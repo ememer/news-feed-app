@@ -1,9 +1,10 @@
 import Layout from './components/Layout';
+import NewsFeed from './components/NewsFeed';
 
 function App() {
   return (
     <Layout>
-      <div className="flex justify-center items-center w-full"></div>
+      <NewsFeed />
     </Layout>
   );
 }

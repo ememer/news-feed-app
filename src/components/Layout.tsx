@@ -16,18 +16,26 @@ const Layout = ({ children }: Props) => {
         className={clsx(
           theme.linearBG,
           theme.borderB,
-          'min-h-10-s border-b py-4 px-10 flex items-center rounded-b-md',
+          'min-h-10-s border-b py-4 px-10 flex justify-center lg:justify-start items-center rounded-b-md fixed w-full top-0 left-0 z-10',
         )}
       >
         <div>
-          <h1 className={clsx('text-2xl', theme.mainAccText)}>
+          <h1 className={clsx('text-2xl font-extrabold', theme.mainAccText)}>
             Daily
             <span className={clsx('font-bold', theme.headerFeeder)}>Feeder</span>
           </h1>
         </div>
       </header>
-      <main className={clsx('grid grid-cols-2 min-h-90-s', theme.linearBG)}>
-        <nav className={clsx('w-4/12 border-r', theme.borderB, theme.linearBG)}></nav>
+      <main className={clsx('flex min-h-90-s', theme.linearBG)}>
+        <nav
+          className={clsx(
+            'w-2/12 border-r hidden fixed h-full lg:block mt-20 p-6',
+            theme.borderB,
+            theme.linearBG,
+          )}
+        >
+          test
+        </nav>
         {children}
       </main>
     </>
