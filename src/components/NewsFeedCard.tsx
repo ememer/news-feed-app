@@ -52,7 +52,7 @@ const NewsFeedCard = ({ theme, article }: Props) => {
         </span>
         <a
           className={clsx(
-            'invisible group-hover/cardItem:visible text-center group-hover/cardItem:border rounded-md p-2',
+            'lg:invisible lg:group-hover/cardItem:visible text-center border  rounded-md p-2',
             theme.borderB,
             theme.elementsLinearBG,
           )}
