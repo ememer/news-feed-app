@@ -2,6 +2,7 @@ import { clsx } from 'clsx';
 import React, { SetStateAction } from 'react';
 
 import { layoutTheme } from '../shared/theme/LayoutTheme';
+import { navLink } from '../shared/utils/navigationLinks';
 const theme = layoutTheme[0];
 
 interface Props {
@@ -27,7 +28,11 @@ const MobileMenu = ({ onClose }: Props) => {
           theme.mainText,
         )}
       >
-        <span>ttttt</span>
+        {navLink.map((link) => (
+          <a key={link.title} href={link.url} title={link.title}>
+            {link.urlText}
+          </a>
+        ))}
       </nav>
     </div>
   );

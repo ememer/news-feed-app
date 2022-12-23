@@ -30,7 +30,7 @@ const Layout = ({ children }: Props) => {
           <div>
             <button
               title="Open side menu"
-              onClick={() => setIsMenuOpen(true)}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="relative group"
             >
               <span className="sr-only">Open side menu button</span>
