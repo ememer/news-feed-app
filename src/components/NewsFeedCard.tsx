@@ -1,5 +1,6 @@
 import {
   faHeart,
+  faMessage,
   faNewspaper,
   faShareFromSquare,
 } from '@fortawesome/free-regular-svg-icons';
@@ -18,13 +19,15 @@ interface Props {
 const NewsFeedCard = ({ theme, article }: Props) => {
   const { source, title, author, url, urlToImage, content } = article;
   const [voteCount, setVoteCount] = useState({
-    vote: 0,
+    vote: Math.floor(Math.random() * (120 - 64) + 64), //Only for mock-up
+    messages: Math.floor(Math.random() * (180 - 64) + 64),
     isClicked: false,
   });
   const [share, setShare] = useState(false);
 
   const addVote = () => {
     setVoteCount((prev) => ({
+      ...prev,
       vote: prev.vote + 1,
       isClicked: true,
     }));
@@ -52,7 +55,7 @@ const NewsFeedCard = ({ theme, article }: Props) => {
         </span>
         <a
           className={clsx(
-            'invisible group-hover/cardItem:visible text-center group-hover/cardItem:border rounded-md p-2',
+            'lg:invisible lg:group-hover/cardItem:visible text-center border  rounded-md p-2',
             theme.borderB,
             theme.elementsLinearBG,
           )}
@@ -85,6 +88,14 @@ const NewsFeedCard = ({ theme, article }: Props) => {
             )}
           >
             {voteCount.vote !== 0 ? voteCount.vote : null}
+          </span>
+        </div>
+        <div className="flex flex-row items-center">
+          <button className="text-2xl">
+            <FontAwesomeIcon icon={faMessage} />
+          </button>
+          <span className="ml-4 duration-75 transform ease-in-out">
+            {voteCount.messages !== 0 ? voteCount.messages : null}
           </span>
         </div>
         <div className="flex flex-row items-center overflow-hidden">
