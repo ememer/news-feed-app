@@ -2,25 +2,38 @@ import {
   faArrowAltCircleUp,
   faComment,
   faShareFromSquare,
+  faSquareCaretLeft,
+  faSquareCaretRight,
 } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, useContext, useEffect, useState } from 'react';
 
+import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { ArticleResponse, CloseHandler } from '../types/NewsFeedArticleType';
+import { ArticleResponse } from '../types/NewsFeedArticleType';
+import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
+import PopupCTA from './PopupCTA';
 
 const theme = layoutTheme[0];
 
 interface Props {
-  onClose: Dispatch<SetStateAction<any>>;
   selectedArticle: ArticleResponse;
-  votes: number;
-  comments: number;
+  onClose: Dispatch<React.SetStateAction<boolean>>;
 }
 
-const FeedPopUp = ({ selectedArticle, onClose, votes, comments }: Props) => {
+const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
   const [shouldCommentOpen, setShouldCommentOpen] = useState(false);
+  const { fillComponentData, setFillComponentData } = useContext(
+    NewsFeedContext,
+  ) as NewsFeedContextTypes;
+
+  // TO DO
+  //
+  // COMMENT SECTION
+  //
+  //
+
   const {
     title = '',
     content = '',
@@ -30,29 +43,22 @@ const FeedPopUp = ({ selectedArticle, onClose, votes, comments }: Props) => {
     source = { id: '', name: '' },
   } = selectedArticle;
 
+  const closePopup = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onClose(false);
+    }
+  };
   useEffect(() => {
-    const closePopup = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose((prevState: CloseHandler) => ({
-          ...prevState,
-          isPopUpOpen: false,
-        }));
-      }
-    };
-
     document.addEventListener('keyup', (e) => closePopup(e));
-    return removeEventListener('keyup', closePopup);
-  }, []);
+    return () => removeEventListener('keyup', closePopup);
+  });
 
   return (
     <div
       id="Popup"
       onClick={(e) => {
         if ((e.target as HTMLDivElement).id === 'Popup') {
-          onClose((prevState: CloseHandler) => ({
-            ...prevState,
-            isPopUpOpen: false,
-          }));
+          onClose(false);
         }
       }}
       className={clsx(
@@ -62,12 +68,64 @@ const FeedPopUp = ({ selectedArticle, onClose, votes, comments }: Props) => {
     >
       <div
         className={clsx(
-          'mt-5 flex max-h-90-s w-full  gap-5 overflow-y-scroll rounded-lg border p-10 shadow-lg lg:w-4/6',
+          'mt-5 flex max-h-90-s w-full flex-col gap-5 overflow-y-scroll rounded-lg border p-10 shadow-lg lg:w-4/6 lg:flex-row',
           theme.borderB,
           theme.elementsLinearBG,
         )}
       >
-        <div className="w-3/4 border-r border-hot-ping-500/20 pr-10">
+        <div className="w-full border-hot-ping-500/20 lg:w-3/4 lg:border-r lg:pr-10">
+          <div className="flex items-center justify-between">
+            <div className="my-6 text-5xl">
+              <button
+                title="Previous Article"
+                disabled={fillComponentData.componentId === 0}
+                className={clsx(
+                  'mx-2',
+                  fillComponentData.componentId === 0 && 'text-hot-ping-500/50',
+                  'text-hot-ping-500',
+                )}
+                onClick={() => {
+                  if (fillComponentData.componentId > 0) {
+                    setFillComponentData((prevState) => ({
+                      ...prevState,
+                      componentId: prevState.componentId - 1,
+                    }));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon={faSquareCaretLeft} />
+              </button>
+
+              {/*  TO DO => PROTECT CLICKING CONNECT WITH ARTICLES LENGTH */}
+              <button
+                title="Next Article"
+                className="mx-2 text-hot-ping-500"
+                onClick={() =>
+                  setFillComponentData((prevState) => ({
+                    ...prevState,
+                    componentId: prevState.componentId + 1,
+                  }))
+                }
+              >
+                <FontAwesomeIcon icon={faSquareCaretRight} />
+              </button>
+            </div>
+            <a
+              target="_blank"
+              href={url as string}
+              title="Open article"
+              className="text-3xl lg:hidden"
+              rel="noreferrer"
+            >
+              <FontAwesomeIcon icon={faShareFromSquare} /> Open
+            </a>
+            <div className="fixed top-14 right-14 z-50">
+              <button className="relative w-1/4 lg:hidden" onClick={() => onClose(false)}>
+                <span className="absolute inline-block h-1 w-8 rotate-45 rounded-md bg-hot-ping-500/50" />
+                <span className="absolute inline-block h-1 w-8 -rotate-45 rounded-md bg-hot-ping-500/50" />
+              </button>
+            </div>
+          </div>
           <h2 className="text-5xl font-bold">{title}</h2>
           <p className="my-4 border-l-2 border-hot-ping-500 pl-4">
             <span className="mr-2 border-l-8 border-hot-ping-500 pl-4 text-xl font-bold text-hot-ping-500">
@@ -78,8 +136,10 @@ const FeedPopUp = ({ selectedArticle, onClose, votes, comments }: Props) => {
           <span className="block m-2">{publishedAt}</span>
           <img className="rounded-md" src={urlToImage as string} />
           <div className="mt-6 mb-2 w-full text-sm">
-            <span className="mx-2">{votes} Upovotes</span>
-            <span className="mx-2">{comments} Comments</span>
+            <span className="mx-2">{fillComponentData.voteReactionCount} Upvotes</span>
+            <span className="mx-2">
+              {fillComponentData.messagesReactionCount} Comments
+            </span>
           </div>
           <div className="mb-6 flex items-center justify-between border-t border-b border-hot-ping-500/30 py-4">
             <div>
@@ -111,43 +171,18 @@ const FeedPopUp = ({ selectedArticle, onClose, votes, comments }: Props) => {
             </div>
           </div>
         </div>
-        <div className="w-2/4">
-          <div className="flex w-full flex-row justify-between">
-            <a
-              target="_blank"
-              className={clsx(
-                'block mx-auto rounded-md border border-hot-ping-500 p-4 xl:w-2/4',
-                theme.elementsLinearBG,
-              )}
-              href={url as string}
-              rel="noreferrer"
-            >
-              <span className="mr-4">
-                <FontAwesomeIcon icon={faShareFromSquare} />
-              </span>
-              Read article
-            </a>
-            <button
-              className="relative w-1/4"
-              onClick={() =>
-                onClose((prevState) => ({ ...prevState, isPopUpOpen: false }))
-              }
-            >
-              <span className="absolute inline-block h-1 w-8 rotate-45 rounded-md bg-hot-ping-500/50" />
-              <span className="absolute inline-block h-1 w-8 -rotate-45 rounded-md bg-hot-ping-500/50" />
-            </button>
-          </div>
-          <div className="my-4 p-4">
-            <span className="text-xl font-bold ">Source:</span>
-
-            <span className={clsx('ml-4 font-bold', theme.mainAccText)}>
-              {source.name ? source.name : 'No information'}
-            </span>
-          </div>
-          <div className="mt-20 flex h-64 w-full items-center justify-center rounded-md border border-hot-ping-500/50 p-2">
+        <div className="w-full lg:w-2/4 ">
+          <PopupCTA
+            buttonClose={onClose}
+            source={source}
+            url={url as string}
+            theme={theme}
+            className="hidden lg:block"
+          />
+          <div className="mt-10 flex h-64 w-full items-center justify-center rounded-md border border-hot-ping-500/50 p-2 lg:mt-20">
             <span className="text-5xl opacity-20">TODO</span>
           </div>
-          <div className="mt-20 flex h-64 w-full items-center justify-center rounded-md border border-hot-ping-500/50 p-2">
+          <div className="mt-10 flex h-64 w-full items-center justify-center rounded-md border border-hot-ping-500/50 p-2 lg:mt-20">
             <span className="text-5xl opacity-20">TODO</span>
           </div>
         </div>

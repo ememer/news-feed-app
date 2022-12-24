@@ -6,47 +6,69 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 
+import { NewsFeedContext } from '../context/NewsFeedContext';
 import { clipLongText } from '../shared/utils/clipText';
 import { LayoutTheme } from '../types/layoutTheme';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
+import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 
 type Props = {
   theme: LayoutTheme;
   article: ArticleResponse;
   // eslint-disable-next-line no-unused-vars
-  onClick: (idx: number, votes: number, comments: number) => void;
+  onClick: Dispatch<SetStateAction<boolean>>;
   index: number;
 };
 
 const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
+  const { fillComponentData, setFillComponentData } = useContext(
+    NewsFeedContext,
+  ) as NewsFeedContextTypes;
+
   const { source, title, author, url, urlToImage, content = '' } = article;
-  const [voteCount, setVoteCount] = useState({
+  const [userReactions, setUserReactions] = useState({
     vote: Math.floor(Math.random() * (120 - 64) + 64), //Only for mock-up
     messages: Math.floor(Math.random() * (180 - 64) + 64), //Only for mock-up
     isClicked: false,
   });
 
   const addVote = () => {
-    setVoteCount((prev) => ({
+    setUserReactions((prev) => ({
       ...prev,
       vote: prev.vote + 1,
       isClicked: true,
     }));
     setTimeout(() => {
-      setVoteCount((prev) => ({
+      setUserReactions((prev) => ({
         ...prev,
         isClicked: false,
       }));
     }, 400);
   };
 
+  useEffect(() => {
+    if (fillComponentData.componentId === index) {
+      console.log('fill');
+      setFillComponentData({
+        componentId: index,
+        voteReactionCount: userReactions.vote,
+        messagesReactionCount: userReactions.messages,
+      });
+    }
+  }, [fillComponentData.componentId]);
+
   return (
     <article
       onClick={(e) => {
         if ((e.target as HTMLDivElement).id !== 'UIelement') {
-          onClick(index, voteCount.vote, voteCount.messages);
+          setFillComponentData({
+            componentId: index,
+            voteReactionCount: userReactions.vote,
+            messagesReactionCount: userReactions.messages,
+          });
+          onClick(true);
         }
       }}
       className={clsx(
@@ -59,7 +81,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
       <div id="article" className="grid grid-cols-2 items-center justify-between p-4">
         <span className={clsx(theme.mainAccText)}>
           <FontAwesomeIcon className="mr-2" icon={faNewspaper} />
-          {source?.id?.toLocaleUpperCase()}
+          {source?.name?.toLocaleUpperCase()}
         </span>
         <a
           id="UIelement"
@@ -92,11 +114,11 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
           </button>
           <span
             className={clsx(
-              voteCount.isClicked && theme.mainAccText,
+              userReactions.isClicked && theme.mainAccText,
               'ml-4 transform duration-75 ease-in-out',
             )}
           >
-            {voteCount.vote !== 0 ? voteCount.vote : null}
+            {userReactions.vote !== 0 ? userReactions.vote : null}
           </span>
         </div>
         <div id="UIelement" className="flex flex-row items-center">
@@ -104,7 +126,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
             <FontAwesomeIcon id="UIelement" icon={faMessage} />
           </button>
           <span className="ml-4 transform duration-75 ease-in-out">
-            {voteCount.messages !== 0 ? voteCount.messages : null}
+            {userReactions.messages !== 0 ? userReactions.messages : null}
           </span>
         </div>
         <div id="UIelement" className="flex flex-row items-center overflow-hidden">

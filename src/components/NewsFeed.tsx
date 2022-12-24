@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
+import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { TempData } from '../shared/utils/tempData';
 import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
+import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import FeedPopUp from './FeedPopup';
 import NewsFeedCard from './NewsFeedCard';
 
@@ -20,14 +22,10 @@ const DEF_ARTICLE: ArticleResponse = {
 };
 
 const NewsFeed = () => {
+  const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
+  const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
   // const [response, setResponse] = useState<ResponseArray>(TempData);
   const [response] = useState<ResponseArray>(TempData);
-  const [clickedNews, setClickedNews] = useState({
-    isPopUpOpen: false,
-    articleId: DEF_ARTICLE,
-    currentVotes: 0,
-    comments: 0,
-  });
   const theme = layoutTheme[0];
 
   // const TOKEN = 'apiKey=dcfea20b502345c6be30e1d013d3d7b3';
@@ -47,48 +45,31 @@ const NewsFeed = () => {
   //   return articlesResponse;
   // };
 
-  // console.log(TempData);
-
   // useEffect(() => {
   //   news().catch((err) => err.message);
   // }, []);
 
   //
 
-  const selectNewsHandler = (idx: number, votes: number, comments: number) => {
-    const matchArticle = response.articles.find((e, index) => index === idx);
-
+  const openAndUpdatePopup = () => {
+    const matchArticle = response.articles.find(
+      (e, idx) => idx === fillComponentData.componentId,
+    );
     if (matchArticle && Object.keys(matchArticle).length !== 0) {
-      setClickedNews(() => ({
-        isPopUpOpen: true,
-        articleId: matchArticle,
-        currentVotes: votes,
-        comments: comments,
-      }));
-      return;
+      return matchArticle;
     }
-    setClickedNews(() => ({
-      isPopUpOpen: true,
-      articleId: DEF_ARTICLE,
-      currentVotes: votes,
-      comments: comments,
-    }));
+    return DEF_ARTICLE;
   };
 
   return (
     <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-10 md:grid-cols-2 lg:w-10/12 xl:grid-cols-3">
-      {clickedNews.isPopUpOpen && (
-        <FeedPopUp
-          onClose={setClickedNews}
-          selectedArticle={clickedNews.articleId}
-          votes={clickedNews.currentVotes}
-          comments={clickedNews.comments}
-        />
+      {isPopUpOpen && (
+        <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
       )}
       {response?.articles.map((article, idx) => (
         <NewsFeedCard
           index={idx}
-          onClick={selectNewsHandler}
+          onClick={setIsPopUpOpen}
           key={`${article.title}+${idx}`}
           article={article}
           theme={theme}
