@@ -1,10 +1,13 @@
 import Layout from './components/Layout';
 import NewsFeed from './components/NewsFeed';
+import NewsFeedContextProvider from './context/NewsFeedContextProvider';
 
 function App() {
   return (
     <Layout>
-      <NewsFeed />
+      <NewsFeedContextProvider>
+        <NewsFeed />
+      </NewsFeedContextProvider>
     </Layout>
   );
 }

@@ -1,13 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
+import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { TempData } from '../shared/utils/tempData';
-// import { ResponseArray } from '../types/NewsFeedArticleType';
+import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
+import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
+import FeedPopUp from './FeedPopup';
 import NewsFeedCard from './NewsFeedCard';
 
+const DEF_ARTICLE: ArticleResponse = {
+  author: '',
+  content: '',
+  publishedAt: '',
+  source: {
+    id: '',
+    name: '',
+  },
+  title: '',
+  url: '',
+  urlToImage: '',
+};
+
 const NewsFeed = () => {
+  const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
+  const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
   // const [response, setResponse] = useState<ResponseArray>(TempData);
-  const [response, setResponse] = useState(TempData);
+  const [response] = useState<ResponseArray>(TempData);
   const theme = layoutTheme[0];
 
   // const TOKEN = 'apiKey=dcfea20b502345c6be30e1d013d3d7b3';
@@ -27,16 +45,35 @@ const NewsFeed = () => {
   //   return articlesResponse;
   // };
 
-  // console.log(TempData);
-
   // useEffect(() => {
   //   news().catch((err) => err.message);
   // }, []);
 
+  //
+
+  const openAndUpdatePopup = () => {
+    const matchArticle = response.articles.find(
+      (e, idx) => idx === fillComponentData.componentId,
+    );
+    if (matchArticle && Object.keys(matchArticle).length !== 0) {
+      return matchArticle;
+    }
+    return DEF_ARTICLE;
+  };
+
   return (
-    <div className="grid gap-10 ml-auto mt-20 p-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full scroll-smooth scroll-m-10 lg:w-10/12">
+    <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-10 md:grid-cols-2 lg:w-10/12 xl:grid-cols-3">
+      {isPopUpOpen && (
+        <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
+      )}
       {response?.articles.map((article, idx) => (
-        <NewsFeedCard key={`${article.title}+${idx}`} article={article} theme={theme} />
+        <NewsFeedCard
+          index={idx}
+          onClick={setIsPopUpOpen}
+          key={`${article.title}+${idx}`}
+          article={article}
+          theme={theme}
+        />
       ))}
     </div>
   );
