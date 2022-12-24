@@ -13,7 +13,7 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
-import CommentBlank from './ComentBlank';
+import CommentBlank from './CommentBlank';
 import PopupCTA from './PopupCTA';
 
 const theme = layoutTheme[0];
@@ -24,16 +24,17 @@ interface Props {
 }
 
 const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const [shouldCommentOpen, setShouldCommentOpen] = useState(false);
   const { fillComponentData, setFillComponentData } = useContext(
     NewsFeedContext,
   ) as NewsFeedContextTypes;
 
-  // TO DO
+  //  =>> TO DO <<=
   //
-  // COMMENT SECTION
+  // =>COMMENT SECTION
   //
-  //
+  // => USE DECELERATED VARIABLE
 
   const {
     title = '',
@@ -49,6 +50,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
       onClose(false);
     }
   };
+
   useEffect(() => {
     document.addEventListener('keyup', (e) => closePopup(e));
     return () => removeEventListener('keyup', closePopup);

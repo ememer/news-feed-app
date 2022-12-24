@@ -48,6 +48,8 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
     }, 400);
   };
 
+  // Updating Votes in Card via Popup
+
   useEffect(() => {
     if (fillComponentData.componentId === index) {
       setUserReactions((prevState) => ({
@@ -56,6 +58,8 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
       }));
     }
   }, [fillComponentData.voteReactionCount]);
+
+  // Updating Popup after index/render change in popup
 
   useEffect(() => {
     if (fillComponentData.componentId === index) {
