@@ -13,6 +13,7 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
+import CommentBlank from './ComentBlank';
 import PopupCTA from './PopupCTA';
 
 const theme = layoutTheme[0];
@@ -169,6 +170,13 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
                 <span className="ml-2">Share</span>
               </button>
             </div>
+          </div>
+          <div className="my-4 w-full">
+            <span className="text-center text-slate-900/70">TO DO COMMENTS SECTION</span>
+            <CommentBlank />
+            <CommentBlank />
+            <CommentBlank />
+            <CommentBlank />
           </div>
         </div>
         <div className="w-full lg:w-2/4 ">
