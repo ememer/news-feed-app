@@ -144,7 +144,14 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
           </div>
           <div className="mb-6 flex items-center justify-between border-t border-b border-hot-ping-500/30 py-4">
             <div>
-              <button>
+              <button
+                onClick={() =>
+                  setFillComponentData((prevState) => ({
+                    ...prevState,
+                    voteReactionCount: prevState.voteReactionCount + 1,
+                  }))
+                }
+              >
                 <FontAwesomeIcon icon={faArrowAltCircleUp} />
                 <span className="ml-2">Upvote</span>
               </button>

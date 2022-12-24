@@ -50,7 +50,15 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
 
   useEffect(() => {
     if (fillComponentData.componentId === index) {
-      console.log('fill');
+      setUserReactions((prevState) => ({
+        ...prevState,
+        vote: fillComponentData.voteReactionCount,
+      }));
+    }
+  }, [fillComponentData.voteReactionCount]);
+
+  useEffect(() => {
+    if (fillComponentData.componentId === index) {
       setFillComponentData({
         componentId: index,
         voteReactionCount: userReactions.vote,
