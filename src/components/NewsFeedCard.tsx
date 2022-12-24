@@ -27,7 +27,6 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
     messages: Math.floor(Math.random() * (180 - 64) + 64), //Only for mock-up
     isClicked: false,
   });
-  const [share, setShare] = useState(false);
 
   const addVote = () => {
     setVoteCount((prev) => ({
@@ -46,7 +45,6 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
   return (
     <article
       onClick={(e) => {
-        console.log((e.target as HTMLElement).id);
         if ((e.target as HTMLDivElement).id !== 'UIelement') {
           onClick(index, voteCount.vote, voteCount.messages);
         }
@@ -113,17 +111,13 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
           <button
             id="UIelement"
             className="text-2xl"
-            onClick={() => {
-              setShare(true);
+            onClick={() =>
               navigator.share({
                 title: title as string,
                 text: content as string,
                 url: url as string,
-              });
-              setTimeout(() => {
-                setShare(false);
-              }, 2000);
-            }}
+              })
+            }
           >
             <FontAwesomeIcon id="UIelement" icon={faShareFromSquare} />
           </button>
