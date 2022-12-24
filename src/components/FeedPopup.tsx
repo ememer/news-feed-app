@@ -56,13 +56,13 @@ const FeedPopUp = ({ selectedArticle, onClose, votes, comments }: Props) => {
         }
       }}
       className={clsx(
-        'fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-hot-ping-900 bg-opacity-30 bg-clip-padding backdrop-blur-sm backdrop-filter',
+        'h-90-s fixed top-0 left-0  z-50 flex h-full  w-full items-center justify-center overflow-y-auto bg-hot-ping-900 bg-opacity-30 bg-clip-padding  backdrop-blur-sm backdrop-filter',
         theme.mainText,
       )}
     >
       <div
         className={clsx(
-          'mt-10 flex min-h-90-s  w-full gap-5 rounded-lg border p-10 shadow-lg lg:w-4/6',
+          'mt-5 flex max-h-90-s w-full  gap-5 overflow-y-scroll rounded-lg border p-10 shadow-lg lg:w-4/6',
           theme.borderB,
           theme.elementsLinearBG,
         )}
