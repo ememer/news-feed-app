@@ -17,7 +17,7 @@ const Layout = ({ children }: Props) => {
       <header
         className={clsx(
           theme.borderB,
-          'min-h-10-s border-b py-4 px-10 flex justify-center lg:justify-start items-center rounded-b-md fixed w-full top-0 left-0 z-10 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border bg-blue-800',
+          'fixed top-0 left-0 z-10 flex min-h-10-s w-full items-center justify-center rounded-b-md border border-b bg-blue-800 bg-opacity-10 bg-clip-padding py-4 px-10 backdrop-blur-sm backdrop-filter lg:justify-start',
         )}
       >
         <div className="ml-auto lg:ml-0">
@@ -26,39 +26,39 @@ const Layout = ({ children }: Props) => {
             <span className={clsx('font-bold', theme.headerFeeder)}>Feeder</span>
           </h1>
         </div>
-        <div className="lg:hidden ml-auto">
+        <div className="ml-auto lg:hidden">
           <div>
             <button
               title="Open side menu"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="relative group"
+              className="group relative"
             >
               <span className="sr-only">Open side menu button</span>
-              <div className="relative flex overflow-hidden items-center justify-center rounded-xl w-[40px] h-[40px] transform transition-all duration-200 shadow-md bg-prussian-blue-900">
+              <div className="relative flex h-[40px] w-[40px] transform items-center justify-center overflow-hidden rounded-xl bg-prussian-blue-900 shadow-md transition-all duration-200">
                 <div
                   className={clsx(
                     isMenuOpen && '-translate-x-1.5 rotate-180',
-                    'flex flex-col justify-between w-[15px] h-[15px] transform transition-all duration-300 origin-center overflow-hidden',
+                    'flex h-[15px] w-[15px] origin-center transform flex-col justify-between overflow-hidden transition-all duration-300',
                   )}
                 >
                   <span
                     className={clsx(
-                      isMenuOpen && 'rotate-[42deg] w-2/3 delay-150',
-                      'bg-white h-[2px] w-7 transform transition-all duration-300 origin-left',
+                      isMenuOpen && 'w-2/3 rotate-[42deg] delay-150',
+                      'h-[2px] w-7 origin-left transform bg-white transition-all duration-300',
                     )}
                   />
 
                   <span
                     className={clsx(
                       isMenuOpen && 'translate-x-10',
-                      'bg-white h-[2px] w-7 rounded transform transition-all duration-300',
+                      'h-[2px] w-7 transform rounded bg-white transition-all duration-300',
                     )}
                   />
 
                   <span
                     className={clsx(
-                      isMenuOpen && '-rotate-[42deg] w-2/3',
-                      'bg-white h-[2px] w-7 transform transition-all duration-300 origin-left delay-150',
+                      isMenuOpen && 'w-2/3 -rotate-[42deg]',
+                      'h-[2px] w-7 origin-left transform bg-white transition-all delay-150 duration-300',
                     )}
                   />
                 </div>
@@ -71,7 +71,7 @@ const Layout = ({ children }: Props) => {
       <main className={clsx('flex min-h-90-s', theme.linearBG)}>
         <nav
           className={clsx(
-            'w-2/12 border-r hidden fixed h-full lg:block mt-20 p-6',
+            'fixed mt-20 hidden h-full w-2/12 border-r p-6 lg:block',
             theme.borderB,
             theme.linearBG,
           )}
