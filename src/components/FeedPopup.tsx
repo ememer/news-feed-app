@@ -136,7 +136,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
             </span>
             {content}
           </p>
-          <span className="block m-2">{publishedAt}</span>
+          <span className="m-2 block">{publishedAt}</span>
           <img className="rounded-md" src={urlToImage as string} />
           <div className="mt-6 mb-2 w-full text-sm">
             <span className="mx-2">{fillComponentData.voteReactionCount} Upvotes</span>

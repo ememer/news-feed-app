@@ -1,12 +1,14 @@
+import { Outlet } from 'react-router-dom';
+
 import Layout from './components/Layout';
-import NewsFeed from './components/NewsFeed';
+// import NewsFeed from './components/NewsFeed';
 import NewsFeedContextProvider from './context/NewsFeedContextProvider';
 
 function App() {
   return (
     <Layout>
       <NewsFeedContextProvider>
-        <NewsFeed />
+        <Outlet />
       </NewsFeedContextProvider>
     </Layout>
   );

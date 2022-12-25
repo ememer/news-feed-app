@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import MobileMenu from './MobileMenu';
+import NavElements from './NavElements';
 
 type Props = {
   children: React.ReactNode;
@@ -33,7 +34,7 @@ const Layout = ({ children }: Props) => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="group relative"
             >
-              <span className="sr-only">Open side menu button</span>
+              <span className="sr-only">Open side menu button</span>{' '}
               <div className="relative flex h-[40px] w-[40px] transform items-center justify-center overflow-hidden rounded-xl bg-prussian-blue-900 shadow-md transition-all duration-200">
                 <div
                   className={clsx(
@@ -43,21 +44,21 @@ const Layout = ({ children }: Props) => {
                 >
                   <span
                     className={clsx(
-                      isMenuOpen && 'w-2/3 rotate-[42deg] delay-150',
+                      isMenuOpen && 'w-2/4 rotate-[42deg] delay-150',
                       'h-[2px] w-7 origin-left transform bg-white transition-all duration-300',
                     )}
                   />
 
                   <span
                     className={clsx(
-                      isMenuOpen && 'translate-x-10',
+                      isMenuOpen && 'w-2/4 translate-x-10',
                       'h-[2px] w-7 transform rounded bg-white transition-all duration-300',
                     )}
                   />
 
                   <span
                     className={clsx(
-                      isMenuOpen && 'w-2/3 -rotate-[42deg]',
+                      isMenuOpen && 'w-2/4 -rotate-[42deg]',
                       'h-[2px] w-7 origin-left transform bg-white transition-all delay-150 duration-300',
                     )}
                   />
@@ -71,12 +72,13 @@ const Layout = ({ children }: Props) => {
       <main className={clsx('flex min-h-90-s', theme.linearBG)}>
         <nav
           className={clsx(
-            'fixed mt-20 hidden h-full w-2/12 border-r p-6 lg:block',
+            'fixed mt-20 hidden h-full w-2/12 border-r px-8 py-16 lg:block',
             theme.borderB,
             theme.linearBG,
+            theme.mainText,
           )}
         >
-          test
+          <NavElements theme={theme} />
         </nav>
         {children}
       </main>
