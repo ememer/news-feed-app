@@ -3,8 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
 import { useContext, useState } from 'react';
 
+import CloseButton from '../components/CloseButton';
 import FeedPopUp from '../components/FeedPopup';
+import LayoutPopUp from '../components/LayoutPopUp';
 import NewsFeedCard from '../components/NewsFeedCard';
+import PreferenceMenu from '../components/PreferenceMenu';
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { TempData } from '../shared/utils/tempData';
@@ -26,6 +29,7 @@ const DEF_ARTICLE: ArticleResponse = {
 
 const MyFeed = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
+  const [preferenceMenu, setPreferenceMenu] = useState(false);
   const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
   const [isHintShouldOpen, setIsHintShouldOpen] = useState(true);
   // const [response, setResponse] = useState<ResponseArray>(TempData);
@@ -67,8 +71,14 @@ const MyFeed = () => {
 
   return (
     <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-10 lg:w-10/12">
+      {preferenceMenu && (
+        <LayoutPopUp className="flex flex-col lg:flex-row " onClose={setPreferenceMenu}>
+          <PreferenceMenu />
+        </LayoutPopUp>
+      )}
       <div className="relative my-10 flex min-h-10-s items-center p-6">
         <button
+          onClick={() => setPreferenceMenu(true)}
           className={clsx(
             'flex items-center rounded-2xl py-4 px-6 font-bold hover:bg-prussian-blue-800',
             theme.mainText,
@@ -88,19 +98,23 @@ const MyFeed = () => {
               )}
             >
               <span className="text-sm">Edit your personal feed preferences here</span>
-              <button
-                onClick={() => setIsHintShouldOpen(false)}
-                className="w-10 text-2xl text-hot-ping-500"
-              >
-                x
-              </button>
+              <div>
+                <button
+                  className="font-bold text-hot-ping-500"
+                  onClick={() => setIsHintShouldOpen}
+                >
+                  x
+                </button>
+              </div>
             </div>
           </div>
         )}
       </div>
       <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3">
         {isPopUpOpen && (
-          <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
+          <LayoutPopUp className="flex flex-col lg:flex-row" onClose={setIsPopUpOpen}>
+            <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
+          </LayoutPopUp>
         )}
         {response?.articles.map((article, idx) => (
           <NewsFeedCard

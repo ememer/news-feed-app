@@ -3,14 +3,17 @@ import { Outlet } from 'react-router-dom';
 import Layout from './components/Layout';
 // import NewsFeed from './components/NewsFeed';
 import NewsFeedContextProvider from './context/NewsFeedContextProvider';
+import UserPreferencesContextProvider from './context/UserPreferencesContextProvider';
 
 function App() {
   return (
-    <Layout>
-      <NewsFeedContextProvider>
-        <Outlet />
-      </NewsFeedContextProvider>
-    </Layout>
+    <UserPreferencesContextProvider>
+      <Layout>
+        <NewsFeedContextProvider>
+          <Outlet />
+        </NewsFeedContextProvider>
+      </Layout>
+    </UserPreferencesContextProvider>
   );
 }
 
