@@ -45,6 +45,8 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
     source = { id: '', name: '' },
   } = selectedArticle;
 
+  console.log(fillComponentData.componentId);
+
   return (
     <>
       <div className="w-full border-hot-ping-500/20 lg:w-3/4 lg:border-r lg:pr-10">
@@ -55,8 +57,9 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
               disabled={fillComponentData.componentId === 0}
               className={clsx(
                 'mx-2',
-                fillComponentData.componentId === 0 && 'text-hot-ping-500/50',
-                'text-hot-ping-500',
+                fillComponentData.componentId === 0
+                  ? 'text-hot-ping-500/50'
+                  : theme.textP,
               )}
               onClick={() => {
                 if (fillComponentData.componentId > 0) {

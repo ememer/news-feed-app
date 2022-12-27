@@ -1,15 +1,16 @@
 import { faBarsProgress } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import FeedPopUp from '../components/FeedPopup';
 import LayoutPopUp from '../components/LayoutPopUp';
 import NewsFeedCard from '../components/NewsFeedCard';
 import PreferenceMenu from '../components/PreferenceMenu';
 import { NewsFeedContext } from '../context/NewsFeedContext';
+import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { TempData } from '../shared/utils/tempData';
+// import { TempData } from '../shared/utils/tempData';
 import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 
@@ -31,35 +32,41 @@ const MyFeed = () => {
   const [preferenceMenu, setPreferenceMenu] = useState(false);
   const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
   const [isHintShouldOpen, setIsHintShouldOpen] = useState(true);
-  // const [response, setResponse] = useState<ResponseArray>(TempData);
-  const [response] = useState<ResponseArray>(TempData);
+  const [response, setResponse] = useState<ResponseArray>();
+  // const [response] = useState<ResponseArray>(TempData);
   const theme = layoutTheme[0];
 
-  // const TOKEN = 'apiKey=dcfea20b502345c6be30e1d013d3d7b3';
-  // const URL = 'https://newsapi.org/v2/everything?' + 'q=Sport&' + TOKEN;
-  // const request: Request = new Request(URL);
+  const { userPreferencesStringUrl, datePeriod } = useApiRequest();
 
-  // const news = async (): Promise<ResponseArray> => {
-  //   const resp = await fetch(request);
+  const TOKEN = 'apiKey=dcfea20b502345c6be30e1d013d3d7b3';
+  const URL =
+    'https://newsapi.org/v2/everything?' +
+    userPreferencesStringUrl +
+    datePeriod +
+    'sortBy=popularity' +
+    TOKEN;
+  const request: Request = new Request(URL);
 
-  //   if (!resp.ok) {
-  //     const message = `Error exist ${resp.status}`;
-  //     throw new Error(message);
-  //   }
+  const news = async (): Promise<ResponseArray> => {
+    const resp = await fetch(request);
 
-  //   const articlesResponse = await resp.json();
-  //   setResponse(articlesResponse);
-  //   return articlesResponse;
-  // };
+    if (!resp.ok) {
+      const message = `Error exist ${resp.status}`;
+      throw new Error(message);
+    }
 
-  // useEffect(() => {
-  //   news().catch((err) => err.message);
-  // }, []);
+    const articlesResponse = await resp.json();
 
-  //
+    setResponse(articlesResponse);
+    return articlesResponse;
+  };
+
+  useEffect(() => {
+    news().catch((err) => err.message);
+  }, [userPreferencesStringUrl]);
 
   const openAndUpdatePopup = () => {
-    const matchArticle = response.articles.find(
+    const matchArticle = response?.articles.find(
       (e, idx) => idx === fillComponentData.componentId,
     );
     if (matchArticle && Object.keys(matchArticle).length !== 0) {
