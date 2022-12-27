@@ -49,7 +49,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
 
   return (
     <>
-      <div className="w-full border-hot-ping-500/20 lg:w-3/4 lg:border-r lg:pr-10">
+      <div className={clsx('w-full lg:w-3/4 lg:border-r lg:pr-10', theme.borderP20)}>
         <div className="flex items-center justify-between">
           <div className="my-6 text-5xl">
             <button
@@ -76,7 +76,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
             {/*  TO DO => PROTECT CLICKING CONNECT WITH ARTICLES LENGTH */}
             <button
               title="Next Article"
-              className="mx-2 text-hot-ping-500"
+              className={clsx('mx-2', theme.textP)}
               onClick={() =>
                 setFillComponentData((prevState) => ({
                   ...prevState,
@@ -98,14 +98,30 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
           </a>
           <div className="fixed top-14 right-14 z-50">
             <button className="relative w-1/4 lg:hidden" onClick={() => onClose(false)}>
-              <span className="absolute inline-block h-1 w-8 rotate-45 rounded-md bg-hot-ping-500/50" />
-              <span className="absolute inline-block h-1 w-8 -rotate-45 rounded-md bg-hot-ping-500/50" />
+              <span
+                className={clsx(
+                  'absolute inline-block h-1 w-8 rotate-45 rounded-md',
+                  theme.elementsBgP50,
+                )}
+              />
+              <span
+                className={clsx(
+                  'absolute inline-block h-1 w-8 -rotate-45 rounded-md',
+                  theme.elementsBgP50,
+                )}
+              />
             </button>
           </div>
         </div>
         <h2 className="text-5xl font-bold">{title}</h2>
-        <p className="my-4 border-l-2 border-hot-ping-500 pl-4">
-          <span className="mr-2 border-l-8 border-hot-ping-500 pl-4 text-xl font-bold text-hot-ping-500">
+        <p className={clsx('my-4 border-l-2 pl-4', theme.borderP)}>
+          <span
+            className={clsx(
+              'mr-2 border-l-8 pl-4 text-xl font-bold ',
+              theme.borderP,
+              theme.textP,
+            )}
+          >
             {'TL:DR/>'}
           </span>
           {content}
@@ -116,7 +132,12 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
           <span className="mx-2">{fillComponentData.voteReactionCount} Upvotes</span>
           <span className="mx-2">{fillComponentData.messagesReactionCount} Comments</span>
         </div>
-        <div className="mb-6 flex items-center justify-between border-t border-b border-hot-ping-500/30 py-4">
+        <div
+          className={clsx(
+            'mb-6 flex items-center justify-between border-t border-b py-4',
+            theme.borderP50,
+          )}
+        >
           <div>
             <button
               onClick={() =>
@@ -168,10 +189,20 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
           theme={theme}
           className="hidden lg:block"
         />
-        <div className="mt-10 flex h-64 w-full items-center justify-center rounded-md border border-hot-ping-500/50 p-2 lg:mt-20">
+        <div
+          className={clsx(
+            'mt-10 flex h-64 w-full items-center justify-center rounded-md border p-2 lg:mt-20',
+            theme.borderP50,
+          )}
+        >
           <span className="text-5xl opacity-20">TODO</span>
         </div>
-        <div className="mt-10 flex h-64 w-full items-center justify-center rounded-md border border-hot-ping-500/50 p-2 lg:mt-20">
+        <div
+          className={clsx(
+            'mt-10 flex h-64 w-full items-center justify-center rounded-md border p-2 lg:mt-20',
+            theme.borderP50,
+          )}
+        >
           <span className="text-5xl opacity-20">TODO</span>
         </div>
       </div>

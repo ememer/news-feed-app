@@ -10,7 +10,10 @@ export const layoutTheme = [
     mainButton: 'bg-prussian-blue-800',
     accButton: 'bg-prussian-blue-800/20',
     borderP: 'border-hot-ping-500',
+    borderP20: 'border-hot-ping-500/20',
+    borderP50: 'border-hot-ping-500/50',
     elementsBgP: 'bg-hot-ping-500',
+    elementsBgP50: 'bg-hot-ping-500/50',
     textP: 'text-hot-ping-500',
   },
 ];

@@ -43,7 +43,7 @@ const MyFeed = () => {
     'https://newsapi.org/v2/everything?' +
     userPreferencesStringUrl +
     datePeriod +
-    'sortBy=popularity' +
+    'sortBy=popularity&' +
     TOKEN;
   const request: Request = new Request(URL);
 
