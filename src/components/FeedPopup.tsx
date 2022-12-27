@@ -125,7 +125,13 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
           {content}
         </p>
         <span className="m-2 block">{publishedAt}</span>
-        <img className="rounded-md" src={urlToImage as string} />
+        <img
+          className="rounded-md"
+          src={
+            (urlToImage as string) ??
+            'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
+          }
+        />
         <div className="mt-6 mb-2 w-full text-sm">
           <span className="mx-2">{fillComponentData.voteReactionCount} Upvotes</span>
           <span className="mx-2">{fillComponentData.messagesReactionCount} Comments</span>

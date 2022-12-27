@@ -117,7 +117,10 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
       <img
         className="aspect-video rounded-b-md object-cover"
         alt={`${title} article`}
-        src={urlToImage ?? 'https://miro.medium.com/max/800/1*hFwwQAW45673VGKrMPE2qQ.png'}
+        src={
+          urlToImage ??
+          'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
+        }
       />
       <div id="UIelement" className="row flex justify-between p-4">
         <div id="UIelement" className="flex flex-row items-center">
