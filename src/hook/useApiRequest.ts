@@ -19,6 +19,7 @@ export const useApiRequest = () => {
   const userPreferences = userSettings.myFeed.tagSub.map(
     (tag) => `q=${tag.toLocaleLowerCase()}&`,
   );
-  const userPreferencesStringUrl = userPreferences.join('');
+  const userPreferencesStringUrl =
+    userPreferences.length !== 0 ? userPreferences.join('') : 'q=';
   return { userPreferencesStringUrl, datePeriod };
 };

@@ -40,7 +40,7 @@ const MyFeed = () => {
 
   const TOKEN = 'apiKey=dcfea20b502345c6be30e1d013d3d7b3';
   const URL =
-    'https://newsapi.org/v2/everything?' +
+    'https://newsapi.org/v2/everything?q=' +
     userPreferencesStringUrl +
     datePeriod +
     'sortBy=popularity&' +

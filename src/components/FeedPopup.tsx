@@ -45,8 +45,6 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
     source = { id: '', name: '' },
   } = selectedArticle;
 
-  console.log(fillComponentData.componentId);
-
   return (
     <>
       <div className={clsx('w-full lg:w-3/4 lg:border-r lg:pr-10', theme.borderP20)}>
