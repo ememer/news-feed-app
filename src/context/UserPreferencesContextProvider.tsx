@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import { UserSettingsObjectTypes } from '../types/UserPreferContext';
 import { UserPreferencesContext } from './UserPreferencesContext';
 
 interface Props {
   children: React.ReactNode;
 }
 
-const temp = 'Hello Context';
+const DEFAULT_USER_SETTINGS: UserSettingsObjectTypes = {
+  myFeed: {
+    tagSub: [],
+    myFeedCategory: 'MyFeed',
+  },
+  layoutType: 'eco',
+};
 
 const UserPreferencesContextProvider = ({ children }: Props) => {
+  const [userSettings, setUserSettings] =
+    useState<UserSettingsObjectTypes>(DEFAULT_USER_SETTINGS);
   return (
-    <UserPreferencesContext.Provider value={{ temp }}>
+    <UserPreferencesContext.Provider value={{ userSettings, setUserSettings }}>
       {children}
     </UserPreferencesContext.Provider>
   );
