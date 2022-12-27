@@ -7,5 +7,10 @@ export const layoutTheme = [
     headerFeeder:
       'text-xl bg-gradient-to-r from-prussian-blue-400 to-prussian-blue-300 text-transparent bg-clip-text',
     elementsLinearBG: 'bg-gradient-to-br from-prussian-blue-900 to-shark-900',
+    mainButton: 'bg-prussian-blue-800',
+    accButton: 'bg-prussian-blue-800/20',
+    borderP: 'border-hot-ping-500',
+    elementsBgP: 'bg-hot-ping-500',
+    textP: 'text-hot-ping-500',
   },
 ];

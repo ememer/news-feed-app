@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
 import { useContext, useState } from 'react';
 
-import CloseButton from '../components/CloseButton';
 import FeedPopUp from '../components/FeedPopup';
 import LayoutPopUp from '../components/LayoutPopUp';
 import NewsFeedCard from '../components/NewsFeedCard';
@@ -76,7 +75,7 @@ const MyFeed = () => {
           <PreferenceMenu />
         </LayoutPopUp>
       )}
-      <div className="relative my-10 flex min-h-10-s items-center p-6">
+      <div className="my-10 flex min-h-10-s flex-col items-center p-6 lg:flex-row">
         <button
           onClick={() => setPreferenceMenu(true)}
           className={clsx(
@@ -87,20 +86,28 @@ const MyFeed = () => {
           My feed <FontAwesomeIcon className="ml-4 text-xl" icon={faBarsProgress} />
         </button>
         {isHintShouldOpen && (
-          <div className=" -ml-4 flex items-center justify-start">
-            <span className="block h-2 w-2 rounded-full  border border-hot-ping-500 bg-hot-ping-500" />
-            <span className="block h-0.5 w-6 bg-hot-ping-500" />
+          <div className="-ml-4 -mt-2 flex flex-col items-center justify-start lg:flex-row">
+            <span
+              className={clsx(
+                'block h-2 w-2 rounded-full border',
+                theme.borderP,
+                theme.elementsBgP,
+              )}
+            />
+            <span
+              className={clsx('block h-6 w-0.5 lg:h-0.5 lg:w-6', theme.elementsBgP)}
+            />
             <div
               className={clsx(
-                'flex w-4/6 items-start rounded-xl border border-hot-ping-500 py-2 px-4',
-
+                'flex w-4/6 items-start rounded-xl border py-2 px-4',
+                theme.borderP,
                 theme.mainText,
               )}
             >
               <span className="text-sm">Edit your personal feed preferences here</span>
-              <div>
+              <div className="w-2/12">
                 <button
-                  className="font-bold text-hot-ping-500"
+                  className={clsx('text-2xl font-bold', theme.textP)}
                   onClick={() => setIsHintShouldOpen}
                 >
                   x

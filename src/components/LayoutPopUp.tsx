@@ -35,7 +35,7 @@ const LayoutPopUp = ({ children, onClose, className }: Props) => {
     >
       <div
         className={clsx(
-          'mt-5 max-h-90-s w-full  gap-5 overflow-y-scroll rounded-lg border p-10 shadow-lg lg:w-4/6',
+          'mt-5 max-h-90-s w-full  gap-5 overflow-y-scroll rounded-lg border p-8 shadow-lg lg:w-4/6 lg:p-10',
           className,
           theme.borderB,
           theme.elementsLinearBG,
