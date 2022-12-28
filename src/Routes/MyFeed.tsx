@@ -139,9 +139,9 @@ const MyFeed = () => {
       <div
         className={clsx('grid w-full grid-cols-1', {
           'gap-2 p-2 md:grid-cols-2 xl:grid-cols-4': userSettings.layoutType === 'eco',
-          'gap-10 p-20 md:grid-cols-2 md:gap-6 md:p-16 xl:grid-cols-3':
+          'gap-10 p-4 md:grid-cols-2 md:gap-6 md:p-16 lg:p-20 xl:grid-cols-3':
             userSettings.layoutType === 'roomy',
-          'md:gap-15 gap-20 p-10 md:grid-cols-2 xl:grid-cols-3':
+          'md:gap-15 gap-20 md:grid-cols-2 lg:p-10 xl:grid-cols-3':
             userSettings.layoutType === 'cozy',
         })}
       >
