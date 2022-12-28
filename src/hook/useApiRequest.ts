@@ -16,9 +16,7 @@ export const useApiRequest = () => {
     yesterday.toISOString().split('T')[0]
   }&`;
 
-  const userPreferences = userSettings.myFeed.tagSub.map(
-    (tag) => `q=${tag.toLocaleLowerCase()}&`,
-  );
+  const userPreferences = userSettings.myFeed.tagSub.map((tag) => `q=${tag}&`);
   const userPreferencesStringUrl =
     userPreferences.length !== 0 ? userPreferences.join('') : 'q=';
   return { userPreferencesStringUrl, datePeriod };

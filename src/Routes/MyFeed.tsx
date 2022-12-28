@@ -10,7 +10,6 @@ import PreferenceMenu from '../components/PreferenceMenu';
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-// import { TempData } from '../shared/utils/tempData';
 import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 
@@ -33,19 +32,20 @@ const MyFeed = () => {
   const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
   const [isHintShouldOpen, setIsHintShouldOpen] = useState(true);
   const [response, setResponse] = useState<ResponseArray>();
-  // const [response] = useState<ResponseArray>(TempData);
   const theme = layoutTheme[0];
 
   const { userPreferencesStringUrl, datePeriod } = useApiRequest();
 
   const TOKEN = 'apiKey=dcfea20b502345c6be30e1d013d3d7b3';
   const URL =
-    'https://newsapi.org/v2/everything?q=' +
+    'https://newsapi.org/v2/everything?' +
     userPreferencesStringUrl +
     datePeriod +
     'sortBy=popularity&' +
     TOKEN;
   const request: Request = new Request(URL);
+
+  console.log(URL);
 
   const news = async (): Promise<ResponseArray> => {
     const resp = await fetch(request);
@@ -57,12 +57,13 @@ const MyFeed = () => {
 
     const articlesResponse = await resp.json();
 
-    setResponse(articlesResponse);
     return articlesResponse;
   };
 
   useEffect(() => {
-    news().catch((err) => err.message);
+    news()
+      .then((resp) => setResponse(resp))
+      .catch((err) => err.message);
   }, [userPreferencesStringUrl]);
 
   const openAndUpdatePopup = () => {
