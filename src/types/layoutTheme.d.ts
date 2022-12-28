@@ -5,4 +5,12 @@ export interface LayoutTheme {
   mainAccText: string;
   headerFeeder: string;
   elementsLinearBG: string;
+  mainButton: string;
+  borderP: string;
+  borderP20: string;
+  borderP50: string;
+  accButton: string;
+  elementsBgP: string;
+  elementsBgP50: string;
+  textP: string;
 }

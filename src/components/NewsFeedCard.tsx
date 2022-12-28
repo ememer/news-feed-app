@@ -7,6 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
 import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import LazyLoad from 'react-lazy-load';
 
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { clipLongText } from '../shared/utils/clipText';
@@ -91,7 +92,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
       )}
     >
       <div id="article" className="grid grid-cols-2 items-center justify-between p-4">
-        <span className={clsx(theme.mainAccText)}>
+        <span className={clsx('text-xs lg:text-sm', theme.mainAccText)}>
           <FontAwesomeIcon className="mr-2" icon={faNewspaper} />
           {source?.name?.toLocaleUpperCase()}
         </span>
@@ -114,14 +115,24 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
         <span className="my-2 font-light">{author}</span>
         <p className="my-4">{clipLongText(content as string, 100)}</p>
       </div>
-      <img
-        className="aspect-video rounded-b-md object-cover"
-        alt={`${title} article`}
-        src={urlToImage ?? 'https://miro.medium.com/max/800/1*hFwwQAW45673VGKrMPE2qQ.png'}
-      />
+      <LazyLoad threshold={0.5}>
+        <img
+          className="aspect-video rounded-b-md object-cover"
+          alt={`${title} article`}
+          src={
+            urlToImage ??
+            'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
+          }
+        />
+      </LazyLoad>
       <div id="UIelement" className="row flex justify-between p-4">
         <div id="UIelement" className="flex flex-row items-center">
-          <button id="UIelement" className="text-2xl" onClick={() => addVote()}>
+          <button
+            title="Vote up"
+            id="UIelement"
+            className="text-2xl"
+            onClick={() => addVote()}
+          >
             <FontAwesomeIcon id="UIelement" icon={faHeart} />
           </button>
           <span
@@ -134,7 +145,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
           </span>
         </div>
         <div id="UIelement" className="flex flex-row items-center">
-          <button id="UIelement" className="text-2xl">
+          <button title="Open comments" id="UIelement" className="text-2xl">
             <FontAwesomeIcon id="UIelement" icon={faMessage} />
           </button>
           <span className="ml-4 transform duration-75 ease-in-out">
@@ -143,6 +154,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
         </div>
         <div id="UIelement" className="flex flex-row items-center overflow-hidden">
           <button
+            title="Share content"
             id="UIelement"
             className="text-2xl"
             onClick={() =>

@@ -14,6 +14,7 @@ const DEFAULT_COMPONENT_DATA = {
 
 const NewsFeedContextProvider = ({ children }: Props) => {
   const [fillComponentData, setFillComponentData] = useState(DEFAULT_COMPONENT_DATA);
+
   return (
     <NewsFeedContext.Provider
       value={{
