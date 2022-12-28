@@ -97,7 +97,11 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
             <FontAwesomeIcon icon={faShareFromSquare} /> Open
           </a>
           <div className="fixed top-14 right-14 z-50">
-            <button className="relative w-1/4 lg:hidden" onClick={() => onClose(false)}>
+            <button
+              title="Close popup"
+              className="relative w-1/4 lg:hidden"
+              onClick={() => onClose(false)}
+            >
               <span
                 className={clsx(
                   'absolute inline-block h-1 w-8 rotate-45 rounded-md',
@@ -149,6 +153,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
         >
           <div>
             <button
+              title="Vote up"
               onClick={() =>
                 setFillComponentData((prevState) => ({
                   ...prevState,
@@ -161,13 +166,14 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
             </button>
           </div>
           <div>
-            <button onClick={() => setShouldCommentOpen(true)}>
+            <button title="Open comments" onClick={() => setShouldCommentOpen(true)}>
               <FontAwesomeIcon icon={faComment} />
               <span className="ml-2">Comment</span>
             </button>
           </div>
           <div>
             <button
+              title="Share content"
               onClick={() =>
                 navigator.share({
                   title: title as string,

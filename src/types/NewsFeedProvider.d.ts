@@ -9,5 +9,4 @@ type DEF_COMPONENT_DATA = {
 export interface NewsFeedContextTypes {
   fillComponentData: DEF_COMPONENT_DATA;
   setFillComponentData: Dispatch<SetStateAction<DEF_COMPONENT_DATA>>;
-  lazyLoadHeight: number;
 }

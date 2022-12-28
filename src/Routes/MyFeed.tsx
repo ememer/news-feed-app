@@ -83,6 +83,7 @@ const MyFeed = () => {
       )}
       <div className="my-10 flex min-h-10-s flex-col items-center p-6 lg:flex-row">
         <button
+          title="Open my feed setting"
           onClick={() => setPreferenceMenu(true)}
           className={clsx(
             'flex items-center rounded-2xl py-4 px-6 font-bold hover:bg-prussian-blue-800',
@@ -113,6 +114,7 @@ const MyFeed = () => {
               <span className="text-sm">Edit your personal feed preferences here</span>
               <div className="w-2/12">
                 <button
+                  title="Close my feed hint"
                   className={clsx('text-2xl font-bold', theme.textP)}
                   onClick={() => setIsHintShouldOpen}
                 >

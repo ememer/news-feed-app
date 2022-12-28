@@ -20,7 +20,7 @@ const PopupCTA = ({ buttonClose, source, url, theme, className }: Props) => {
         <a
           target="_blank"
           className={clsx(
-            'block mx-auto rounded-md border border-hot-ping-500 p-4 xl:w-2/4',
+            'mx-auto block rounded-md border border-hot-ping-500 p-4 xl:w-2/4',
             theme.elementsLinearBG,
           )}
           href={url as string}
@@ -31,7 +31,11 @@ const PopupCTA = ({ buttonClose, source, url, theme, className }: Props) => {
           </span>
           Read article
         </a>
-        <button className="relative w-1/4" onClick={() => buttonClose(false)}>
+        <button
+          title="Close popup"
+          className="relative w-1/4"
+          onClick={() => buttonClose(false)}
+        >
           <span className="absolute inline-block h-1 w-8 rotate-45 rounded-md bg-hot-ping-500/50" />
           <span className="absolute inline-block h-1 w-8 -rotate-45 rounded-md bg-hot-ping-500/50" />
         </button>

@@ -24,7 +24,7 @@ type Props = {
 };
 
 const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
-  const { fillComponentData, setFillComponentData, lazyLoadHeight } = useContext(
+  const { fillComponentData, setFillComponentData } = useContext(
     NewsFeedContext,
   ) as NewsFeedContextTypes;
 
@@ -115,7 +115,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
         <span className="my-2 font-light">{author}</span>
         <p className="my-4">{clipLongText(content as string, 100)}</p>
       </div>
-      <LazyLoad threshold={0.5} height={lazyLoadHeight}>
+      <LazyLoad threshold={0.5}>
         <img
           className="aspect-video rounded-b-md object-cover"
           alt={`${title} article`}
@@ -127,7 +127,12 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
       </LazyLoad>
       <div id="UIelement" className="row flex justify-between p-4">
         <div id="UIelement" className="flex flex-row items-center">
-          <button id="UIelement" className="text-2xl" onClick={() => addVote()}>
+          <button
+            title="Vote up"
+            id="UIelement"
+            className="text-2xl"
+            onClick={() => addVote()}
+          >
             <FontAwesomeIcon id="UIelement" icon={faHeart} />
           </button>
           <span
@@ -140,7 +145,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
           </span>
         </div>
         <div id="UIelement" className="flex flex-row items-center">
-          <button id="UIelement" className="text-2xl">
+          <button title="Open comments" id="UIelement" className="text-2xl">
             <FontAwesomeIcon id="UIelement" icon={faMessage} />
           </button>
           <span className="ml-4 transform duration-75 ease-in-out">
@@ -149,6 +154,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
         </div>
         <div id="UIelement" className="flex flex-row items-center overflow-hidden">
           <button
+            title="Share content"
             id="UIelement"
             className="text-2xl"
             onClick={() =>

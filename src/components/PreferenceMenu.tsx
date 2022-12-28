@@ -30,6 +30,7 @@ const PreferenceMenu = () => {
     <>
       <div className="mt-10 flex w-full flex-col lg:w-1/4">
         <button
+          title="Adjust feed followed tags"
           onClick={() =>
             setUserSettings((prevState) => ({
               ...prevState,
@@ -47,6 +48,7 @@ const PreferenceMenu = () => {
           <FontAwesomeIcon icon={faHashtag} /> My feed tags
         </button>
         <button
+          title="Set layout title"
           onClick={() =>
             setUserSettings((prevState) => ({
               ...prevState,
@@ -82,6 +84,7 @@ const PreferenceMenu = () => {
                   key={category}
                 >
                   <button
+                    title={`Add ${category} to following`}
                     onClick={(e: React.MouseEvent) => {
                       if (
                         !userSettings.myFeed?.tagSub?.includes(
@@ -106,6 +109,11 @@ const PreferenceMenu = () => {
                     {category}
                   </button>
                   <button
+                    title={`${
+                      userSettings.myFeed.tagSub.includes(category)
+                        ? 'Unfollow'
+                        : 'Follow'
+                    } ${category}`}
                     id={category}
                     onClick={(e: React.MouseEvent) => {
                       userSettings.myFeed.tagSub.includes(
