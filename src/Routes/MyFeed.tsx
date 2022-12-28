@@ -78,7 +78,7 @@ const MyFeed = () => {
   };
 
   return (
-    <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-10 lg:w-9/12 xl:w-10/12">
+    <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
       {preferenceMenu && (
         <LayoutPopUp className="flex flex-col lg:flex-row " onClose={setPreferenceMenu}>
           <PreferenceMenu />
@@ -115,10 +115,13 @@ const MyFeed = () => {
               )}
             >
               <span className="text-sm">Edit your personal feed preferences here</span>
-              <div className="w-2/12">
+              <div className="w-4/12 lg:w-2/12">
                 <button
                   title="Close my feed hint"
-                  className={clsx('text-2xl font-bold', theme.textP)}
+                  className={clsx(
+                    'w-full text-right text-2xl font-bold lg:text-left',
+                    theme.textP,
+                  )}
                   onClick={() =>
                     setUserSettings((prevState) => ({
                       ...prevState,

@@ -92,7 +92,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
       )}
     >
       <div id="article" className="grid grid-cols-2 items-center justify-between p-4">
-        <span className={clsx(theme.mainAccText)}>
+        <span className={clsx('text-xs lg:text-sm', theme.mainAccText)}>
           <FontAwesomeIcon className="mr-2" icon={faNewspaper} />
           {source?.name?.toLocaleUpperCase()}
         </span>

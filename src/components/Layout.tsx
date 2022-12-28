@@ -13,12 +13,13 @@ const theme = layoutTheme[0];
 
 const Layout = ({ children }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <>
       <header
         className={clsx(
           theme.borderB,
-          'fixed top-0 left-0 z-10 flex min-h-10-s w-full items-center justify-center rounded-b-md border border-b bg-blue-800 bg-opacity-10 bg-clip-padding py-4 px-6 backdrop-blur-sm backdrop-filter lg:justify-start lg:px-10',
+          'fixed top-0 left-0 z-10 flex min-h-10-s w-full items-center justify-center rounded-b-md border border-b bg-blue-800 bg-opacity-10 bg-clip-padding py-4 px-1 backdrop-blur-sm backdrop-filter lg:justify-start lg:px-10',
         )}
       >
         <div className="ml-auto lg:ml-0">

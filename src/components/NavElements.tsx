@@ -18,13 +18,18 @@ import { LayoutTheme } from '../types/layoutTheme';
 
 interface Props {
   theme: LayoutTheme;
+  onClose?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const NavElements = ({ theme }: Props) => {
+const NavElements = ({ theme, onClose }: Props) => {
   return (
     <ul className="my-auto text-center lg:text-left">
       {navLink.feed.map((link) => (
-        <li className="my-2 w-full" key={link.title}>
+        <li
+          onClick={() => (onClose ? onClose(false) : null)}
+          className="my-2 w-full"
+          key={link.title}
+        >
           <NavLink
             className={({ isActive }) =>
               isActive ? clsx(theme.mainAccText, 'w-full rounded-md') : theme.mainText
@@ -41,7 +46,11 @@ const NavElements = ({ theme }: Props) => {
         Discover
       </span>
       {navLink.discover.map((link) => (
-        <li className="my-2 w-full" key={link.title}>
+        <li
+          onClick={() => (onClose ? onClose(false) : null)}
+          className="my-2 w-full"
+          key={link.title}
+        >
           <NavLink
             className={({ isActive }) =>
               isActive

@@ -117,7 +117,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
             </button>
           </div>
         </div>
-        <h2 className="text-5xl font-bold">{title}</h2>
+        <h2 className="text-3xl font-bold lg:text-5xl">{title}</h2>
         <p className={clsx('my-4 border-l-2 pl-4', theme.borderP)}>
           <span
             className={clsx(

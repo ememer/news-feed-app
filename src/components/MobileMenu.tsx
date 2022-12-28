@@ -29,7 +29,7 @@ const MobileMenu = ({ onClose }: Props) => {
           theme.mainText,
         )}
       >
-        <NavElements theme={theme} />
+        <NavElements onClose={() => onClose(false)} theme={theme} />
       </nav>
     </div>
   );
