@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { UserSettingsObjectTypes } from '../types/UserPreferContext';
 import { UserPreferencesContext } from './UserPreferencesContext';
@@ -12,13 +12,20 @@ const DEFAULT_USER_SETTINGS: UserSettingsObjectTypes = {
     tagSub: [],
     myFeedCategory: 'MyFeed',
   },
-  layoutType: 'eco',
+  layoutType: 'cozy',
   isHintShouldOpen: true,
 };
 
 const UserPreferencesContextProvider = ({ children }: Props) => {
-  const [userSettings, setUserSettings] =
-    useState<UserSettingsObjectTypes>(DEFAULT_USER_SETTINGS);
+  const [userSettings, setUserSettings] = useState<UserSettingsObjectTypes>(
+    JSON.parse(localStorage.getItem('feedUserSettings') as string) ??
+      DEFAULT_USER_SETTINGS,
+  );
+
+  useEffect(() => {
+    localStorage.setItem('feedUserSettings', JSON.stringify(userSettings));
+  }, [userSettings]);
+
   return (
     <UserPreferencesContext.Provider value={{ userSettings, setUserSettings }}>
       {children}

@@ -17,6 +17,8 @@ const categories = [
   'Technology',
 ];
 
+const layoutSets = ['eco', 'roomy', 'cozy'];
+
 const buttonClassName = 'mb-10 rounded-xl p-4';
 
 const theme = layoutTheme[0];
@@ -154,6 +156,35 @@ const PreferenceMenu = () => {
                 </li>
               ))}
             </ul>
+          )}
+          {userSettings.myFeed.myFeedCategory === 'FeedLayout' && (
+            <>
+              {layoutSets.map((set) => (
+                <div className="w-full p-4" key={set}>
+                  <label className="flex cursor-pointer items-center">
+                    <input
+                      onChange={(e) =>
+                        setUserSettings((prevState) => ({
+                          ...prevState,
+                          layoutType: (e.target as HTMLInputElement).value as
+                            | 'eco'
+                            | 'roomy'
+                            | 'cozy',
+                        }))
+                      }
+                      className="mr-10"
+                      type="radio"
+                      name={set}
+                      value={set}
+                      checked={
+                        userSettings.layoutType === (set as 'eco' | 'roomy' | 'cozy')
+                      }
+                    />
+                    {set}
+                  </label>
+                </div>
+              ))}
+            </>
           )}
         </div>
       </div>

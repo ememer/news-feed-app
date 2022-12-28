@@ -136,7 +136,15 @@ const MyFeed = () => {
           </div>
         )}
       </div>
-      <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3">
+      <div
+        className={clsx('grid w-full grid-cols-1', {
+          'gap-2 p-2 md:grid-cols-2 xl:grid-cols-4': userSettings.layoutType === 'eco',
+          'gap-10 p-20 md:grid-cols-2 md:gap-6 md:p-16 xl:grid-cols-3':
+            userSettings.layoutType === 'roomy',
+          'md:gap-15 gap-20 p-10 md:grid-cols-2 xl:grid-cols-3':
+            userSettings.layoutType === 'cozy',
+        })}
+      >
         {isPopUpOpen && (
           <LayoutPopUp className="flex flex-col lg:flex-row" onClose={setIsPopUpOpen}>
             <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
