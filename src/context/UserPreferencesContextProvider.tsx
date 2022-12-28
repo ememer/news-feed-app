@@ -13,6 +13,7 @@ const DEFAULT_USER_SETTINGS: UserSettingsObjectTypes = {
     myFeedCategory: 'MyFeed',
   },
   layoutType: 'eco',
+  isHintShouldOpen: true,
 };
 
 const UserPreferencesContextProvider = ({ children }: Props) => {

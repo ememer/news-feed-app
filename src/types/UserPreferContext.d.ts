@@ -4,6 +4,7 @@ export interface UserSettingsObjectTypes {
     myFeedCategory: 'MyFeed' | 'FeedLayout';
   };
   layoutType: 'eco' | 'roomy' | 'cozy';
+  isHintShouldOpen: boolean;
 }
 
 export interface UserPreferencesContextTypes {

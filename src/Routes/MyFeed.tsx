@@ -8,10 +8,12 @@ import LayoutPopUp from '../components/LayoutPopUp';
 import NewsFeedCard from '../components/NewsFeedCard';
 import PreferenceMenu from '../components/PreferenceMenu';
 import { NewsFeedContext } from '../context/NewsFeedContext';
+import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
+import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
 const DEF_ARTICLE: ArticleResponse = {
   author: '',
@@ -30,10 +32,11 @@ const MyFeed = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
   const [preferenceMenu, setPreferenceMenu] = useState(false);
   const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
-  const [isHintShouldOpen, setIsHintShouldOpen] = useState(true);
   const [response, setResponse] = useState<ResponseArray>();
   const theme = layoutTheme[0];
-
+  const { userSettings, setUserSettings } = useContext(
+    UserPreferencesContext,
+  ) as UserPreferencesContextTypes;
   const { userPreferencesStringUrl, datePeriod } = useApiRequest();
 
   const TOKEN = 'apiKey=dcfea20b502345c6be30e1d013d3d7b3';
@@ -75,7 +78,7 @@ const MyFeed = () => {
   };
 
   return (
-    <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-10 lg:w-10/12">
+    <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-10 lg:w-9/12 xl:w-10/12">
       {preferenceMenu && (
         <LayoutPopUp className="flex flex-col lg:flex-row " onClose={setPreferenceMenu}>
           <PreferenceMenu />
@@ -92,7 +95,7 @@ const MyFeed = () => {
         >
           My feed <FontAwesomeIcon className="ml-4 text-xl" icon={faBarsProgress} />
         </button>
-        {isHintShouldOpen && (
+        {userSettings.isHintShouldOpen && (
           <div className="-ml-4 -mt-2 flex flex-col items-center justify-start lg:flex-row">
             <span
               className={clsx(
@@ -116,7 +119,12 @@ const MyFeed = () => {
                 <button
                   title="Close my feed hint"
                   className={clsx('text-2xl font-bold', theme.textP)}
-                  onClick={() => setIsHintShouldOpen}
+                  onClick={() =>
+                    setUserSettings((prevState) => ({
+                      ...prevState,
+                      isHintShouldOpen: false,
+                    }))
+                  }
                 >
                   x
                 </button>

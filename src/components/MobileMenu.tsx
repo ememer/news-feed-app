@@ -23,7 +23,7 @@ const MobileMenu = ({ onClose }: Props) => {
     >
       <nav
         className={clsx(
-          'z-20 min-h-screen w-3/4 border-r px-4 py-6',
+          'z-20 min-h-screen w-3/4 border-r px-4 py-6 md:w-2/4',
           theme.linearBG,
           theme.borderB,
           theme.mainText,
