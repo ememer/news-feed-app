@@ -45,8 +45,6 @@ const MyFeed = () => {
     TOKEN;
   const request: Request = new Request(URL);
 
-  console.log(URL);
-
   const news = async (): Promise<ResponseArray> => {
     const resp = await fetch(request);
 

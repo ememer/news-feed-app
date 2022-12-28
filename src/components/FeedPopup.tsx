@@ -8,7 +8,9 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
 import { useContext, useState } from 'react';
+import LazyLoad from 'react-lazy-load';
 
+// import LazyLoad from 'react-lazy-load/dist/LazyLoad';
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
@@ -125,13 +127,16 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
           {content}
         </p>
         <span className="m-2 block">{publishedAt}</span>
-        <img
-          className="rounded-md"
-          src={
-            (urlToImage as string) ??
-            'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
-          }
-        />
+        <LazyLoad threshold={1.0}>
+          <img
+            className="rounded-md"
+            src={
+              (urlToImage as string) ??
+              'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
+            }
+          />
+        </LazyLoad>
+
         <div className="mt-6 mb-2 w-full text-sm">
           <span className="mx-2">{fillComponentData.voteReactionCount} Upvotes</span>
           <span className="mx-2">{fillComponentData.messagesReactionCount} Comments</span>

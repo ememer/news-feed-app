@@ -7,6 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
 import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import LazyLoad from 'react-lazy-load';
 
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { clipLongText } from '../shared/utils/clipText';
@@ -23,7 +24,7 @@ type Props = {
 };
 
 const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
-  const { fillComponentData, setFillComponentData } = useContext(
+  const { fillComponentData, setFillComponentData, lazyLoadHeight } = useContext(
     NewsFeedContext,
   ) as NewsFeedContextTypes;
 
@@ -114,14 +115,16 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
         <span className="my-2 font-light">{author}</span>
         <p className="my-4">{clipLongText(content as string, 100)}</p>
       </div>
-      <img
-        className="aspect-video rounded-b-md object-cover"
-        alt={`${title} article`}
-        src={
-          urlToImage ??
-          'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
-        }
-      />
+      <LazyLoad threshold={0.5} height={lazyLoadHeight}>
+        <img
+          className="aspect-video rounded-b-md object-cover"
+          alt={`${title} article`}
+          src={
+            urlToImage ??
+            'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
+          }
+        />
+      </LazyLoad>
       <div id="UIelement" className="row flex justify-between p-4">
         <div id="UIelement" className="flex flex-row items-center">
           <button id="UIelement" className="text-2xl" onClick={() => addVote()}>
