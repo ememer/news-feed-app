@@ -10,7 +10,7 @@ import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from
 import LazyLoad from 'react-lazy-load';
 
 import { NewsFeedContext } from '../context/NewsFeedContext';
-import { clipLongText } from '../shared/utils/clipText';
+// import { clipLongText } from '../shared/utils/clipText';
 import { LayoutTheme } from '../types/layoutTheme';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
@@ -28,7 +28,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
     NewsFeedContext,
   ) as NewsFeedContextTypes;
 
-  const { source, title, author, url, urlToImage, content = '' } = article;
+  const { source, title, author, url, urlToImage, content } = article;
   const [userReactions, setUserReactions] = useState({
     vote: Math.floor(Math.random() * (120 - 64) + 64), //Only for mock-up
     messages: Math.floor(Math.random() * (180 - 64) + 64), //Only for mock-up
@@ -113,7 +113,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
       <div className="mb-4 min-h-10-s p-4 pb-0">
         <h2 className="my-2 w-full text-2xl font-bold">{title}</h2>
         <span className="my-2 font-light">{author}</span>
-        <p className="my-4">{clipLongText(content as string, 100)}</p>
+        {/* <p className="my-4">{clipLongText(content as string, 100)}</p> */}
       </div>
       <LazyLoad threshold={0.5}>
         <img
