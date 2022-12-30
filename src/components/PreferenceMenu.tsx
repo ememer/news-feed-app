@@ -1,7 +1,8 @@
+import React, { useContext } from 'react';
+
 import { faHashtag, faTh } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-import React, { useContext } from 'react';
 
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';

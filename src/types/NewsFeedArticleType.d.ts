@@ -9,6 +9,7 @@ export interface ArticleResponse {
   title: string | null;
   url: string | null;
   urlToImage: string | null;
+  description: string | null;
 }
 
 export interface ResponseArray {

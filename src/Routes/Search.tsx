@@ -1,5 +1,6 @@
-import clsx from 'clsx';
 import { useContext, useEffect, useState } from 'react';
+
+import clsx from 'clsx';
 
 import FeedPopUp from '../components/FeedPopup';
 import LayoutPopUp from '../components/LayoutPopUp';
@@ -8,22 +9,9 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
+import { ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
-
-const DEF_ARTICLE: ArticleResponse = {
-  author: '',
-  content: '',
-  publishedAt: '',
-  source: {
-    id: '',
-    name: '',
-  },
-  title: '',
-  url: '',
-  urlToImage: '',
-};
 
 const Search = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
@@ -33,35 +21,39 @@ const Search = () => {
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
-  const { userPreferencesStringUrl, datePeriod } = useApiRequest();
+  const { news, DEF_ARTICLE } = useApiRequest();
+  const [searchParam, setSearchParam] = useState('');
+  const [shouldRequest, setShouldRequest] = useState(true);
 
-  const TOKEN = 'apiKey=dcfea20b502345c6be30e1d013d3d7b3';
-  const URL =
-    'https://newsapi.org/v2/everything?' +
-    userPreferencesStringUrl +
-    datePeriod +
-    'sortBy=popularity&' +
-    TOKEN;
-  const request: Request = new Request(URL);
-
-  const news = async (): Promise<ResponseArray> => {
-    const resp = await fetch(request);
-
-    if (!resp.ok) {
-      const message = `Error exist ${resp.status}`;
-      throw new Error(message);
+  const createSearchUrl = (fieldText: string) => {
+    if (fieldText.length >= 1 && fieldText.length < 3) {
+      return { __err: 'Search field should have minimum 3 characters' };
     }
 
-    const articlesResponse = await resp.json();
-
-    return articlesResponse;
+    const searchParams = fieldText.split(' ');
+    const filteredParamsUrl = `${searchParams.filter((elem: string) => elem !== '')}`;
+    return filteredParamsUrl;
   };
 
+  const validationError: string | { __err: string } = createSearchUrl(searchParam);
+
+  const isValidate = Object.keys(validationError).toLocaleString() !== '__err';
+
   useEffect(() => {
-    news()
-      .then((resp) => setResponse(resp))
-      .catch((err) => err.message);
-  }, [userPreferencesStringUrl]);
+    if (shouldRequest) {
+      news({
+        preferences: 'everything?',
+        userPreferencesTags: (typeof createSearchUrl(searchParam) === 'object'
+          ? ''
+          : createSearchUrl(searchParam)) as string,
+        country: 'pl',
+      })
+        .then((resp) => {
+          setShouldRequest(false), setResponse(resp);
+        })
+        .catch((err) => err.message);
+    }
+  }, [searchParam, shouldRequest]);
 
   const openAndUpdatePopup = () => {
     const matchArticle = response?.articles.find(
@@ -75,6 +67,30 @@ const Search = () => {
 
   return (
     <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (isValidate) {
+            setShouldRequest(true);
+          }
+        }}
+        className="my-10 flex min-h-10-s flex-col items-center justify-center p-6"
+      >
+        <input
+          onChange={(e) => setSearchParam(e.target.value)}
+          value={searchParam}
+          autoFocus={true}
+          autoCapitalize="off"
+          className="w-full rounded-lg p-3 focus:outline-none"
+          title="Fill field"
+          type="text"
+          placeholder="Search"
+        />
+
+        <span className={clsx('inline-block w-full p-2', theme.textP)}>
+          {(validationError as { __err: string })?.__err}
+        </span>
+      </form>
       <div
         className={clsx('grid w-full grid-cols-1', {
           'gap-2 p-2 md:grid-cols-2 xl:grid-cols-4': userSettings.layoutType === 'eco',

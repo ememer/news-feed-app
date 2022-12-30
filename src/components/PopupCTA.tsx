@@ -1,7 +1,8 @@
+import React, { Dispatch, SetStateAction } from 'react';
+
 import { faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-import React, { Dispatch, SetStateAction } from 'react';
 
 import { LayoutTheme } from '../types/layoutTheme';
 

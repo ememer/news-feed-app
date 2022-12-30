@@ -1,6 +1,5 @@
-import './index.css';
-
 import React from 'react';
+
 import ReactDOM from 'react-dom';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -10,6 +9,8 @@ import MyFeed from './Routes/MyFeed';
 import Popular from './Routes/Popular';
 import Search from './Routes/Search';
 import Upvoted from './Routes/Upvoted';
+
+import './index.css';
 
 const router = createBrowserRouter([
   {

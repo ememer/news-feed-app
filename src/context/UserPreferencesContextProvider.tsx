@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { UserSettingsObjectTypes } from '../types/UserPreferContext';
+
 import { UserPreferencesContext } from './UserPreferencesContext';
 
 interface Props {

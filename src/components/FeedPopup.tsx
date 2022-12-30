@@ -1,3 +1,5 @@
+import { useContext, useState } from 'react';
+
 import {
   faArrowAltCircleUp,
   faComment,
@@ -7,7 +9,6 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-import { useContext, useState } from 'react';
 import LazyLoad from 'react-lazy-load';
 
 // import LazyLoad from 'react-lazy-load/dist/LazyLoad';
@@ -15,6 +16,7 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
+
 import CommentBlank from './CommentBlank';
 import PopupCTA from './PopupCTA';
 

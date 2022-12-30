@@ -1,5 +1,6 @@
-import clsx from 'clsx';
 import React from 'react';
+
+import clsx from 'clsx';
 
 import { navLink } from '../shared/utils/navigationLinks';
 library.add(faHouse, faFire, faArrowAltCircleUp, faComment, faMagnifyingGlass);

@@ -1,7 +1,8 @@
+import { useContext, useEffect, useState } from 'react';
+
 import { faBarsProgress } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-import { useContext, useEffect, useState } from 'react';
 
 import FeedPopUp from '../components/FeedPopup';
 import LayoutPopUp from '../components/LayoutPopUp';
@@ -27,13 +28,27 @@ const MyFeed = () => {
   const { userPreferencesStringUrl, DEF_ARTICLE, news } = useApiRequest();
 
   useEffect(() => {
+    window.addEventListener('online', () =>
+      news({
+        preferences: 'everything?',
+        popularity: 'sortBy=popularity&',
+        country: 'pl',
+        userPreferencesTags: userPreferencesStringUrl,
+      })
+        .then((resp) => setResponse(resp))
+        .catch((err) => err.message),
+    );
+
     news({
       preferences: 'everything?',
       popularity: 'sortBy=popularity&',
       userPreferencesTags: userPreferencesStringUrl,
+      country: 'pl',
     })
       .then((resp) => setResponse(resp))
-      .catch((err) => err.message);
+      .catch((err) => console.warn(err));
+
+    return () => window.removeEventListener('online', () => news);
   }, [userPreferencesStringUrl]);
 
   const openAndUpdatePopup = () => {

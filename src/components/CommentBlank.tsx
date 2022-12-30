@@ -13,10 +13,10 @@ const CommentBlank = () => {
     >
       <span className="block h-14 w-14 rounded-xl bg-slate-900/50" />
       <div className="w-3/4">
-        <span className="block mb-2 h-2 w-32 rounded-xl bg-slate-900/50 lg:w-56" />
-        <span className="block mb-2 ml-4 h-2 w-36 rounded-xl bg-slate-900/50 lg:w-60" />
-        <span className="block mb-2 ml-6 h-2 w-36 rounded-xl bg-slate-900/50 lg:w-64" />
-        <span className="block mb-2 ml-8 h-2 w-36 rounded-xl bg-slate-900/50" />
+        <span className="mb-2 block h-2 w-32 rounded-xl bg-slate-900/50 lg:w-56" />
+        <span className="mb-2 ml-4 block h-2 w-36 rounded-xl bg-slate-900/50 lg:w-60" />
+        <span className="mb-2 ml-6 block h-2 w-36 rounded-xl bg-slate-900/50 lg:w-64" />
+        <span className="mb-2 ml-8 block h-2 w-36 rounded-xl bg-slate-900/50" />
       </div>
     </div>
   );

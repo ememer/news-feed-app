@@ -1,5 +1,6 @@
-import clsx from 'clsx';
 import { useContext, useEffect, useState } from 'react';
+
+import clsx from 'clsx';
 
 import FeedPopUp from '../components/FeedPopup';
 import LayoutPopUp from '../components/LayoutPopUp';
@@ -8,22 +9,9 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
+import { ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
-
-const DEF_ARTICLE: ArticleResponse = {
-  author: '',
-  content: '',
-  publishedAt: '',
-  source: {
-    id: '',
-    name: '',
-  },
-  title: '',
-  url: '',
-  urlToImage: '',
-};
 
 const Discussion = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
@@ -33,32 +21,13 @@ const Discussion = () => {
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
-  const { userPreferencesStringUrl, datePeriod } = useApiRequest();
-
-  const TOKEN = 'apiKey=dcfea20b502345c6be30e1d013d3d7b3';
-  const URL =
-    'https://newsapi.org/v2/everything?' +
-    userPreferencesStringUrl +
-    datePeriod +
-    'sortBy=popularity&' +
-    TOKEN;
-  const request: Request = new Request(URL);
-
-  const news = async (): Promise<ResponseArray> => {
-    const resp = await fetch(request);
-
-    if (!resp.ok) {
-      const message = `Error exist ${resp.status}`;
-      throw new Error(message);
-    }
-
-    const articlesResponse = await resp.json();
-
-    return articlesResponse;
-  };
+  const { userPreferencesStringUrl, news, DEF_ARTICLE } = useApiRequest();
 
   useEffect(() => {
-    news()
+    news({
+      preferences: 'top-headlines?',
+      country: 'pl',
+    })
       .then((resp) => setResponse(resp))
       .catch((err) => err.message);
   }, [userPreferencesStringUrl]);

@@ -1,5 +1,6 @@
-import clsx from 'clsx';
 import { useContext, useEffect, useState } from 'react';
+
+import clsx from 'clsx';
 
 import FeedPopUp from '../components/FeedPopup';
 import LayoutPopUp from '../components/LayoutPopUp';
@@ -26,12 +27,12 @@ const Popular = () => {
   useEffect(() => {
     news({
       preferences: 'top-headlines?',
-      userPreferencesTags: '',
-      country: '',
+      country: 'pl',
     })
       .then((resp) => setResponse(resp))
       .catch((err) => err.message);
   }, [userPreferencesStringUrl]);
+
   const openAndUpdatePopup = () => {
     const matchArticle = response?.articles.find(
       (e, idx) => idx === fillComponentData.componentId,
