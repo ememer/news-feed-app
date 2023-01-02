@@ -57,15 +57,17 @@ const Discussion = () => {
             <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
           </LayoutPopUp>
         )}
-        {response?.articles.map((article, idx) => (
-          <NewsFeedCard
-            index={idx}
-            onClick={setIsPopUpOpen}
-            key={`${article.title}+${idx}`}
-            article={article}
-            theme={theme}
-          />
-        ))}
+        {response?.articles
+          .sort((a, b) => (b.messages as number) - (a.messages as number))
+          .map((article, idx) => (
+            <NewsFeedCard
+              index={idx}
+              onClick={setIsPopUpOpen}
+              key={`${article.title}+${idx}`}
+              article={article}
+              theme={theme}
+            />
+          ))}
       </div>
     </div>
   );
