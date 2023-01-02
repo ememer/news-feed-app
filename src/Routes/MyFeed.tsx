@@ -12,9 +12,11 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { ResponseArray } from '../types/NewsFeedArticleType';
+import { RequestParams, ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
+
+const API_PARAMS = { preferences: 'top-headlines?', country: 'pl' } as RequestParams;
 
 const MyFeed = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
@@ -29,21 +31,14 @@ const MyFeed = () => {
 
   useEffect(() => {
     window.addEventListener('online', () =>
-      news({
-        preferences: 'everything?',
-        popularity: 'sortBy=popularity&',
-        country: 'pl',
-        userPreferencesTags: userPreferencesStringUrl,
-      })
+      news({ ...API_PARAMS, userPreferencesTags: userPreferencesStringUrl })
         .then((resp) => setResponse(resp))
         .catch((err) => err.message),
     );
 
     news({
-      preferences: 'everything?',
-      popularity: 'sortBy=popularity&',
+      ...API_PARAMS,
       userPreferencesTags: userPreferencesStringUrl,
-      country: 'pl',
     })
       .then((resp) => setResponse(resp))
       .catch((err) => console.warn(err));

@@ -26,7 +26,6 @@ const Discussion = () => {
   useEffect(() => {
     news({
       preferences: 'top-headlines?',
-      country: 'pl',
     })
       .then((resp) => setResponse(resp))
       .catch((err) => err.message);

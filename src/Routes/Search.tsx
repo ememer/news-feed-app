@@ -26,34 +26,35 @@ const Search = () => {
   const [shouldRequest, setShouldRequest] = useState(true);
 
   const createSearchUrl = (fieldText: string) => {
-    if (fieldText.length >= 1 && fieldText.length < 3) {
+    if (fieldText.length >= 0 && fieldText.length < 3) {
       return { __err: 'Search field should have minimum 3 characters' };
     }
 
-    const searchParams = fieldText.split(' ');
-    const filteredParamsUrl = `${searchParams.filter((elem: string) => elem !== '')}`;
-    return filteredParamsUrl;
+    return encodeURIComponent(`${fieldText}`);
   };
+
+  console.log(createSearchUrl(searchParam));
 
   const validationError: string | { __err: string } = createSearchUrl(searchParam);
 
   const isValidate = Object.keys(validationError).toLocaleString() !== '__err';
 
+  console.log(shouldRequest);
   useEffect(() => {
     if (shouldRequest) {
       news({
         preferences: 'everything?',
-        userPreferencesTags: (typeof createSearchUrl(searchParam) === 'object'
-          ? ''
-          : createSearchUrl(searchParam)) as string,
-        country: 'pl',
+        popularity: 'sortBy=popularity&',
+        userPreferencesTags:
+          typeof createSearchUrl(searchParam) === 'object'
+            ? 'q='
+            : (`q=${createSearchUrl(searchParam)}&` as string),
       })
-        .then((resp) => {
-          setShouldRequest(false), setResponse(resp);
-        })
+        .then((resp) => setResponse(resp))
         .catch((err) => err.message);
+      setShouldRequest(false);
     }
-  }, [searchParam, shouldRequest]);
+  }, [shouldRequest]);
 
   const openAndUpdatePopup = () => {
     const matchArticle = response?.articles.find(
@@ -87,7 +88,7 @@ const Search = () => {
           placeholder="Search"
         />
 
-        <span className={clsx('inline-block w-full p-2', theme.textP)}>
+        <span className={clsx('inline-block w-full p-2', theme.mainAccText)}>
           {(validationError as { __err: string })?.__err}
         </span>
       </form>
