@@ -23,7 +23,7 @@ const DEF_ARTICLE: ArticleResponse = {
 
 const today = new Date();
 const yesterday = new Date(today);
-yesterday.setDate(yesterday.getDate() - 1);
+yesterday.setDate(yesterday.getDate() - 5);
 
 // splitting to array and convert to string template
 
@@ -55,9 +55,7 @@ export const useApiRequest = () => {
       userPreferencesTags +
       (preferences === 'everything?' ? datePeriod : '') +
       (!country && !popularity && !userPreferencesTags ? `&${TOKEN}` : TOKEN);
-    console.log(URL);
 
-    // return;
     const request: Request = new Request(URL);
     const resp = await fetch(request);
 
@@ -67,7 +65,6 @@ export const useApiRequest = () => {
     }
 
     const articlesResponse = await resp.json();
-    console.log(articlesResponse);
 
     return articlesResponse;
   };

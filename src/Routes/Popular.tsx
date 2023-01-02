@@ -9,9 +9,15 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { ResponseArray } from '../types/NewsFeedArticleType';
+import { RequestParams, ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
+
+const API_PARAMS = {
+  preferences: 'everything?',
+  popularity: 'sortBy=popularity&',
+  userPreferencesTags: 'q=',
+} as RequestParams;
 
 const Popular = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
@@ -25,10 +31,7 @@ const Popular = () => {
   const { userPreferencesStringUrl, DEF_ARTICLE, news } = useApiRequest();
 
   useEffect(() => {
-    news({
-      preferences: 'top-headlines?',
-      country: 'pl',
-    })
+    news(API_PARAMS)
       .then((resp) => setResponse(resp))
       .catch((err) => err.message);
   }, [userPreferencesStringUrl]);
