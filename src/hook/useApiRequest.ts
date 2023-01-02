@@ -46,17 +46,20 @@ export const useApiRequest = () => {
     preferences = 'everything?',
     popularity = '',
     userPreferencesTags = '',
-    country = '',
+    country = 'pl',
   }: RequestParams): Promise<ResponseArray> => {
     const URL =
       `https://newsapi.org/v2/${preferences}` +
       popularity +
-      (country ? `country=${country}&` : '') +
+      (preferences === 'everything?' ? '' : `country=${country}&`) +
       userPreferencesTags +
       (preferences === 'everything?' ? datePeriod : '') +
       (!country && !popularity && !userPreferencesTags ? `&${TOKEN}` : TOKEN);
 
     const request: Request = new Request(URL);
+    console.log(URL);
+
+    return;
     const resp = await fetch(request);
 
     if (!resp.ok) {
@@ -65,7 +68,6 @@ export const useApiRequest = () => {
     }
 
     const articlesResponse = await resp.json();
-
     return articlesResponse;
   };
 

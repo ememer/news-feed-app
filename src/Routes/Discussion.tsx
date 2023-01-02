@@ -13,7 +13,7 @@ import { RequestParams, ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
-const API_PARAMS = { preferences: 'top-headlines?', country: 'pl' } as RequestParams;
+const API_PARAMS = { preferences: 'top-headlines?' } as RequestParams;
 
 const Discussion = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;

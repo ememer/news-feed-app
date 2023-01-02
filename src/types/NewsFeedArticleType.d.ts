@@ -82,6 +82,5 @@ export type RequestParams = {
     | 'ua'
     | 'us'
     | 've'
-    | 'za'
-    | '';
+    | 'za';
 };

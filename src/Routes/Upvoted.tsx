@@ -13,7 +13,7 @@ import { RequestParams, ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
-const API_PARAMS = { preferences: 'top-headlines?', country: 'pl' } as RequestParams;
+const API_PARAMS = { preferences: 'top-headlines?' } as RequestParams;
 
 const Upvoted = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
@@ -31,6 +31,7 @@ const Upvoted = () => {
       .catch((err) => err.message);
   }, [userPreferencesStringUrl]);
 
+  console.log(response);
   const openAndUpdatePopup = () => {
     const matchArticle = response?.articles.find(
       (e, idx) => idx === fillComponentData.componentId,
