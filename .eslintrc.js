@@ -39,8 +39,27 @@ module.exports = {
     'jsx-a11y/accessible-emoji': 'off',
     'react/prop-types': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: [
+          // React-related imports
+          ['^react$', '^prop-types$'],
+          // other external imports
+          ['^@?\\w'],
+          // app's internal relative imports
+          ['^../../../'],
+          ['^../../'],
+          ['^../'],
+          ['^./'],
+          // image imports
+          ['^.*\\.(png|jpg)$'],
+          // CSS imports
+          ['^\\u0000\\S+.css$', '^\\u0000\\S+(?<!.css)$'],
+        ],
+      },
+    ],
     // 'jsx-a11y/anchor-is-valid': [
     //   'error',
     //   {

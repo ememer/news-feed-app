@@ -1,11 +1,16 @@
-import './index.css';
-
 import React from 'react';
+
 import ReactDOM from 'react-dom';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import App from './App';
+import Discussion from './Routes/Discussion';
 import MyFeed from './Routes/MyFeed';
+import Popular from './Routes/Popular';
+import Search from './Routes/Search';
+import Upvoted from './Routes/Upvoted';
+
+import './index.css';
 
 const router = createBrowserRouter([
   {
@@ -18,19 +23,19 @@ const router = createBrowserRouter([
       },
       {
         path: '/news-feeder/popular',
-        element: <MyFeed />,
+        element: <Popular />,
       },
       {
         path: '/news-feeder/upvoted',
-        element: <MyFeed />,
+        element: <Upvoted />,
       },
       {
         path: '/news-feeder/discussion',
-        element: <MyFeed />,
+        element: <Discussion />,
       },
       {
         path: '/news-feeder/search',
-        element: <MyFeed />,
+        element: <Search />,
       },
     ],
   },

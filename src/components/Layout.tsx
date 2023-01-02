@@ -1,7 +1,9 @@
-import clsx from 'clsx';
 import React, { useState } from 'react';
 
+import clsx from 'clsx';
+
 import { layoutTheme } from '../shared/theme/LayoutTheme';
+
 import MobileMenu from './MobileMenu';
 import NavElements from './NavElements';
 
