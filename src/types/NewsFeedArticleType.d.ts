@@ -10,6 +10,8 @@ export interface ArticleResponse {
   url: string | null;
   urlToImage: string | null;
   description: string | null;
+  vote?: number;
+  messages?: number;
 }
 
 export interface ResponseArray {
@@ -82,6 +84,5 @@ export type RequestParams = {
     | 'ua'
     | 'us'
     | 've'
-    | 'za'
-    | '';
+    | 'za';
 };

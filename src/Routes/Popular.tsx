@@ -29,7 +29,6 @@ const Popular = () => {
   ) as UserPreferencesContextTypes;
 
   const { userPreferencesStringUrl, DEF_ARTICLE, news } = useApiRequest();
-
   useEffect(() => {
     news(API_PARAMS)
       .then((resp) => setResponse(resp))

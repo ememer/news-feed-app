@@ -13,7 +13,7 @@ import { RequestParams, ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
-const API_PARAMS = { preferences: 'top-headlines?', country: 'pl' } as RequestParams;
+const API_PARAMS = { preferences: 'top-headlines?' } as RequestParams;
 
 const Upvoted = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
@@ -57,15 +57,17 @@ const Upvoted = () => {
             <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
           </LayoutPopUp>
         )}
-        {response?.articles.map((article, idx) => (
-          <NewsFeedCard
-            index={idx}
-            onClick={setIsPopUpOpen}
-            key={`${article.title}+${idx}`}
-            article={article}
-            theme={theme}
-          />
-        ))}
+        {response?.articles
+          .sort((a, b) => (b.vote as number) - (a.vote as number))
+          .map((article, idx) => (
+            <NewsFeedCard
+              index={idx}
+              onClick={setIsPopUpOpen}
+              key={`${article.title}+${idx}`}
+              article={article}
+              theme={theme}
+            />
+          ))}
       </div>
     </div>
   );

@@ -46,12 +46,12 @@ export const useApiRequest = () => {
     preferences = 'everything?',
     popularity = '',
     userPreferencesTags = '',
-    country = '',
+    country = 'us',
   }: RequestParams): Promise<ResponseArray> => {
     const URL =
       `https://newsapi.org/v2/${preferences}` +
       popularity +
-      (country ? `country=${country}&` : '') +
+      (preferences === 'everything?' ? '' : `country=${country}&`) +
       userPreferencesTags +
       (preferences === 'everything?' ? datePeriod : '') +
       (!country && !popularity && !userPreferencesTags ? `&${TOKEN}` : TOKEN);
@@ -60,13 +60,21 @@ export const useApiRequest = () => {
     const resp = await fetch(request);
 
     if (!resp.ok) {
-      const message = `Hhh.. ${resp?.status}`;
+      const message = `${resp?.status}`;
       throw new Error(message);
     }
 
     const articlesResponse = await resp.json();
 
-    return articlesResponse;
+    return {
+      ...articlesResponse,
+      articles: articlesResponse?.articles.map((article: ArticleResponse) => ({
+        ...article,
+        vote: Math.floor(Math.random() * (120 - 64) + 64), //Only for mock-up
+        messages: Math.floor(Math.random() * (40 - 14) + 14), //Only for mock-up
+        isClicked: false,
+      })),
+    };
   };
 
   return { userPreferencesStringUrl, news, DEF_ARTICLE };
