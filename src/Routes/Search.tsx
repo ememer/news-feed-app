@@ -9,9 +9,14 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { ResponseArray } from '../types/NewsFeedArticleType';
+import { RequestParams, ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
+
+const API_PARAMS = {
+  preferences: 'everything?',
+  popularity: 'sortBy=popularity&',
+} as RequestParams;
 
 const Search = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
@@ -33,18 +38,14 @@ const Search = () => {
     return encodeURIComponent(`${fieldText}`);
   };
 
-  console.log(createSearchUrl(searchParam));
-
   const validationError: string | { __err: string } = createSearchUrl(searchParam);
 
   const isValidate = Object.keys(validationError).toLocaleString() !== '__err';
 
-  console.log(shouldRequest);
   useEffect(() => {
     if (shouldRequest) {
       news({
-        preferences: 'everything?',
-        popularity: 'sortBy=popularity&',
+        ...API_PARAMS,
         userPreferencesTags:
           typeof createSearchUrl(searchParam) === 'object'
             ? 'q='
