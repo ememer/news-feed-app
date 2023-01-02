@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { faHashtag, faTh } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
@@ -25,6 +26,7 @@ const buttonClassName = 'mb-10 rounded-xl p-4';
 const theme = layoutTheme[0];
 
 const PreferenceMenu = () => {
+  const { t } = useTranslation('myFeedTranslation');
   const { userSettings, setUserSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
@@ -109,7 +111,7 @@ const PreferenceMenu = () => {
                     id={category}
                     className={clsx('w-3/4')}
                   >
-                    {category}
+                    {t(category)}
                   </button>
                   <button
                     title={`${

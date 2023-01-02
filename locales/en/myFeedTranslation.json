@@ -1,0 +1,11 @@
+{
+  "buttonHintDescription": "Open my feed setting",
+  "hintDescription": "Edit your personal feed preferences here",
+  "Business": "Business",
+  "Entertainment": "Entertainment",
+  "General": "General",
+  "Health": "Health",
+  "Science": "Science",
+  "Sports": "Sports",
+  "Technology": "Technology"
+}

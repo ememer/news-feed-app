@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { faBarsProgress } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 import FeedPopUp from '../components/FeedPopup';
 import LayoutPopUp from '../components/LayoutPopUp';
@@ -28,6 +29,8 @@ const MyFeed = () => {
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
   const { userPreferencesStringUrl, DEF_ARTICLE, news } = useApiRequest();
+
+  const { t } = useTranslation('myFeedTranslation');
 
   useEffect(() => {
     window.addEventListener('online', () =>
@@ -65,7 +68,7 @@ const MyFeed = () => {
       )}
       <div className="my-10 flex min-h-10-s flex-col items-center p-6 lg:flex-row">
         <button
-          title="Open my feed setting"
+          title={t('buttonHintDescription') as string}
           onClick={() => setPreferenceMenu(true)}
           className={clsx(
             'flex items-center rounded-2xl py-4 px-6 font-bold hover:bg-prussian-blue-800',
@@ -93,7 +96,7 @@ const MyFeed = () => {
                 theme.mainText,
               )}
             >
-              <span className="text-sm">Edit your personal feed preferences here</span>
+              <span className="text-sm">{t('hintDescription')}</span>
               <div className="w-4/12 lg:w-2/12">
                 <button
                   title="Close my feed hint"
