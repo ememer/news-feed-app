@@ -31,7 +31,6 @@ const Upvoted = () => {
       .catch((err) => err.message);
   }, [userPreferencesStringUrl]);
 
-  console.log(response);
   const openAndUpdatePopup = () => {
     const matchArticle = response?.articles.find(
       (e, idx) => idx === fillComponentData.componentId,

@@ -57,9 +57,6 @@ export const useApiRequest = () => {
       (!country && !popularity && !userPreferencesTags ? `&${TOKEN}` : TOKEN);
 
     const request: Request = new Request(URL);
-    console.log(URL);
-
-    return;
     const resp = await fetch(request);
 
     if (!resp.ok) {
@@ -68,7 +65,16 @@ export const useApiRequest = () => {
     }
 
     const articlesResponse = await resp.json();
-    return articlesResponse;
+
+    return {
+      ...articlesResponse,
+      articles: articlesResponse?.articles.map((article: ArticleResponse) => ({
+        ...article,
+        vote: Math.floor(Math.random() * (120 - 64) + 64), //Only for mock-up
+        messages: Math.floor(Math.random() * (180 - 64) + 64), //Only for mock-up
+        isClicked: false,
+      })),
+    };
   };
 
   return { userPreferencesStringUrl, news, DEF_ARTICLE };

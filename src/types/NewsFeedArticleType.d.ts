@@ -10,6 +10,8 @@ export interface ArticleResponse {
   url: string | null;
   urlToImage: string | null;
   description: string | null;
+  vote?: number;
+  messages?: number;
 }
 
 export interface ResponseArray {

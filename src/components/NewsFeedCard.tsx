@@ -28,17 +28,18 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
     NewsFeedContext,
   ) as NewsFeedContextTypes;
 
-  const { source, title, author, url, urlToImage, content, description } = article;
+  const { source, title, author, url, urlToImage, content, description, vote, messages } =
+    article;
   const [userReactions, setUserReactions] = useState({
-    vote: Math.floor(Math.random() * (120 - 64) + 64), //Only for mock-up
-    messages: Math.floor(Math.random() * (180 - 64) + 64), //Only for mock-up
+    vote: vote,
+    messages: messages,
     isClicked: false,
   });
 
   const addVote = () => {
     setUserReactions((prev) => ({
       ...prev,
-      vote: prev.vote + 1,
+      vote: (prev.vote as number) + 1,
       isClicked: true,
     }));
     setTimeout(() => {
@@ -66,8 +67,8 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
     if (fillComponentData.componentId === index) {
       setFillComponentData({
         componentId: index,
-        voteReactionCount: userReactions.vote,
-        messagesReactionCount: userReactions.messages,
+        voteReactionCount: userReactions.vote as number,
+        messagesReactionCount: userReactions.messages as number,
       });
     }
   }, [fillComponentData.componentId]);
@@ -78,8 +79,8 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
         if ((e.target as HTMLDivElement).id !== 'UIelement') {
           setFillComponentData({
             componentId: index,
-            voteReactionCount: userReactions.vote,
-            messagesReactionCount: userReactions.messages,
+            voteReactionCount: userReactions.vote as number,
+            messagesReactionCount: userReactions.messages as number,
           });
           onClick(true);
         }
