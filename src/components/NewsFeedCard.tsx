@@ -28,8 +28,18 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
     NewsFeedContext,
   ) as NewsFeedContextTypes;
 
-  const { source, title, author, url, urlToImage, content, description, vote, messages } =
-    article;
+  const {
+    source,
+    title,
+    author,
+    url,
+    urlToImage,
+    content,
+    description,
+    vote,
+    messages,
+    publishedAt,
+  } = article;
   const [userReactions, setUserReactions] = useState({
     vote: vote,
     messages: messages,
@@ -62,6 +72,8 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
   }, [fillComponentData.voteReactionCount]);
 
   // Updating Popup after index/render change in popup
+
+  const publishedDate = new Date(publishedAt as string);
 
   useEffect(() => {
     if (fillComponentData.componentId === index) {
@@ -111,6 +123,9 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
           Open in new Tab
         </a>
       </div>
+      <div className={clsx('flex flex-wrap p-4 font-semibold', theme.textP)}>
+        {publishedDate.toLocaleDateString()}
+      </div>
       <div className="mb-4 min-h-10-s p-4 pb-0">
         <h2 className="my-2 w-full text-2xl font-bold">{title}</h2>
         <span className="my-2 font-light">{author}</span>
@@ -120,6 +135,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
           <p className="my-4">{clipLongText((description ?? content) as string, 100)}</p>
         )}
       </div>
+
       <LazyLoad threshold={0.5}>
         <img
           className="aspect-video rounded-b-md object-cover"
