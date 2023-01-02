@@ -49,6 +49,8 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
     source = { id: '', name: '' },
   } = selectedArticle;
 
+  const publishedDate = new Date(publishedAt as string);
+
   return (
     <>
       <div className={clsx('w-full lg:w-3/4 lg:border-r lg:pr-10', theme.borderP20)}>
@@ -132,7 +134,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
           </span>
           {content}
         </p>
-        <span className="m-2 block">{publishedAt}</span>
+        <span className="m-4 block">{publishedDate.toLocaleDateString()}</span>
         <LazyLoad threshold={1.0}>
           <img
             className="rounded-md"
