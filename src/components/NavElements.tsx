@@ -13,6 +13,7 @@ import {
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
 import { LayoutTheme } from '../types/layoutTheme';
@@ -23,6 +24,7 @@ interface Props {
 }
 
 const NavElements = ({ theme, onClose }: Props) => {
+  const { t } = useTranslation('translation');
   return (
     <ul className="my-auto text-center lg:text-left">
       {navLink.feed.map((link) => (
@@ -36,10 +38,10 @@ const NavElements = ({ theme, onClose }: Props) => {
               isActive ? clsx(theme.mainAccText, 'w-full rounded-md') : theme.mainText
             }
             to={link.url}
-            title={link.title}
+            title={t(link.title) as string}
           >
             <FontAwesomeIcon className="ml-2 mr-4" icon={link.icon as IconProp} />
-            {link.urlText}
+            {t(link.urlText)}
           </NavLink>
         </li>
       ))}
@@ -59,10 +61,10 @@ const NavElements = ({ theme, onClose }: Props) => {
                 : clsx(theme.mainText)
             }
             to={link.url}
-            title={link.title}
+            title={t(link.title) as string}
           >
             <FontAwesomeIcon className="ml-2 mr-4" icon={link.icon as IconProp} />
-            {link.urlText}
+            {t(link.urlText)}
           </NavLink>
         </li>
       ))}

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 import FeedPopUp from '../components/FeedPopup';
 import LayoutPopUp from '../components/LayoutPopUp';
@@ -29,10 +30,10 @@ const Search = () => {
   const { news, DEF_ARTICLE } = useApiRequest();
   const [searchParam, setSearchParam] = useState('');
   const [shouldRequest, setShouldRequest] = useState(true);
-
+  const { t } = useTranslation('translation');
   const createSearchUrl = (fieldText: string) => {
     if (fieldText.length >= 0 && fieldText.length < 3) {
-      return { __err: 'Search field should have minimum 3 characters' };
+      return { __err: t('searchFieldInfo') };
     }
 
     return encodeURIComponent(`${fieldText}`);

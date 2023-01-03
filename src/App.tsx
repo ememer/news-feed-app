@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { Outlet } from 'react-router-dom';
 
 import Layout from './components/Layout';
@@ -7,13 +9,15 @@ import UserPreferencesContextProvider from './context/UserPreferencesContextProv
 
 function App() {
   return (
-    <UserPreferencesContextProvider>
-      <Layout>
-        <NewsFeedContextProvider>
-          <Outlet />
-        </NewsFeedContextProvider>
-      </Layout>
-    </UserPreferencesContextProvider>
+    <Suspense fallback="loading">
+      <UserPreferencesContextProvider>
+        <Layout>
+          <NewsFeedContextProvider>
+            <Outlet />
+          </NewsFeedContextProvider>
+        </Layout>
+      </UserPreferencesContextProvider>
+    </Suspense>
   );
 }
 

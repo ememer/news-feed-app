@@ -11,6 +11,7 @@ import Search from './Routes/Search';
 import Upvoted from './Routes/Upvoted';
 
 import './index.css';
+import './i18n';
 
 const router = createBrowserRouter([
   {
