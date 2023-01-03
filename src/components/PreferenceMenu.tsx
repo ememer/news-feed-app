@@ -26,7 +26,7 @@ const buttonClassName = 'mb-10 rounded-xl p-4';
 const theme = layoutTheme[0];
 
 const PreferenceMenu = () => {
-  const { t } = useTranslation('myFeedTranslation');
+  const { t } = useTranslation(['myFeedTranslation', 'translation']);
   const { userSettings, setUserSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
@@ -35,7 +35,7 @@ const PreferenceMenu = () => {
     <>
       <div className="mt-10 flex w-full flex-col lg:w-1/4">
         <button
-          title="Adjust feed followed tags"
+          title={t('tagsButton') as string}
           onClick={() =>
             setUserSettings((prevState) => ({
               ...prevState,
@@ -50,10 +50,10 @@ const PreferenceMenu = () => {
             userSettings.myFeed.myFeedCategory === 'MyFeed' && theme.mainButton,
           )}
         >
-          <FontAwesomeIcon icon={faHashtag} /> My feed tags
+          <FontAwesomeIcon icon={faHashtag} /> {t('menagePop.myTags')}
         </button>
         <button
-          title="Set layout title"
+          title={t('layoutButton') as string}
           onClick={() =>
             setUserSettings((prevState) => ({
               ...prevState,
@@ -69,15 +69,17 @@ const PreferenceMenu = () => {
             userSettings.myFeed.myFeedCategory === 'FeedLayout' && theme.mainButton,
           )}
         >
-          <FontAwesomeIcon icon={faTh} /> Feed layout
+          <FontAwesomeIcon icon={faTh} /> {t('menagePop.feedLayout')}
         </button>
       </div>
       <div className={clsx('w-full lg:w-3/4 lg:border-l', theme.borderB)}>
         <div>
           <h2 className={clsx('border-b py-2 px-6 text-2xl', theme.borderB)}>
-            {userSettings.myFeed.myFeedCategory === 'MyFeed'
-              ? 'Menage tags'
-              : 'Menage feed layout'}
+            {t(
+              userSettings.myFeed.myFeedCategory === 'MyFeed'
+                ? 'menagePop.tagsTitle'
+                : 'menagePop.feedTitle',
+            )}
           </h2>
         </div>
         <div className="min-h-80-s p-2 lg:p-6">
@@ -89,7 +91,7 @@ const PreferenceMenu = () => {
                   key={category}
                 >
                   <button
-                    title={`Add ${category} to following`}
+                    title={t('categoryButton', { category: t(category) }) as string}
                     onClick={(e: React.MouseEvent) => {
                       if (
                         !userSettings.myFeed?.tagSub?.includes(
@@ -114,11 +116,12 @@ const PreferenceMenu = () => {
                     {t(category)}
                   </button>
                   <button
-                    title={`${
+                    title={`${t(
                       userSettings.myFeed.tagSub.includes(category)
                         ? 'Unfollow'
-                        : 'Follow'
-                    } ${category}`}
+                        : 'Follow',
+                      { ns: 'translation' },
+                    )} ${t(category)}`}
                     id={category}
                     onClick={(e: React.MouseEvent) => {
                       userSettings.myFeed.tagSub.includes(
@@ -152,9 +155,12 @@ const PreferenceMenu = () => {
                         : theme.elementsLinearBG,
                     )}
                   >
-                    {userSettings.myFeed.tagSub.includes(category)
-                      ? 'Unfollow'
-                      : 'Follow'}
+                    {t(
+                      userSettings.myFeed.tagSub.includes(category)
+                        ? 'Unfollow'
+                        : 'Follow',
+                      { ns: 'translation' },
+                    )}
                   </button>
                 </li>
               ))}
@@ -177,13 +183,13 @@ const PreferenceMenu = () => {
                       }
                       className="mr-10"
                       type="radio"
-                      name={set}
+                      name={t(`menagePop.${set}`) as string}
                       value={set}
                       checked={
                         userSettings.layoutType === (set as 'eco' | 'roomy' | 'cozy')
                       }
                     />
-                    {set}
+                    {t(`menagePop.${set}`)}
                   </label>
                 </div>
               ))}

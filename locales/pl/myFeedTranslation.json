@@ -7,5 +7,17 @@
   "Health": "Zdrowie",
   "Science": "Nauka",
   "Sports": "Sport",
-  "Technology": "Technologia"
+  "Technology": "Technologia",
+  "menagePop": {
+    "tagsTitle": "Zarządzaj tagami",
+    "feedTitle": "Zarządzaj układem tablicy",
+    "myTags": "Moje tagi",
+    "feedLayout": "Układ tablicy",
+    "eco": "Ekonomiczny",
+    "roomy": "Przestronny",
+    "cozy": "Wygodny"
+  },
+  "tagsButton": "Dopaj subskrybowane tagi do Twojej tablicy",
+  "layoutButton": "Ustaw wygląd tablicy",
+  "categoryButton": "Dodaj {{category}} do obserwowanych"
 }

@@ -7,5 +7,17 @@
   "Health": "Health",
   "Science": "Science",
   "Sports": "Sports",
-  "Technology": "Technology"
+  "Technology": "Technology",
+  "menagePop": {
+    "tagsTitle": "Menage tags",
+    "feedTitle": "Menage feed layout",
+    "myTags": "My feed tags",
+    "feedLayout": "Feed layout",
+    "eco": "Eco",
+    "roomy": "Roomy",
+    "cozy": "Cozy"
+  },
+  "tagsButton": "Adjust feed followed tags",
+  "layoutButton": "Set layout",
+  "categoryButton": "Add {{category}} to following"
 }
