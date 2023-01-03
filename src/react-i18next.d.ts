@@ -1,12 +1,12 @@
-import myFeedTranslation from './locales/en/myFeedTranslation.json';
+import translation from './../public/locales/en/translation.json';
 
 import 'react-i18next';
 
 declare module 'react-i18next' {
   interface CustomTypeOptions {
-    defaultNS: 'myFeedTranslation';
+    defaultNS: 'translation';
     resources: {
-      myFeedTranslation: typeof myFeedTranslation;
+      translation: typeof translation;
     };
   }
 }

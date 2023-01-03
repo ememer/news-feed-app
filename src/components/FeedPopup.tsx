@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 import LazyLoad from 'react-lazy-load';
 
 // import LazyLoad from 'react-lazy-load/dist/LazyLoad';
@@ -28,6 +29,7 @@ interface Props {
 }
 
 const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
+  const { t } = useTranslation('translation');
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const [shouldCommentOpen, setShouldCommentOpen] = useState(false);
   const { fillComponentData, setFillComponentData } = useContext(
@@ -57,7 +59,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
         <div className="flex items-center justify-between">
           <div className="my-6 text-5xl">
             <button
-              title="Previous Article"
+              title={t('prevArt') as string}
               disabled={fillComponentData.componentId === 0}
               className={clsx(
                 'mx-2',
@@ -79,7 +81,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
 
             {/*  TO DO => PROTECT CLICKING CONNECT WITH ARTICLES LENGTH */}
             <button
-              title="Next Article"
+              title={t('nextArt') as string}
               className={clsx('mx-2', theme.textP)}
               onClick={() =>
                 setFillComponentData((prevState) => ({
@@ -94,7 +96,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
           <a
             target="_blank"
             href={url as string}
-            title="Open article"
+            title={t('readArticle') as string}
             className="text-3xl lg:hidden"
             rel="noreferrer"
           >
@@ -102,7 +104,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
           </a>
           <div className="fixed top-14 right-14 z-50">
             <button
-              title="Close popup"
+              title={t('closePopUp') as string}
               className="relative w-1/4 lg:hidden"
               onClick={() => onClose(false)}
             >
@@ -146,8 +148,12 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
         </LazyLoad>
 
         <div className="mt-6 mb-2 w-full text-sm">
-          <span className="mx-2">{fillComponentData.voteReactionCount} Upvotes</span>
-          <span className="mx-2">{fillComponentData.messagesReactionCount} Comments</span>
+          <span className="mx-2">
+            {fillComponentData.voteReactionCount} {t('vote')}
+          </span>
+          <span className="mx-2">
+            {fillComponentData.messagesReactionCount} {t('comments')}
+          </span>
         </div>
         <div
           className={clsx(
@@ -157,7 +163,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
         >
           <div>
             <button
-              title="Vote up"
+              title={t('voteUpButton') as string}
               onClick={() =>
                 setFillComponentData((prevState) => ({
                   ...prevState,
@@ -166,18 +172,21 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
               }
             >
               <FontAwesomeIcon icon={faArrowAltCircleUp} />
-              <span className="ml-2">Upvote</span>
-            </button>
-          </div>
-          <div>
-            <button title="Open comments" onClick={() => setShouldCommentOpen(true)}>
-              <FontAwesomeIcon icon={faComment} />
-              <span className="ml-2">Comment</span>
+              <span className="ml-2">{t('voteUpButton')}</span>
             </button>
           </div>
           <div>
             <button
-              title="Share content"
+              title={t('commentButton') as string}
+              onClick={() => setShouldCommentOpen(true)}
+            >
+              <FontAwesomeIcon icon={faComment} />
+              <span className="ml-2">{t('comments')}</span>
+            </button>
+          </div>
+          <div>
+            <button
+              title={t('shareButton') as string}
               onClick={() =>
                 navigator.share({
                   title: title as string,
@@ -188,7 +197,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
             >
               <FontAwesomeIcon icon={faShareFromSquare} />
 
-              <span className="ml-2">Share</span>
+              <span className="ml-2">{t('share')}</span>
             </button>
           </div>
         </div>

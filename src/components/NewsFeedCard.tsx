@@ -8,6 +8,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
+import { useTranslation } from 'react-i18next';
 import LazyLoad from 'react-lazy-load';
 
 import { NewsFeedContext } from '../context/NewsFeedContext';
@@ -27,7 +28,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
   const { fillComponentData, setFillComponentData } = useContext(
     NewsFeedContext,
   ) as NewsFeedContextTypes;
-
+  const { t } = useTranslation('translation');
   const {
     source,
     title,
@@ -120,7 +121,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
           target="_blank"
           rel="noreferrer"
         >
-          Open in new Tab
+          {t('newTab')}
         </a>
       </div>
       <div className={clsx('flex flex-wrap p-4 font-semibold', theme.textP)}>
@@ -139,7 +140,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
       <LazyLoad threshold={0.5}>
         <img
           className="aspect-video rounded-b-md object-cover"
-          alt={`${title} article`}
+          alt={title as string}
           src={
             urlToImage ??
             'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
@@ -149,7 +150,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
       <div id="UIelement" className="row flex justify-between p-4">
         <button
           className="flex flex-row items-center"
-          title="Vote up"
+          title={t('voteUpButton') as string}
           id="UIelement"
           onClick={() => addVote()}
         >
@@ -167,7 +168,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
           </div>
         </button>
         <button
-          title="Open comments"
+          title={t('commentButton') as string}
           id="UIelement"
           className="flex flex-row items-center"
         >
@@ -183,7 +184,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
         </button>
         <button
           className="flex flex-row items-center overflow-hidden"
-          title="Share content"
+          title={t('shareButton') as string}
           id="UIelement"
           onClick={() =>
             navigator.share({

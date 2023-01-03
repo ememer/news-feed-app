@@ -56,7 +56,7 @@ export const useApiRequest = () => {
       (preferences === 'everything?' ? datePeriod : '') +
       (!country && !popularity && !userPreferencesTags ? `&${TOKEN}` : TOKEN);
 
-    return;
+    // return;
     const request: Request = new Request(URL);
     const resp = await fetch(request);
 

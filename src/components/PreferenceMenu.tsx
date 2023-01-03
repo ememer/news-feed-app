@@ -26,7 +26,7 @@ const buttonClassName = 'mb-10 rounded-xl p-4';
 const theme = layoutTheme[0];
 
 const PreferenceMenu = () => {
-  const { t } = useTranslation(['myFeedTranslation', 'translation']);
+  const { t } = useTranslation('translation');
   const { userSettings, setUserSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;

@@ -30,7 +30,7 @@ const MyFeed = () => {
   ) as UserPreferencesContextTypes;
   const { userPreferencesStringUrl, DEF_ARTICLE, news } = useApiRequest();
 
-  const { t } = useTranslation('myFeedTranslation');
+  const { t } = useTranslation('translation');
 
   useEffect(() => {
     window.addEventListener('online', () =>
@@ -99,7 +99,7 @@ const MyFeed = () => {
               <span className="text-sm">{t('hintDescription')}</span>
               <div className="w-4/12 lg:w-2/12">
                 <button
-                  title="Close my feed hint"
+                  title={t('closePopUp') as string}
                   className={clsx(
                     'w-full text-right text-2xl font-bold lg:text-left',
                     theme.textP,

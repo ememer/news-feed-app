@@ -24,7 +24,7 @@ interface Props {
 }
 
 const NavElements = ({ theme, onClose }: Props) => {
-  const { t } = useTranslation('navigationTranslate');
+  const { t } = useTranslation('translation');
   return (
     <ul className="my-auto text-center lg:text-left">
       {navLink.feed.map((link) => (

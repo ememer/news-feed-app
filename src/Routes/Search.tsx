@@ -30,7 +30,7 @@ const Search = () => {
   const { news, DEF_ARTICLE } = useApiRequest();
   const [searchParam, setSearchParam] = useState('');
   const [shouldRequest, setShouldRequest] = useState(true);
-  const { t } = useTranslation('searchTranslation');
+  const { t } = useTranslation('translation');
   const createSearchUrl = (fieldText: string) => {
     if (fieldText.length >= 0 && fieldText.length < 3) {
       return { __err: t('searchFieldInfo') };
