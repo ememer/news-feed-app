@@ -4,7 +4,9 @@ import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
 import { RequestParams } from '../types/NewsFeedArticleType';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
+
 const TOKEN = 'apiKey=dcfea20b502345c6be30e1d013d3d7b3';
+
 const DEF_ARTICLE: ArticleResponse = {
   author: '',
   content: '',
@@ -31,6 +33,10 @@ const datePeriod = `from=${today.toISOString().split('T')[0]}&to=${
   yesterday.toISOString().split('T')[0]
 }&`;
 
+// User lang detector
+
+const userLang = navigator.language.split('-')[0] as RequestParams['country'];
+
 export const useApiRequest = () => {
   const { userSettings } = useContext(
     UserPreferencesContext,
@@ -46,17 +52,19 @@ export const useApiRequest = () => {
     preferences = 'everything?',
     popularity = '',
     userPreferencesTags = '',
-    country = 'us',
+    country = userLang,
   }: RequestParams): Promise<ResponseArray> => {
     const URL =
       `https://newsapi.org/v2/${preferences}` +
       popularity +
-      (preferences === 'everything?' ? '' : `country=${country}&`) +
+      (preferences === 'everything?' ? `language=${country}&` : `country=${country}&`) +
       userPreferencesTags +
       (preferences === 'everything?' ? datePeriod : '') +
       (!country && !popularity && !userPreferencesTags ? `&${TOKEN}` : TOKEN);
 
-    // return;
+    console.log(URL);
+
+    return;
     const request: Request = new Request(URL);
     const resp = await fetch(request);
 

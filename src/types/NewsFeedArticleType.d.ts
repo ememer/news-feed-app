@@ -30,7 +30,7 @@ export type RequestParams = {
   preferences: 'everything?' | 'top-headlines?';
   popularity?: 'sortBy=popularity&' | '';
   userPreferencesTags?: string;
-  country?:
+  country:
     | 'ae'
     | 'ar'
     | 'at'
@@ -46,6 +46,7 @@ export type RequestParams = {
     | 'cz'
     | 'de'
     | 'eg'
+    | 'en'
     | 'fr'
     | 'gb'
     | 'gr'

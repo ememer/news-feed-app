@@ -17,6 +17,7 @@ const API_PARAMS = {
   preferences: 'everything?',
   popularity: 'sortBy=popularity&',
   userPreferencesTags: 'q=',
+  country: 'en',
 } as RequestParams;
 
 const Popular = () => {
