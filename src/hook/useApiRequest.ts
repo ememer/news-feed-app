@@ -21,7 +21,7 @@ const DEF_ARTICLE: ArticleResponse = {
   description: '',
 };
 
-// date period
+// date period for API Request
 
 const today = new Date();
 const yesterday = new Date(today);
@@ -61,10 +61,9 @@ export const useApiRequest = () => {
       userPreferencesTags +
       (preferences === 'everything?' ? datePeriod : '') +
       (!country && !popularity && !userPreferencesTags ? `&${TOKEN}` : TOKEN);
-
     console.log(URL);
 
-    return;
+    // return;
     const request: Request = new Request(URL);
     const resp = await fetch(request);
 

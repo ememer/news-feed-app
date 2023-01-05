@@ -20,6 +20,7 @@ import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 const API_PARAMS = { preferences: 'top-headlines?' } as RequestParams;
 
 const MyFeed = () => {
+  const { t } = useTranslation('translation');
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
   const [preferenceMenu, setPreferenceMenu] = useState(false);
   const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
@@ -30,11 +31,14 @@ const MyFeed = () => {
   ) as UserPreferencesContextTypes;
   const { userPreferencesStringUrl, DEF_ARTICLE, news } = useApiRequest();
 
-  const { t } = useTranslation('translation');
+  // Fetch on component load, after connection lost depending on url change
 
   useEffect(() => {
     window.addEventListener('online', () =>
-      news({ ...API_PARAMS, userPreferencesTags: userPreferencesStringUrl })
+      news({
+        ...API_PARAMS,
+        userPreferencesTags: userPreferencesStringUrl,
+      })
         .then((resp) => setResponse(resp))
         .catch((err) => err.message),
     );
@@ -44,10 +48,36 @@ const MyFeed = () => {
       userPreferencesTags: userPreferencesStringUrl,
     })
       .then((resp) => setResponse(resp))
-      .catch((err) => console.warn(err));
+      .catch((err) => err.message);
 
     return () => window.removeEventListener('online', () => news);
   }, [userPreferencesStringUrl]);
+
+  // Fetch after period time, refreshed depending on URL
+
+  useEffect(() => {
+    const now = new Date();
+    const hourFromNow = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      now.getHours() + 1,
+    );
+
+    const msDifference = +hourFromNow - +now;
+
+    if (msDifference > 1000) {
+      const timeoutId = setTimeout(() => {
+        news({
+          ...API_PARAMS,
+          userPreferencesTags: userPreferencesStringUrl,
+        })
+          .then((resp) => setResponse(resp))
+          .catch((err) => err.message);
+      }, msDifference);
+      return () => clearInterval(timeoutId);
+    }
+  }, [userPreferencesStringUrl, response]);
 
   const openAndUpdatePopup = () => {
     const matchArticle = response?.articles.find(
