@@ -1,4 +1,4 @@
-// Enabled only for NETLIFY
+// Enabled only for LOCAL
 
 export const navLink = {
   feed: [
@@ -37,7 +37,7 @@ export const navLink = {
   ],
 };
 
-// DISABLED FOR NETLIFY
+// DISABLED FOR RUN LOCAL
 // Customized paths for the subdomain in the portfolio
 
 // export const navLink = {
