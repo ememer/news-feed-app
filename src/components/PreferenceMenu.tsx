@@ -30,7 +30,6 @@ const PreferenceMenu = () => {
   const { userSettings, setUserSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
-
   return (
     <>
       <div className="mt-10 flex w-full flex-col lg:w-1/4">

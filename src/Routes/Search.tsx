@@ -17,6 +17,7 @@ import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 const API_PARAMS = {
   preferences: 'everything?',
   popularity: 'sortBy=popularity&',
+  country: 'en',
 } as RequestParams;
 
 const Search = () => {

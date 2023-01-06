@@ -13,9 +13,11 @@ import Upvoted from './Routes/Upvoted';
 import './index.css';
 import './i18n';
 
+// Enabled only for NETLIFY
+
 const router = createBrowserRouter([
   {
-    path: '/news-feeder/',
+    path: '/',
     element: <App />,
     children: [
       {
@@ -23,24 +25,56 @@ const router = createBrowserRouter([
         element: <MyFeed />,
       },
       {
-        path: '/news-feeder/popular',
+        path: '/popular',
         element: <Popular />,
       },
       {
-        path: '/news-feeder/upvoted',
+        path: '/upvoted',
         element: <Upvoted />,
       },
       {
-        path: '/news-feeder/discussion',
+        path: '/discussion',
         element: <Discussion />,
       },
       {
-        path: '/news-feeder/search',
+        path: '/search',
         element: <Search />,
       },
     ],
   },
 ]);
+
+// DISABLED FOR NETLIFY
+// Customized paths for the subdomain in the portfolio
+
+// const router = createBrowserRouter([
+//   {
+//     path: '/news-feeder/',
+//     element: <App />,
+//     children: [
+//       {
+//         index: true,
+//         element: <MyFeed />,
+//       },
+//       {
+//         path: '/news-feeder/popular',
+//         element: <Popular />,
+//       },
+//       {
+//         path: '/news-feeder/upvoted',
+//         element: <Upvoted />,
+//       },
+//       {
+//         path: '/news-feeder/discussion',
+//         element: <Discussion />,
+//       },
+//       {
+//         path: '/news-feeder/search',
+//         element: <Search />,
+//       },
+//     ],
+//   },
+// ]);
 
 ReactDOM.render(
   <React.StrictMode>
