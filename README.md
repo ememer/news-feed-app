@@ -3,9 +3,11 @@
 
 App inspired by daily.dev
 
-### App and readme under construction
+### App and readme Under Construction, some features can no work yet
 
-## unfortunately because API provider which is NEWSAPI don't allowed use free model in production, only for developer environment, please clone repository and run it locally
+TEMPORARY DEMO
+
+https://deploy-preview-14--glittering-kleicha-795556.netlify.app/
 
 
 ## Run Locally
