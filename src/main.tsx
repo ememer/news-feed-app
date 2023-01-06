@@ -13,7 +13,7 @@ import Upvoted from './Routes/Upvoted';
 import './index.css';
 import './i18n';
 
-// Enabled only for NETLIFY
+// Enabled only for LOCAL
 
 const router = createBrowserRouter([
   {
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-// DISABLED FOR NETLIFY
+// DISABLED FOR RUN LOCAL
 // Customized paths for the subdomain in the portfolio
 
 // const router = createBrowserRouter([
