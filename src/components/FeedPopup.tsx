@@ -44,13 +44,14 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
   const {
     title = '',
     content = '',
-    publishedAt = '',
-    urlToImage = '',
-    url = '',
-    source = { id: '', name: '' },
+    description = '',
+    pubDate = '',
+    image_url = '',
+    link = '',
+    source_id = '',
   } = selectedArticle;
 
-  const publishedDate = new Date(publishedAt as string);
+  const publishedDate = new Date(pubDate as string);
 
   return (
     <>
@@ -94,7 +95,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
           </div>
           <a
             target="_blank"
-            href={url as string}
+            href={link as string}
             title={t('readArticle') as string}
             className="text-3xl lg:hidden"
             rel="noreferrer"
@@ -133,14 +134,14 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
           >
             {'TL:DR/>'}
           </span>
-          {content}
+          {content ?? description}
         </p>
         <span className="m-4 block">{publishedDate.toLocaleDateString()}</span>
         <LazyLoad threshold={1.0}>
           <img
             className="rounded-md"
             src={
-              (urlToImage as string) ??
+              (image_url as string) ??
               'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
             }
           />
@@ -189,8 +190,8 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
               onClick={() =>
                 navigator.share({
                   title: title as string,
-                  text: content as string,
-                  url: url as string,
+                  text: (content ?? description) as string,
+                  url: link as string,
                 })
               }
             >
@@ -211,8 +212,8 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
       <div className="w-full lg:w-2/4 ">
         <PopupCTA
           buttonClose={onClose}
-          source={source}
-          url={url as string}
+          source={source_id}
+          url={link as string}
           theme={theme}
           className="hidden lg:block"
         />

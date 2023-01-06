@@ -10,13 +10,17 @@ import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
 const categories = [
-  'Business',
-  'Entertainment',
-  'General',
-  'Health',
-  'Science',
-  'Sports',
-  'Technology',
+  'business',
+  'entertainment',
+  'environment',
+  'food',
+  'health',
+  'politics',
+  'science',
+  'sports',
+  'technology',
+  'top',
+  'world',
 ];
 
 const layoutSets = ['eco', 'roomy', 'cozy'];

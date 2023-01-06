@@ -13,11 +13,9 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { RequestParams, ResponseArray } from '../types/NewsFeedArticleType';
+import { ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
-
-const API_PARAMS = { preferences: 'top-headlines?' } as RequestParams;
 
 const MyFeed = () => {
   const { t } = useTranslation('translation');
@@ -29,28 +27,20 @@ const MyFeed = () => {
   const { userSettings, setUserSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
-  const { userPreferencesStringUrl, DEF_ARTICLE, news } = useApiRequest();
+  const { userPreferencesStringUrl, DEF_ARTICLE, newNews } = useApiRequest();
 
   // Fetch on component load, after connection lost depending on url change
 
   useEffect(() => {
     window.addEventListener('online', () =>
-      news({
-        ...API_PARAMS,
-        userPreferencesTags: userPreferencesStringUrl,
-      })
+      newNews()
         .then((resp) => setResponse(resp))
-        .catch((err) => err.message),
+        .catch((err) => err),
     );
-
-    news({
-      ...API_PARAMS,
-      userPreferencesTags: userPreferencesStringUrl,
-    })
+    newNews()
       .then((resp) => setResponse(resp))
-      .catch((err) => err.message);
-
-    return () => window.removeEventListener('online', () => news);
+      .catch((err) => err);
+    return () => window.removeEventListener('online', () => newNews);
   }, [userPreferencesStringUrl]);
 
   // Fetch after period time, refreshed depending on URL
@@ -68,19 +58,16 @@ const MyFeed = () => {
 
     if (msDifference > 1000) {
       const timeoutId = setTimeout(() => {
-        news({
-          ...API_PARAMS,
-          userPreferencesTags: userPreferencesStringUrl,
-        })
+        newNews()
           .then((resp) => setResponse(resp))
-          .catch((err) => err.message);
+          .catch((err) => err);
       }, msDifference);
       return () => clearInterval(timeoutId);
     }
   }, [userPreferencesStringUrl, response]);
 
   const openAndUpdatePopup = () => {
-    const matchArticle = response?.articles.find(
+    const matchArticle = response?.results.find(
       (e, idx) => idx === fillComponentData.componentId,
     );
     if (matchArticle && Object.keys(matchArticle).length !== 0) {
@@ -162,7 +149,7 @@ const MyFeed = () => {
             <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
           </LayoutPopUp>
         )}
-        {response?.articles.map((article, idx) => (
+        {response?.results.map((article, idx) => (
           <NewsFeedCard
             index={idx}
             onClick={setIsPopUpOpen}

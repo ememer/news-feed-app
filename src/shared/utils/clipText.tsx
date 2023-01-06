@@ -1,5 +1,5 @@
 export const clipLongText = (text: string, breakPoint: number): string => {
-  const shouldBeClipped = text.length > breakPoint ?? text;
+  const shouldBeClipped = text.length > breakPoint;
 
   if (shouldBeClipped) {
     const whiteSpaceIndex = text.slice(0, breakPoint).lastIndexOf(' ');

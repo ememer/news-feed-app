@@ -9,7 +9,7 @@ import { LayoutTheme } from '../types/layoutTheme';
 
 interface Props {
   buttonClose: Dispatch<SetStateAction<boolean>>;
-  source: { id?: string | null; name: string | null };
+  source: string | null;
   url: string;
   theme: LayoutTheme;
   className: string;
@@ -47,7 +47,7 @@ const PopupCTA = ({ buttonClose, source, url, theme, className }: Props) => {
         <span className="text-xl font-bold ">{t('source')}:</span>
 
         <span className={clsx('ml-4 font-bold', theme.mainAccText)}>
-          {source.name ? source.name : t('noInfo')}
+          {source ? source : t('noInfo')}
         </span>
       </div>
     </div>

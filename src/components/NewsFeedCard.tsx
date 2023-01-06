@@ -30,16 +30,16 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
   ) as NewsFeedContextTypes;
   const { t } = useTranslation('translation');
   const {
-    source,
+    source_id,
     title,
-    author,
-    url,
-    urlToImage,
+    creator,
+    link,
+    image_url,
     content,
     description,
     vote,
     messages,
-    publishedAt,
+    pubDate,
   } = article;
   const [userReactions, setUserReactions] = useState({
     vote: vote,
@@ -74,7 +74,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
 
   // Updating Popup after index/render change in popup
 
-  const publishedDate = new Date(publishedAt as string);
+  const publishedDate = new Date(pubDate as string);
 
   useEffect(() => {
     if (fillComponentData.componentId === index) {
@@ -108,7 +108,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
       <div id="article" className="grid grid-cols-2 items-center justify-between p-4">
         <span className={clsx('text-xs lg:text-sm', theme.mainAccText)}>
           <FontAwesomeIcon className="mr-2" icon={faNewspaper} />
-          {source?.name?.toLocaleUpperCase()}
+          {source_id?.toLocaleUpperCase()}
         </span>
         <a
           id="UIelement"
@@ -117,7 +117,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
             theme.borderB,
             theme.elementsLinearBG,
           )}
-          href={url as string}
+          href={link as string}
           target="_blank"
           rel="noreferrer"
         >
@@ -129,7 +129,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
       </div>
       <div className="mb-4 min-h-10-s p-4 pb-0">
         <h2 className="my-2 w-full text-2xl font-bold">{title}</h2>
-        <span className="my-2 font-light">{author}</span>
+        <span className="my-2 font-light">{creator ?? ''}</span>
         {!description && !content ? (
           <p className="my-4">{'No article description available'}</p>
         ) : (
@@ -142,7 +142,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
           className="aspect-video rounded-b-md object-cover"
           alt={title as string}
           src={
-            urlToImage ??
+            image_url ??
             'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
           }
         />
@@ -189,8 +189,8 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
           onClick={() =>
             navigator.share({
               title: title as string,
-              text: content as string,
-              url: url as string,
+              text: (content ?? description) as string,
+              url: link as string,
             })
           }
         >

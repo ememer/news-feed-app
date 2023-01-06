@@ -9,11 +9,9 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { RequestParams, ResponseArray } from '../types/NewsFeedArticleType';
+import { ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
-
-const API_PARAMS = { preferences: 'top-headlines?' } as RequestParams;
 
 const Discussion = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
@@ -23,16 +21,16 @@ const Discussion = () => {
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
-  const { userPreferencesStringUrl, news, DEF_ARTICLE } = useApiRequest();
+  const { userPreferencesStringUrl, newNews, DEF_ARTICLE } = useApiRequest();
 
   useEffect(() => {
-    news(API_PARAMS)
+    newNews()
       .then((resp) => setResponse(resp))
-      .catch((err) => err.message);
+      .catch((err) => err);
   }, [userPreferencesStringUrl]);
 
   const openAndUpdatePopup = () => {
-    const matchArticle = response?.articles.find(
+    const matchArticle = response?.results.find(
       (e, idx) => idx === fillComponentData.componentId,
     );
     if (matchArticle && Object.keys(matchArticle).length !== 0) {
@@ -57,7 +55,7 @@ const Discussion = () => {
             <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
           </LayoutPopUp>
         )}
-        {response?.articles
+        {response?.results
           .sort((a, b) => (b.messages as number) - (a.messages as number))
           .map((article, idx) => (
             <NewsFeedCard
