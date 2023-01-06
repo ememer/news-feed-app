@@ -1,16 +1,37 @@
-# Vite + React + Typescript + Eslint + Prettier
+
+# NewsFeed app 
 
 App inspired by daily.dev
 
-Under construction
+### App and readme under construction
 
-Temporary demo link version for 6/1/2023
+## unfortunately because API provider which is NEWSAPI don't allowed use free model in production, only for developer environment, please clone repository and run it locally
 
-https://deploy-preview-12--glittering-kleicha-795556.netlify.app/
 
-Use QRCode for mobile
+## Run Locally
 
-![image](https://user-images.githubusercontent.com/46853050/211050897-cbfd8231-055d-4169-9963-485d4a0a2097.png)
+Clone the project
 
+```bash
+  git clone https://github.com/ememer/news-feed-app.git
+```
+
+Go to the project directory
+
+```bash
+  cd my-project
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run dev
+```
 
 ![image](https://user-images.githubusercontent.com/46853050/209478992-21820ccb-ae96-44ad-9e06-2cc306109d9c.png)
