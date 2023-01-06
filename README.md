@@ -4,7 +4,7 @@ App inspired by daily.dev
 
 Under construction
 
-Temporary demo link version fo 6/1/2023
+Temporary demo link version for 6/1/2023
 
 https://deploy-preview-12--glittering-kleicha-795556.netlify.app/
 
