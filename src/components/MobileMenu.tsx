@@ -5,7 +5,6 @@ import { clsx } from 'clsx';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 
 import NavElements from './NavElements';
-// import { navLink } from '../shared/utils/navigationLinks';
 const theme = layoutTheme[0];
 
 interface Props {

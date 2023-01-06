@@ -12,7 +12,6 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import LazyLoad from 'react-lazy-load';
 
-// import LazyLoad from 'react-lazy-load/dist/LazyLoad';
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
