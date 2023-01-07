@@ -7,7 +7,7 @@ App inspired by daily.dev
 
 TEMPORARY DEMO
 
-https://63b92d7ccc26af68ffda6564--glittering-kleicha-795556.netlify.app/
+https://glittering-kleicha-795556.netlify.app
 
 
 ## Run Locally
