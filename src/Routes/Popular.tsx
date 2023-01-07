@@ -52,7 +52,11 @@ const Popular = () => {
       >
         {isPopUpOpen && (
           <LayoutPopUp className="flex flex-col lg:flex-row" onClose={setIsPopUpOpen}>
-            <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
+            <FeedPopUp
+              length={response?.results.length as number}
+              onClose={setIsPopUpOpen}
+              selectedArticle={openAndUpdatePopup()}
+            />
           </LayoutPopUp>
         )}
         {response?.results.map((article, idx) => (

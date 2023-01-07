@@ -80,7 +80,7 @@ const MyFeed = () => {
     <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
       {preferenceMenu && (
         <LayoutPopUp className="flex flex-col lg:flex-row" onClose={setPreferenceMenu}>
-          <PreferenceMenu />
+          <PreferenceMenu onClose={setPreferenceMenu} />
         </LayoutPopUp>
       )}
       <div className="my-10 flex min-h-10-s flex-col items-center p-6 lg:flex-row">
@@ -146,7 +146,11 @@ const MyFeed = () => {
       >
         {isPopUpOpen && (
           <LayoutPopUp className="flex flex-col lg:flex-row" onClose={setIsPopUpOpen}>
-            <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
+            <FeedPopUp
+              length={response?.results.length as number}
+              onClose={setIsPopUpOpen}
+              selectedArticle={openAndUpdatePopup()}
+            />
           </LayoutPopUp>
         )}
         {response?.results.map((article, idx) => (

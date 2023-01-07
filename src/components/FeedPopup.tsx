@@ -25,9 +25,10 @@ const theme = layoutTheme[0];
 interface Props {
   selectedArticle: ArticleResponse;
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
+  length: number;
 }
 
-const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
+const FeedPopUp = ({ selectedArticle, onClose, length = 0 }: Props) => {
   const { t } = useTranslation('translation');
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const [shouldCommentOpen, setShouldCommentOpen] = useState(false);
@@ -82,7 +83,13 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
             {/*  TO DO => PROTECT CLICKING CONNECT WITH ARTICLES LENGTH */}
             <button
               title={t('nextArt') as string}
-              className={clsx('mx-2', theme.textP)}
+              disabled={fillComponentData.componentId === length - 1}
+              className={clsx(
+                'mx-2',
+                fillComponentData.componentId === length - 1
+                  ? 'text-hot-ping-500/50'
+                  : theme.textP,
+              )}
               onClick={() =>
                 setFillComponentData((prevState) => ({
                   ...prevState,
@@ -100,7 +107,7 @@ const FeedPopUp = ({ selectedArticle, onClose }: Props) => {
             className="text-3xl lg:hidden"
             rel="noreferrer"
           >
-            <FontAwesomeIcon icon={faShareFromSquare} /> Open
+            <FontAwesomeIcon icon={faShareFromSquare} /> {t('open')}
           </a>
           <div className="fixed top-14 right-14 z-50">
             <button
