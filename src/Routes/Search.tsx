@@ -47,6 +47,7 @@ const Search = () => {
       )
         .then((resp) => setResponse(resp))
         .catch((err) => err);
+      setShouldRequest(false);
     }
   }, [shouldRequest]);
 
