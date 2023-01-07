@@ -56,9 +56,12 @@ export const useApiRequest = () => {
 
   const searchTags = categoryTags.length > 0 ? `&category=${categoryTags}` : '';
 
-  const newUrl = `https://newsdata.io/api/1/news?apikey=${TOKEN}${searchTags}`;
+  const newNews = async (search = '') => {
+    const newUrl =
+      `https://newsdata.io/api/1/news?apikey=${TOKEN}` +
+      (search !== '' ? `${search}` : `${searchTags}`);
+    console.log(newUrl);
 
-  const newNews = async () => {
     const request = new Request(newUrl + `&language=${userLang}&country=${userLang}`);
     const response = await fetch(request);
     if (!response.ok) {

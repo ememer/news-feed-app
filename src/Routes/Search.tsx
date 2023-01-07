@@ -31,7 +31,7 @@ const Search = () => {
       return { __err: t('searchFieldInfo') };
     }
 
-    return encodeURIComponent(`${fieldText}`);
+    return `&q=${encodeURIComponent(`${fieldText}`)}`;
   };
 
   const validationError: string | { __err: string } = createSearchUrl(searchParam);
@@ -40,7 +40,11 @@ const Search = () => {
 
   useEffect(() => {
     if (shouldRequest) {
-      newNews()
+      newNews(
+        typeof createSearchUrl(searchParam) === 'object'
+          ? ''
+          : (createSearchUrl(searchParam) as string),
+      )
         .then((resp) => setResponse(resp))
         .catch((err) => err);
     }
