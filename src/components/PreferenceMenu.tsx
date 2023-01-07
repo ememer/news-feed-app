@@ -10,13 +10,17 @@ import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
 const categories = [
-  'Business',
-  'Entertainment',
-  'General',
-  'Health',
-  'Science',
-  'Sports',
-  'Technology',
+  'business',
+  'entertainment',
+  'environment',
+  'food',
+  'health',
+  'politics',
+  'science',
+  'sports',
+  'technology',
+  'top',
+  'world',
 ];
 
 const layoutSets = ['eco', 'roomy', 'cozy'];
@@ -25,13 +29,25 @@ const buttonClassName = 'mb-10 rounded-xl p-4';
 
 const theme = layoutTheme[0];
 
-const PreferenceMenu = () => {
+interface Props {
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const PreferenceMenu = ({ onClose }: Props) => {
   const { t } = useTranslation('translation');
   const { userSettings, setUserSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
   return (
     <>
+      <div className="flex w-full justify-end p-2 lg:hidden">
+        <button
+          className={clsx(theme.textP, 'text-2xl font-bold')}
+          onClick={() => onClose(false)}
+        >
+          X
+        </button>
+      </div>
       <div className="mt-10 flex w-full flex-col lg:w-1/4">
         <button
           title={t('tagsButton') as string}

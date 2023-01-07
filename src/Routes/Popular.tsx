@@ -9,16 +9,9 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { RequestParams, ResponseArray } from '../types/NewsFeedArticleType';
+import { ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
-
-const API_PARAMS = {
-  preferences: 'everything?',
-  popularity: 'sortBy=popularity&',
-  userPreferencesTags: 'q=',
-  country: 'en',
-} as RequestParams;
 
 const Popular = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
@@ -29,15 +22,15 @@ const Popular = () => {
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
 
-  const { userPreferencesStringUrl, DEF_ARTICLE, news } = useApiRequest();
+  const { userPreferencesStringUrl, DEF_ARTICLE, newNews } = useApiRequest();
   useEffect(() => {
-    news(API_PARAMS)
+    newNews()
       .then((resp) => setResponse(resp))
-      .catch((err) => err.message);
+      .catch((err) => err);
   }, [userPreferencesStringUrl]);
 
   const openAndUpdatePopup = () => {
-    const matchArticle = response?.articles.find(
+    const matchArticle = response?.results.find(
       (e, idx) => idx === fillComponentData.componentId,
     );
     if (matchArticle && Object.keys(matchArticle).length !== 0) {
@@ -59,10 +52,14 @@ const Popular = () => {
       >
         {isPopUpOpen && (
           <LayoutPopUp className="flex flex-col lg:flex-row" onClose={setIsPopUpOpen}>
-            <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
+            <FeedPopUp
+              length={response?.results.length as number}
+              onClose={setIsPopUpOpen}
+              selectedArticle={openAndUpdatePopup()}
+            />
           </LayoutPopUp>
         )}
-        {response?.articles.map((article, idx) => (
+        {response?.results.map((article, idx) => (
           <NewsFeedCard
             index={idx}
             onClick={setIsPopUpOpen}

@@ -1,23 +1,19 @@
 import { useContext } from 'react';
 
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
-import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
-import { RequestParams } from '../types/NewsFeedArticleType';
+import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
-const TOKEN = 'apiKey=dcfea20b502345c6be30e1d013d3d7b3';
+const TOKEN = 'pub_15362f38ac3988ca613743aeaa20979cbc8c2';
 
 const DEF_ARTICLE: ArticleResponse = {
-  author: '',
+  creator: [''],
   content: '',
-  publishedAt: '',
-  source: {
-    id: '',
-    name: '',
-  },
+  pubDate: '',
+  source_id: '',
   title: '',
-  url: '',
-  urlToImage: '',
+  link: '',
+  image_url: '',
   description: '',
 };
 
@@ -27,15 +23,9 @@ const today = new Date();
 const yesterday = new Date(today);
 yesterday.setDate(yesterday.getDate() - 5);
 
-// splitting to array and convert to string template
-
-const datePeriod = `from=${today.toISOString().split('T')[0]}&to=${
-  yesterday.toISOString().split('T')[0]
-}&`;
-
 // User lang detector
 
-const userLang = navigator.language.split('-')[0] as RequestParams['country'];
+const userLang = navigator.language.split('-')[0];
 
 export const useApiRequest = () => {
   const { userSettings } = useContext(
@@ -44,37 +34,45 @@ export const useApiRequest = () => {
 
   // converting array of user followed tags to string template
 
-  const userPreferences = userSettings.myFeed.tagSub.map((tag) => `category=${tag}&`);
+  const userPreferences = userSettings.myFeed.tagSub.map((tag) => `${tag},`);
   const userPreferencesStringUrl =
     userPreferences.length !== 0 ? userPreferences.join('') : '';
 
-  const news = async ({
-    preferences = 'everything?',
-    popularity = '',
-    userPreferencesTags = '',
-    country = userLang,
-  }: RequestParams): Promise<ResponseArray> => {
-    const URL =
-      `https://newsapi.org/v2/${preferences}` +
-      popularity +
-      (preferences === 'everything?' ? `language=${country}&` : `country=${country}&`) +
-      userPreferencesTags +
-      (preferences === 'everything?' ? datePeriod : '') +
-      (!country && !popularity && !userPreferencesTags ? `&${TOKEN}` : TOKEN);
-    const request: Request = new Request(URL);
-    const resp = await fetch(request);
+  // converting array of user followed tags to string template
 
-    if (!resp.ok) {
-      const message = `${resp?.status}`;
-      throw new Error(message);
+  let categoryTags = '';
+
+  if (userSettings.myFeed.tagSub.length === 1) {
+    categoryTags = userSettings.myFeed.tagSub[0];
+  } else {
+    userSettings.myFeed.tagSub.forEach((tag) => (categoryTags += `${tag},`));
+  }
+
+  const commaShouldBeRemoved = categoryTags.lastIndexOf(',');
+
+  if (commaShouldBeRemoved !== -1) {
+    categoryTags = categoryTags.slice(0, commaShouldBeRemoved);
+  }
+
+  const searchTags = categoryTags.length > 0 ? `&category=${categoryTags}` : '';
+
+  const newNews = async (search = '') => {
+    const newUrl =
+      `https://newsdata.io/api/1/news?apikey=${TOKEN}` +
+      (search !== '' ? `${search}` : `${searchTags}`);
+    console.log(newUrl);
+
+    const request = new Request(newUrl + `&language=${userLang}&country=${userLang}`);
+    const response = await fetch(request);
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
-
-    const articlesResponse = await resp.json();
+    const newses = await response.json();
 
     return {
-      ...articlesResponse,
-      articles: articlesResponse?.articles.map((article: ArticleResponse) => ({
-        ...article,
+      ...newses,
+      results: newses?.results.map((result: ArticleResponse) => ({
+        ...result,
         vote: Math.floor(Math.random() * (120 - 64) + 64), //Only for mock-up
         messages: Math.floor(Math.random() * (40 - 14) + 14), //Only for mock-up
         isClicked: false,
@@ -82,5 +80,5 @@ export const useApiRequest = () => {
     };
   };
 
-  return { userPreferencesStringUrl, news, DEF_ARTICLE };
+  return { userPreferencesStringUrl, newNews, DEF_ARTICLE };
 };

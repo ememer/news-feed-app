@@ -10,15 +10,9 @@ import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { RequestParams, ResponseArray } from '../types/NewsFeedArticleType';
+import { ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
-
-const API_PARAMS = {
-  preferences: 'everything?',
-  popularity: 'sortBy=popularity&',
-  country: 'en',
-} as RequestParams;
 
 const Search = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
@@ -28,7 +22,7 @@ const Search = () => {
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
-  const { news, DEF_ARTICLE } = useApiRequest();
+  const { newNews, DEF_ARTICLE } = useApiRequest();
   const [searchParam, setSearchParam] = useState('');
   const [shouldRequest, setShouldRequest] = useState(true);
   const { t } = useTranslation('translation');
@@ -37,7 +31,7 @@ const Search = () => {
       return { __err: t('searchFieldInfo') };
     }
 
-    return encodeURIComponent(`${fieldText}`);
+    return `&q=${encodeURIComponent(`${fieldText}`)}`;
   };
 
   const validationError: string | { __err: string } = createSearchUrl(searchParam);
@@ -46,21 +40,18 @@ const Search = () => {
 
   useEffect(() => {
     if (shouldRequest) {
-      news({
-        ...API_PARAMS,
-        userPreferencesTags:
-          typeof createSearchUrl(searchParam) === 'object'
-            ? 'q='
-            : (`q=${createSearchUrl(searchParam)}&` as string),
-      })
+      newNews(
+        typeof createSearchUrl(searchParam) === 'object'
+          ? ''
+          : (createSearchUrl(searchParam) as string),
+      )
         .then((resp) => setResponse(resp))
-        .catch((err) => err.message);
-      setShouldRequest(false);
+        .catch((err) => err);
     }
   }, [shouldRequest]);
 
   const openAndUpdatePopup = () => {
-    const matchArticle = response?.articles.find(
+    const matchArticle = response?.results.find(
       (e, idx) => idx === fillComponentData.componentId,
     );
     if (matchArticle && Object.keys(matchArticle).length !== 0) {
@@ -106,10 +97,14 @@ const Search = () => {
       >
         {isPopUpOpen && (
           <LayoutPopUp className="flex flex-col lg:flex-row" onClose={setIsPopUpOpen}>
-            <FeedPopUp onClose={setIsPopUpOpen} selectedArticle={openAndUpdatePopup()} />
+            <FeedPopUp
+              length={response?.results.length as number}
+              onClose={setIsPopUpOpen}
+              selectedArticle={openAndUpdatePopup()}
+            />
           </LayoutPopUp>
         )}
-        {response?.articles.map((article, idx) => (
+        {response?.results.map((article, idx) => (
           <NewsFeedCard
             index={idx}
             onClick={setIsPopUpOpen}

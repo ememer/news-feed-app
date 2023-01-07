@@ -1,13 +1,17 @@
 {
   "buttonHintDescription": "Open my feed setting",
   "hintDescription": "Edit your personal feed preferences here",
-  "Business": "Business",
-  "Entertainment": "Entertainment",
-  "General": "General",
-  "Health": "Health",
-  "Science": "Science",
-  "Sports": "Sports",
-  "Technology": "Technology",
+  "business": "Business",
+  "entertainment": "Entertainment",
+  "environment": "Environment",
+  "food": "Food",
+  "health": "Health",
+  "politics": "Politics",
+  "science": "Science",
+  "sports": "Sports",
+  "technology": "Technology",
+  "top": "Top",
+  "world": "World",
   "menagePop": {
     "tagsTitle": "Menage tags",
     "feedTitle": "Menage feed layout",
@@ -40,5 +44,6 @@
   "nextArt": "Next article",
   "comments": "Comments",
   "share": "Share",
-  "vote": "Votes"
+  "vote": "Votes",
+  "open": "Open"
 }
