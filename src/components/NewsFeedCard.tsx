@@ -22,9 +22,10 @@ type Props = {
   article: ArticleResponse;
   onClick: Dispatch<SetStateAction<boolean>>;
   index: number;
+  isReference?: any;
 };
 
-const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
+const NewsFeedCard = ({ theme, article, onClick, index, isReference }: Props) => {
   const { fillComponentData, setFillComponentData } = useContext(
     NewsFeedContext,
   ) as NewsFeedContextTypes;
@@ -88,6 +89,7 @@ const NewsFeedCard = ({ theme, article, onClick, index }: Props) => {
 
   return (
     <article
+      ref={isReference}
       onClick={(e) => {
         if ((e.target as HTMLDivElement).id !== 'UIelement') {
           setFillComponentData({

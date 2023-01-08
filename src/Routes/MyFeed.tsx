@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { faBarsProgress } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,23 +23,65 @@ const MyFeed = () => {
   const [preferenceMenu, setPreferenceMenu] = useState(false);
   const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
   const [response, setResponse] = useState<ResponseArray>();
+  const [shouldUpdate, setShouldUpdated] = useState(false);
   const theme = layoutTheme[0];
   const { userSettings, setUserSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
-  const { userPreferencesStringUrl, DEF_ARTICLE, newNews } = useApiRequest();
+  const {
+    userPreferencesStringUrl,
+    DEF_ARTICLE,
+    newNews,
+    nextPage,
+    isLoaded,
+    setIsLoaded,
+  } = useApiRequest();
+
+  const observer = useRef<IntersectionObserver | null>();
+  const lastArticle = useCallback(
+    (node) => {
+      if (!isLoaded) return;
+
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && nextPage !== null) {
+          setShouldUpdated(true);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoaded, nextPage],
+  );
+
+  useEffect(() => {
+    setIsLoaded(true);
+    if (shouldUpdate) {
+      newNews({ pageNumber: nextPage })
+        .then((resp) =>
+          setResponse((prevResp: ResponseArray) => ({
+            resp,
+            results: [...prevResp.results, ...resp.results],
+          })),
+        )
+        .catch((err) => err);
+    }
+    setIsLoaded(false);
+    setShouldUpdated(false);
+  }, [shouldUpdate]);
 
   // Fetch on component load, after connection lost depending on url change
 
   useEffect(() => {
     window.addEventListener('online', () =>
-      newNews()
+      newNews({})
         .then((resp) => setResponse(resp))
         .catch((err) => err),
     );
-    newNews()
+    newNews({})
       .then((resp) => setResponse(resp))
       .catch((err) => err);
+
     return () => window.removeEventListener('online', () => newNews);
   }, [userPreferencesStringUrl]);
 
@@ -58,7 +100,7 @@ const MyFeed = () => {
 
     if (msDifference > 1000) {
       const timeoutId = setTimeout(() => {
-        newNews()
+        newNews({})
           .then((resp) => setResponse(resp))
           .catch((err) => err);
       }, msDifference);
@@ -153,15 +195,26 @@ const MyFeed = () => {
             />
           </LayoutPopUp>
         )}
-        {response?.results.map((article, idx) => (
-          <NewsFeedCard
-            index={idx}
-            onClick={setIsPopUpOpen}
-            key={`${article.title}+${idx}`}
-            article={article}
-            theme={theme}
-          />
-        ))}
+        {response?.results.map((article, idx) =>
+          response?.results.length === idx + 1 ? (
+            <NewsFeedCard
+              index={idx}
+              onClick={setIsPopUpOpen}
+              key={`${article.title}+${idx}`}
+              article={article}
+              theme={theme}
+              isReference={lastArticle}
+            />
+          ) : (
+            <NewsFeedCard
+              index={idx}
+              onClick={setIsPopUpOpen}
+              key={`${article.title}+${idx}`}
+              article={article}
+              theme={theme}
+            />
+          ),
+        )}
       </div>
     </div>
   );

@@ -40,11 +40,12 @@ const Search = () => {
 
   useEffect(() => {
     if (shouldRequest) {
-      newNews(
-        typeof createSearchUrl(searchParam) === 'object'
-          ? ''
-          : (createSearchUrl(searchParam) as string),
-      )
+      newNews({
+        search:
+          typeof createSearchUrl(searchParam) === 'object'
+            ? ''
+            : (createSearchUrl(searchParam) as string),
+      })
         .then((resp) => setResponse(resp))
         .catch((err) => err);
       setShouldRequest(false);
