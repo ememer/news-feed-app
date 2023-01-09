@@ -15,6 +15,7 @@ export interface ResponseArray {
   results: ArticleResponse[];
   status: string;
   totalResults: number;
+  nextPage?: number | null;
 }
 
 export interface CloseHandler {

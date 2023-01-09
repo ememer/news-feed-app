@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
@@ -18,11 +18,12 @@ const Search = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
   const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
   const [response, setResponse] = useState<ResponseArray>();
+  const [shouldUpdate, setShouldUpdated] = useState(false);
   const theme = layoutTheme[0];
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
-  const { newNews, DEF_ARTICLE } = useApiRequest();
+  const { newNews, DEF_ARTICLE, isLoaded, setIsLoaded, nextPage } = useApiRequest();
   const [searchParam, setSearchParam] = useState('');
   const [shouldRequest, setShouldRequest] = useState(true);
   const { t } = useTranslation('translation');
@@ -38,13 +39,57 @@ const Search = () => {
 
   const isValidate = Object.keys(validationError).toLocaleString() !== '__err';
 
+  const observer = useRef<IntersectionObserver | null>();
+
+  const lastArticle = useCallback(
+    (node) => {
+      if (!isLoaded) return;
+
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && nextPage !== null) {
+          setShouldUpdated(true);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoaded, nextPage],
+  );
+
+  useEffect(() => {
+    setIsLoaded(true);
+    if (shouldUpdate) {
+      newNews({
+        search:
+          typeof createSearchUrl(searchParam) === 'object'
+            ? ''
+            : (createSearchUrl(searchParam) as string),
+        pageNumber: nextPage as number,
+      })
+        .then((resp) =>
+          setResponse(
+            (prevResponse): ResponseArray => ({
+              ...resp,
+              results: [
+                ...(prevResponse?.results ?? ''),
+                ...resp.results,
+              ] as ResponseArray['results'],
+            }),
+          ),
+        )
+        .catch((err) => err);
+    }
+  }, [shouldUpdate]);
+
   useEffect(() => {
     if (shouldRequest) {
-      newNews(
-        typeof createSearchUrl(searchParam) === 'object'
-          ? ''
-          : (createSearchUrl(searchParam) as string),
-      )
+      newNews({
+        search:
+          typeof createSearchUrl(searchParam) === 'object'
+            ? ''
+            : (createSearchUrl(searchParam) as string),
+      })
         .then((resp) => setResponse(resp))
         .catch((err) => err);
       setShouldRequest(false);
@@ -105,15 +150,26 @@ const Search = () => {
             />
           </LayoutPopUp>
         )}
-        {response?.results.map((article, idx) => (
-          <NewsFeedCard
-            index={idx}
-            onClick={setIsPopUpOpen}
-            key={`${article.title}+${idx}`}
-            article={article}
-            theme={theme}
-          />
-        ))}
+        {response?.results.map((article, idx) =>
+          response?.results.length === idx + 1 ? (
+            <NewsFeedCard
+              index={idx}
+              onClick={setIsPopUpOpen}
+              key={`${article.title}+${idx}`}
+              article={article}
+              theme={theme}
+              isReference={lastArticle}
+            />
+          ) : (
+            <NewsFeedCard
+              index={idx}
+              onClick={setIsPopUpOpen}
+              key={`${article.title}+${idx}`}
+              article={article}
+              theme={theme}
+            />
+          ),
+        )}
       </div>
     </div>
   );

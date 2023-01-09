@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 
@@ -21,13 +21,51 @@ const Popular = () => {
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
+  const [shouldUpdate, setShouldUpdated] = useState(false);
+  const { DEF_ARTICLE, newNews, isLoaded, setIsLoaded, nextPage } = useApiRequest();
 
-  const { userPreferencesStringUrl, DEF_ARTICLE, newNews } = useApiRequest();
+  const observer = useRef<IntersectionObserver | null>();
+
+  const lastArticle = useCallback(
+    (node) => {
+      if (!isLoaded) return;
+
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && nextPage !== null) {
+          setShouldUpdated(true);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoaded, nextPage],
+  );
+
   useEffect(() => {
-    newNews()
+    setIsLoaded(true);
+    if (shouldUpdate) {
+      newNews({ pageNumber: nextPage as number })
+        .then((resp) =>
+          setResponse(
+            (prevResponse): ResponseArray => ({
+              ...resp,
+              results: [
+                ...(prevResponse?.results ?? ''),
+                ...resp.results,
+              ] as ResponseArray['results'],
+            }),
+          ),
+        )
+        .catch((err) => err);
+    }
+  }, [shouldUpdate]);
+
+  useEffect(() => {
+    newNews({})
       .then((resp) => setResponse(resp))
       .catch((err) => err);
-  }, [userPreferencesStringUrl]);
+  }, []);
 
   const openAndUpdatePopup = () => {
     const matchArticle = response?.results.find(
@@ -59,15 +97,26 @@ const Popular = () => {
             />
           </LayoutPopUp>
         )}
-        {response?.results.map((article, idx) => (
-          <NewsFeedCard
-            index={idx}
-            onClick={setIsPopUpOpen}
-            key={`${article.title}+${idx}`}
-            article={article}
-            theme={theme}
-          />
-        ))}
+        {response?.results.map((article, idx) =>
+          response?.results.length === idx + 1 ? (
+            <NewsFeedCard
+              index={idx}
+              onClick={setIsPopUpOpen}
+              key={`${article.title}+${idx}`}
+              article={article}
+              theme={theme}
+              isReference={lastArticle}
+            />
+          ) : (
+            <NewsFeedCard
+              index={idx}
+              onClick={setIsPopUpOpen}
+              key={`${article.title}+${idx}`}
+              article={article}
+              theme={theme}
+            />
+          ),
+        )}
       </div>
     </div>
   );

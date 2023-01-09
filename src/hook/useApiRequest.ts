@@ -1,7 +1,7 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
-import { ArticleResponse } from '../types/NewsFeedArticleType';
+import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
 const TOKEN = 'pub_15362f38ac3988ca613743aeaa20979cbc8c2';
@@ -28,6 +28,7 @@ yesterday.setDate(yesterday.getDate() - 5);
 const userLang = navigator.language.split('-')[0];
 
 export const useApiRequest = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
@@ -56,17 +57,34 @@ export const useApiRequest = () => {
 
   const searchTags = categoryTags.length > 0 ? `&category=${categoryTags}` : '';
 
-  const newNews = async (search = '') => {
+  interface NewsParams {
+    search?: string;
+    pageNumber?: number;
+  }
+  const [nextPage, setNextPage] = useState<number | null>(0);
+
+  const newNews = async ({
+    search = '',
+    pageNumber = 0,
+  }: NewsParams): Promise<ResponseArray> => {
     const newUrl =
       `https://newsdata.io/api/1/news?apikey=${TOKEN}` +
       (search !== '' ? `${search}` : `${searchTags}`);
-
-    const request = new Request(newUrl + `&language=${userLang}&country=${userLang}`);
+    const request = new Request(
+      newUrl + `&language=${userLang}&country=${userLang}&page=${pageNumber}`,
+    );
     const response = await fetch(request);
     if (!response.ok) {
       throw new Error(response.statusText);
     }
     const newses = await response.json();
+    setIsLoaded(true);
+
+    if (newses?.nextPage !== null || newses?.nextPage !== undefined) {
+      setNextPage(newses?.nextPage);
+    } else {
+      setNextPage(null);
+    }
 
     return {
       ...newses,
@@ -79,5 +97,12 @@ export const useApiRequest = () => {
     };
   };
 
-  return { userPreferencesStringUrl, newNews, DEF_ARTICLE };
+  return {
+    userPreferencesStringUrl,
+    newNews,
+    nextPage,
+    isLoaded,
+    setIsLoaded,
+    DEF_ARTICLE,
+  };
 };
