@@ -39,7 +39,7 @@ https://chillycube.pl
 [I18Next](https://www.i18next.com/)
 
 
-## API Documentation
+## Documentation
 
 [News data API](https://newsdata.io/docs)
 
