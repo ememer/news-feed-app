@@ -70,7 +70,6 @@ export const useApiRequest = () => {
     const newUrl =
       `https://newsdata.io/api/1/news?apikey=${TOKEN}` +
       (search !== '' ? `${search}` : `${searchTags}`);
-
     const request = new Request(
       newUrl + `&language=${userLang}&country=${userLang}&page=${pageNumber}`,
     );

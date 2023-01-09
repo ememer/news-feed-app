@@ -37,6 +37,8 @@ const MyFeed = () => {
     setIsLoaded,
   } = useApiRequest();
 
+  // Initialize asynchronously observer in reference memory to save information between re-renders
+
   const observer = useRef<IntersectionObserver | null>();
   const lastArticle = useCallback(
     (node) => {
@@ -54,21 +56,30 @@ const MyFeed = () => {
     [isLoaded, nextPage],
   );
 
+  // Observer request call
+
   useEffect(() => {
     setIsLoaded(true);
     if (shouldUpdate) {
       newNews({ pageNumber: nextPage as number })
         .then((resp) =>
-          setResponse((prevResponse) => ({
-            resp,
-            results: [...prevResponse.results, ...resp.results],
-          })),
+          setResponse(
+            (prevResponse): ResponseArray => ({
+              ...resp,
+              results: [
+                ...(prevResponse?.results ?? ''),
+                ...resp.results,
+              ] as ResponseArray['results'],
+            }),
+          ),
         )
         .catch((err) => err);
     }
     setIsLoaded(false);
     setShouldUpdated(false);
   }, [shouldUpdate]);
+
+  console.log(response);
 
   // Fetch on component load, after connection lost depending on url change
 
