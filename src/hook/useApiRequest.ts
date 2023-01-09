@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
-import { ArticleResponse } from '../types/NewsFeedArticleType';
+import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
 const TOKEN = 'pub_15362f38ac3988ca613743aeaa20979cbc8c2';
@@ -63,7 +63,10 @@ export const useApiRequest = () => {
   }
   const [nextPage, setNextPage] = useState<number | null>(0);
 
-  const newNews = async ({ search = '', pageNumber = 0 }: NewsParams) => {
+  const newNews = async ({
+    search = '',
+    pageNumber = 0,
+  }: NewsParams): Promise<ResponseArray> => {
     const newUrl =
       `https://newsdata.io/api/1/news?apikey=${TOKEN}` +
       (search !== '' ? `${search}` : `${searchTags}`);

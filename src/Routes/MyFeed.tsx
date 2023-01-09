@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { faBarsProgress } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -57,11 +57,11 @@ const MyFeed = () => {
   useEffect(() => {
     setIsLoaded(true);
     if (shouldUpdate) {
-      newNews({ pageNumber: nextPage })
+      newNews({ pageNumber: nextPage as number })
         .then((resp) =>
-          setResponse((prevResp: ResponseArray) => ({
+          setResponse((prevResponse) => ({
             resp,
-            results: [...prevResp.results, ...resp.results],
+            results: [...prevResponse.results, ...resp.results],
           })),
         )
         .catch((err) => err);
