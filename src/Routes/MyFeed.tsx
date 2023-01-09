@@ -79,8 +79,6 @@ const MyFeed = () => {
     setShouldUpdated(false);
   }, [shouldUpdate]);
 
-  console.log(response);
-
   // Fetch on component load, after connection lost depending on url change
 
   useEffect(() => {
