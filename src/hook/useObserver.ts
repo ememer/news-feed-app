@@ -9,8 +9,6 @@ export const useObserve = () => {
     isLoaded: boolean,
     isPage: number | null,
   ) => {
-    console.log(domElement, isLoaded, isPage);
-
     if (!isLoaded) {
       return;
     }

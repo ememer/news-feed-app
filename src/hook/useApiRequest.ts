@@ -25,8 +25,9 @@ yesterday.setDate(yesterday.getDate() - 5);
 
 // User lang detector
 
-const userLang = navigator.language.split('-')[0];
-
+// const userLang = navigator.language.split('-')[0];
+const userLang = 'en';
+const userCountry = 'US';
 export const useApiRequest = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { userSettings } = useContext(
@@ -71,7 +72,7 @@ export const useApiRequest = () => {
       `https://newsdata.io/api/1/news?apikey=${TOKEN}` +
       (search !== '' ? `${search}` : `${searchTags}`);
     const request = new Request(
-      newUrl + `&language=${userLang}&country=${userLang}&page=${pageNumber}`,
+      newUrl + `&language=${userLang}&country=${userCountry}&page=${pageNumber}`,
     );
     const response = await fetch(request);
     if (!response.ok) {
