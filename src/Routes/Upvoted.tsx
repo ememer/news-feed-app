@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 
@@ -8,6 +8,7 @@ import NewsFeedCard from '../components/NewsFeedCard';
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
+import { useObserve } from '../hook/useObserver';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
@@ -17,34 +18,23 @@ const Upvoted = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
   const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
   const [response, setResponse] = useState<ResponseArray>();
-  const [shouldUpdate, setShouldUpdated] = useState(false);
+
   const theme = layoutTheme[0];
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
   const { newNews, DEF_ARTICLE, isLoaded, setIsLoaded, nextPage } = useApiRequest();
 
-  const observer = useRef<IntersectionObserver | null>();
+  const { observeElement, shouldReRequest, setShouldReRequest } = useObserve();
 
   const lastArticle = useCallback(
-    (node) => {
-      if (!isLoaded) return;
-
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && nextPage !== null) {
-          setShouldUpdated(true);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
+    (node) => observeElement(node, isLoaded, nextPage),
     [isLoaded, nextPage],
   );
 
   useEffect(() => {
     setIsLoaded(true);
-    if (shouldUpdate) {
+    if (shouldReRequest) {
       newNews({ pageNumber: nextPage as number })
         .then((resp) =>
           setResponse(
@@ -59,7 +49,8 @@ const Upvoted = () => {
         )
         .catch((err) => err);
     }
-  }, [shouldUpdate]);
+    setShouldReRequest(false);
+  }, [shouldReRequest]);
 
   useEffect(() => {
     newNews({})
