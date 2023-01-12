@@ -10,8 +10,6 @@ export const useIpLocation = () => {
     const fetchLocation = async () => {
       const response: Response = await fetch(URL);
       const resp = await response.json();
-      console.log(resp);
-
       setIpResponse({
         userCountry: resp?.country_code2,
         userLang: resp?.country_code2,
