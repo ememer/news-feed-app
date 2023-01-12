@@ -12,7 +12,7 @@ export const useIpLocation = () => {
       const resp = await response.json();
       setIpResponse({
         userCountry: resp?.country_code2,
-        userLang: resp?.country_code2,
+        userLang: resp?.languages,
       });
     };
 
