@@ -5,9 +5,24 @@ import { countriesCodesList } from '../shared/utils/countriesCodeList';
 import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
-import { useIpLocation } from './useIpLocation';
-
 const TOKEN = 'pub_15362f38ac3988ca613743aeaa20979cbc8c2';
+
+const DEF_LANG_COUNTRY = { languages: 'en', country_code2: 'us' };
+
+const fetchLocation = async () => {
+  const URL =
+    'https://api.2ipgeolocation.io/ipgeo?apiKey=ef47981cbba64960930278a37104a4a6';
+
+  try {
+    const response = await fetch(URL);
+    if (!response.ok) {
+      throw new Error('Network response was not ok.');
+    }
+    return response.json();
+  } catch (error) {
+    return error;
+  }
+};
 
 const DEF_ARTICLE: ArticleResponse = {
   creator: [''],
@@ -27,18 +42,10 @@ const yesterday = new Date(today);
 yesterday.setDate(yesterday.getDate() - 5);
 
 export const useApiRequest = () => {
-  const { ipResponse } = useIpLocation();
   const [isLoaded, setIsLoaded] = useState(false);
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
-
-  const userCountry = countriesCodesList.includes(
-    ipResponse.userCountry.toLocaleLowerCase(),
-  )
-    ? ipResponse.userCountry
-    : 'us';
-  const userLang = ipResponse.userLang;
 
   // converting array of user followed tags to string template
 
@@ -74,12 +81,20 @@ export const useApiRequest = () => {
     search = '',
     pageNumber = 0,
   }: NewsParams): Promise<ResponseArray> => {
+    const locationResponse = await fetchLocation();
+    const userLang = (await locationResponse.languages) ?? DEF_LANG_COUNTRY.languages;
+    const userCountry =
+      (await locationResponse.country_code2) ?? DEF_LANG_COUNTRY.country_code2;
     const newUrl =
       `https://newsdata.io/api/1/news?apikey=${TOKEN}` +
       (search !== '' ? `${search}` : `${searchTags}`);
     const request = new Request(
       newUrl + `&language=${userLang}&country=${userCountry}&page=${pageNumber}`,
     );
+
+    console.log(request);
+
+    return;
     const response = await fetch(request);
     if (!response.ok) {
       throw new Error(response.statusText);
