@@ -4,6 +4,8 @@ import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
+import { useIpLocation } from './useIpLocation';
+
 const TOKEN = 'pub_15362f38ac3988ca613743aeaa20979cbc8c2';
 
 const DEF_ARTICLE: ArticleResponse = {
@@ -23,17 +25,15 @@ const today = new Date();
 const yesterday = new Date(today);
 yesterday.setDate(yesterday.getDate() - 5);
 
-// User lang detector
-
-// const userLang = navigator.language.split('-')[0];
-const userLang = 'en';
-const userCountry = 'US';
 export const useApiRequest = () => {
+  const { ipResponse } = useIpLocation();
   const [isLoaded, setIsLoaded] = useState(false);
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
 
+  const userCountry = ipResponse.userCountry;
+  const userLang = ipResponse.userLang;
   // converting array of user followed tags to string template
 
   const userPreferences = userSettings.myFeed.tagSub.map((tag) => `${tag},`);
