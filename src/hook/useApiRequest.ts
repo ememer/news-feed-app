@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
+// import { countriesCodesList } from '../shared/utils/countriesCodeList';
 import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
@@ -34,6 +35,7 @@ export const useApiRequest = () => {
 
   const userCountry = ipResponse.userCountry;
   const userLang = ipResponse.userLang;
+
   // converting array of user followed tags to string template
 
   const userPreferences = userSettings.myFeed.tagSub.map((tag) => `${tag},`);
