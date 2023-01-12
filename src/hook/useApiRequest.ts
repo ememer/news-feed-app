@@ -9,9 +9,11 @@ const TOKEN = 'pub_15362f38ac3988ca613743aeaa20979cbc8c2';
 
 const DEF_LANG_COUNTRY = { languages: 'en', country_code2: 'us' };
 
+// Fetch user Language and Country using IP geolocation
+
 const fetchLocation = async () => {
   const URL =
-    'https://api.2ipgeolocation.io/ipgeo?apiKey=ef47981cbba64960930278a37104a4a6';
+    'https://api.ipgeolocation.io/ipgeo?apiKey=ef47981cbba64960930278a37104a4a6';
 
   try {
     const response = await fetch(URL);
@@ -81,20 +83,31 @@ export const useApiRequest = () => {
     search = '',
     pageNumber = 0,
   }: NewsParams): Promise<ResponseArray> => {
+    // Location response await
+
     const locationResponse = await fetchLocation();
+
     const userLang = (await locationResponse.languages) ?? DEF_LANG_COUNTRY.languages;
-    const userCountry =
+
+    const country =
       (await locationResponse.country_code2) ?? DEF_LANG_COUNTRY.country_code2;
+
+    const userCountry = (await countriesCodesList.includes(
+      (await country.toLowerCase()) as string,
+    ))
+      ? country.toLowerCase()
+      : DEF_LANG_COUNTRY.country_code2;
+
+    // News API url
+
     const newUrl =
       `https://newsdata.io/api/1/news?apikey=${TOKEN}` +
       (search !== '' ? `${search}` : `${searchTags}`);
+
     const request = new Request(
       newUrl + `&language=${userLang}&country=${userCountry}&page=${pageNumber}`,
     );
 
-    console.log(request);
-
-    return;
     const response = await fetch(request);
     if (!response.ok) {
       throw new Error(response.statusText);
