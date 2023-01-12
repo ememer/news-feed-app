@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 const URL = 'https://api.ipgeolocation.io/ipgeo?apiKey=ef47981cbba64960930278a37104a4a6';
 
 export const useIpLocation = () => {
-  const [ipResponse, setIpResponse] = useState({ userCountry: 'en', userLang: 'us' });
+  const [ipResponse, setIpResponse] = useState({ userCountry: 'us', userLang: 'en' });
 
   useEffect(() => {
     const fetchLocation = async () => {
