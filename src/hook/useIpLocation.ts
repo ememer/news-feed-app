@@ -8,12 +8,19 @@ export const useIpLocation = () => {
 
   useEffect(() => {
     const fetchLocation = async () => {
-      const response: Response = await fetch(URL);
-      const resp = await response.json();
-      setIpResponse({
-        userCountry: resp?.country_code2,
-        userLang: resp?.languages,
-      });
+      try {
+        const response: Response = await fetch(URL);
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        const resp = await response.json();
+        setIpResponse({
+          userCountry: resp?.country_code2,
+          userLang: resp?.languages,
+        });
+      } catch (error) {
+        return error;
+      }
     };
 
     fetchLocation();

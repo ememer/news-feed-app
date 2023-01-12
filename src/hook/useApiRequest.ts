@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
-// import { countriesCodesList } from '../shared/utils/countriesCodeList';
+import { countriesCodesList } from '../shared/utils/countriesCodeList';
 import { ArticleResponse, ResponseArray } from '../types/NewsFeedArticleType';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
@@ -33,7 +33,11 @@ export const useApiRequest = () => {
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
 
-  const userCountry = ipResponse.userCountry;
+  const userCountry = countriesCodesList.includes(
+    ipResponse.userCountry.toLocaleLowerCase(),
+  )
+    ? ipResponse.userCountry
+    : 'us';
   const userLang = ipResponse.userLang;
 
   // converting array of user followed tags to string template
