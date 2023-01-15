@@ -45,5 +45,6 @@
   "comments": "Comments",
   "share": "Share",
   "vote": "Votes",
-  "open": "Open"
+  "open": "Open",
+  "notFoundMessage": "Not found results for:"
 }

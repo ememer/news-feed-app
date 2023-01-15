@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { faBarsProgress } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,6 +12,7 @@ import PreferenceMenu from '../components/PreferenceMenu';
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
+import { useObserve } from '../hook/useObserver';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
@@ -23,7 +24,7 @@ const MyFeed = () => {
   const [preferenceMenu, setPreferenceMenu] = useState(false);
   const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
   const [response, setResponse] = useState<ResponseArray>();
-  const [shouldUpdate, setShouldUpdated] = useState(false);
+
   const theme = layoutTheme[0];
   const { userSettings, setUserSettings } = useContext(
     UserPreferencesContext,
@@ -39,20 +40,10 @@ const MyFeed = () => {
 
   // Initialize asynchronously observer in reference memory to save information between re-renders
 
-  const observer = useRef<IntersectionObserver | null>();
+  const { observeElement, shouldReRequest, setShouldReRequest } = useObserve();
+
   const lastArticle = useCallback(
-    (node) => {
-      if (!isLoaded) return;
-
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && nextPage !== null) {
-          setShouldUpdated(true);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
+    (node) => observeElement(node, isLoaded, nextPage),
     [isLoaded, nextPage],
   );
 
@@ -60,7 +51,7 @@ const MyFeed = () => {
 
   useEffect(() => {
     setIsLoaded(true);
-    if (shouldUpdate) {
+    if (shouldReRequest) {
       newNews({ pageNumber: nextPage as number })
         .then((resp) =>
           setResponse(
@@ -76,8 +67,8 @@ const MyFeed = () => {
         .catch((err) => err);
     }
     setIsLoaded(false);
-    setShouldUpdated(false);
-  }, [shouldUpdate]);
+    setShouldReRequest(false);
+  }, [shouldReRequest]);
 
   // Fetch on component load, after connection lost depending on url change
 
@@ -128,7 +119,7 @@ const MyFeed = () => {
   };
 
   return (
-    <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
+    <div className="ml-auto mt-20 grid min-h-screen w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
       {preferenceMenu && (
         <LayoutPopUp className="flex flex-col lg:flex-row" onClose={setPreferenceMenu}>
           <PreferenceMenu onClose={setPreferenceMenu} />

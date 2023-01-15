@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ import NewsFeedCard from '../components/NewsFeedCard';
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
+import { useObserve } from '../hook/useObserver';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
@@ -18,7 +19,7 @@ const Search = () => {
   const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
   const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
   const [response, setResponse] = useState<ResponseArray>();
-  const [shouldUpdate, setShouldUpdated] = useState(false);
+
   const theme = layoutTheme[0];
   const { userSettings } = useContext(
     UserPreferencesContext,
@@ -39,27 +40,16 @@ const Search = () => {
 
   const isValidate = Object.keys(validationError).toLocaleString() !== '__err';
 
-  const observer = useRef<IntersectionObserver | null>();
+  const { observeElement, shouldReRequest, setShouldReRequest } = useObserve();
 
   const lastArticle = useCallback(
-    (node) => {
-      if (!isLoaded) return;
-
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && nextPage !== null) {
-          setShouldUpdated(true);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
+    (node) => observeElement(node, isLoaded, nextPage),
     [isLoaded, nextPage],
   );
 
   useEffect(() => {
     setIsLoaded(true);
-    if (shouldUpdate) {
+    if (shouldReRequest) {
       newNews({
         search:
           typeof createSearchUrl(searchParam) === 'object'
@@ -80,7 +70,8 @@ const Search = () => {
         )
         .catch((err) => err);
     }
-  }, [shouldUpdate]);
+    setShouldReRequest(false);
+  }, [shouldReRequest]);
 
   useEffect(() => {
     if (shouldRequest) {
@@ -107,7 +98,7 @@ const Search = () => {
   };
 
   return (
-    <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
+    <div className="ml-auto mt-20 grid min-h-screen w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -131,6 +122,16 @@ const Search = () => {
         <span className={clsx('inline-block w-full p-2', theme.mainAccText)}>
           {(validationError as { __err: string })?.__err}
         </span>
+        {response?.results.length === 0 && (
+          <span
+            className={clsx(
+              theme.textP,
+              'mx-auto my-2 inline-block w-full px-4 font-bold',
+            )}
+          >
+            {t('notFoundMessage')} {searchParam}
+          </span>
+        )}
       </form>
       <div
         className={clsx('grid w-full grid-cols-1', {
@@ -150,6 +151,7 @@ const Search = () => {
             />
           </LayoutPopUp>
         )}
+
         {response?.results.map((article, idx) =>
           response?.results.length === idx + 1 ? (
             <NewsFeedCard

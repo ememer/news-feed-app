@@ -1,7 +1,6 @@
+# DailyFeeder - News app
 
-# DailyFeeder - News app 
 You should be mention is still under construction and some feautres can't work yet.
-
 
 This application is inspired daily.dev.
 
@@ -13,9 +12,7 @@ App can detect your laugage preferences and provide to you articles from your co
 
 Supporting basic I18n increase user experience app.
 
-
 ![image](https://user-images.githubusercontent.com/46853050/209478992-21820ccb-ae96-44ad-9e06-2cc306109d9c.png)
-
 
 ## TEMPORARY DEMO
 
@@ -24,7 +21,6 @@ https://glittering-kleicha-795556.netlify.app
 `TRY ON MOBILE - SKAN QR CODE`
 
 ![image](https://user-images.githubusercontent.com/46853050/211394822-0426a361-2ae7-4446-acbf-e5fb74c2f1c5.png)
-
 
 Feel free to check my personal portfolio:
 
@@ -37,7 +33,6 @@ https://chillycube.pl
 [FontAwesome](https://fontawesome.com/)
 
 [I18Next](https://www.i18next.com/)
-
 
 ## Documentation
 
@@ -52,8 +47,6 @@ https://chillycube.pl
 ## Tech Stack
 
 **Client:** React - Vite, TypeScript, TailwindCSS, I18Next, React Router
-
-
 
 ## Run Locally
 

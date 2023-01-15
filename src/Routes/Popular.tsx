@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 
@@ -8,6 +8,7 @@ import NewsFeedCard from '../components/NewsFeedCard';
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { UserPreferencesContext } from '../context/UserPreferencesContext';
 import { useApiRequest } from '../hook/useApiRequest';
+import { useObserve } from '../hook/useObserver';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { ResponseArray } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
@@ -21,30 +22,17 @@ const Popular = () => {
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
-  const [shouldUpdate, setShouldUpdated] = useState(false);
   const { DEF_ARTICLE, newNews, isLoaded, setIsLoaded, nextPage } = useApiRequest();
-
-  const observer = useRef<IntersectionObserver | null>();
+  const { observeElement, shouldReRequest, setShouldReRequest } = useObserve();
 
   const lastArticle = useCallback(
-    (node) => {
-      if (!isLoaded) return;
-
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && nextPage !== null) {
-          setShouldUpdated(true);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
+    (node) => observeElement(node, isLoaded, nextPage),
     [isLoaded, nextPage],
   );
 
   useEffect(() => {
     setIsLoaded(true);
-    if (shouldUpdate) {
+    if (shouldReRequest) {
       newNews({ pageNumber: nextPage as number })
         .then((resp) =>
           setResponse(
@@ -59,7 +47,8 @@ const Popular = () => {
         )
         .catch((err) => err);
     }
-  }, [shouldUpdate]);
+    setShouldReRequest(false);
+  }, [shouldReRequest]);
 
   useEffect(() => {
     newNews({})
@@ -78,7 +67,7 @@ const Popular = () => {
   };
 
   return (
-    <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
+    <div className="ml-auto mt-20 grid min-h-screen w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
       <div
         className={clsx('grid w-full grid-cols-1', {
           'gap-2 p-2 md:grid-cols-2 xl:grid-cols-4': userSettings.layoutType === 'eco',
