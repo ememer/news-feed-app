@@ -98,7 +98,7 @@ const Search = () => {
   };
 
   return (
-    <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
+    <div className="ml-auto mt-20 grid min-h-screen w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -122,6 +122,16 @@ const Search = () => {
         <span className={clsx('inline-block w-full p-2', theme.mainAccText)}>
           {(validationError as { __err: string })?.__err}
         </span>
+        {response?.results.length === 0 && (
+          <span
+            className={clsx(
+              theme.textP,
+              'mx-auto my-2 inline-block w-full px-4 font-bold',
+            )}
+          >
+            {t('notFoundMessage')} {searchParam}
+          </span>
+        )}
       </form>
       <div
         className={clsx('grid w-full grid-cols-1', {
@@ -141,6 +151,7 @@ const Search = () => {
             />
           </LayoutPopUp>
         )}
+
         {response?.results.map((article, idx) =>
           response?.results.length === idx + 1 ? (
             <NewsFeedCard

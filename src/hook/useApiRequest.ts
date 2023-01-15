@@ -22,7 +22,7 @@ const fetchLocation = async () => {
     }
     return response.json();
   } catch (error) {
-    return error;
+    return DEF_LANG_COUNTRY;
   }
 };
 
@@ -107,6 +107,7 @@ export const useApiRequest = () => {
     const request = new Request(
       newUrl + `&language=${userLang}&country=${userCountry}&page=${pageNumber}`,
     );
+    console.log(request.url);
 
     const response = await fetch(request);
     if (!response.ok) {

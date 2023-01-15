@@ -119,7 +119,7 @@ const MyFeed = () => {
   };
 
   return (
-    <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
+    <div className="ml-auto mt-20 grid min-h-screen w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
       {preferenceMenu && (
         <LayoutPopUp className="flex flex-col lg:flex-row" onClose={setPreferenceMenu}>
           <PreferenceMenu onClose={setPreferenceMenu} />

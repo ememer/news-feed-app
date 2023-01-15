@@ -68,7 +68,7 @@ const Discussion = () => {
   };
 
   return (
-    <div className="ml-auto mt-20 grid w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
+    <div className="ml-auto mt-20 grid min-h-screen w-full scroll-m-10 grid-cols-1 gap-10 scroll-smooth p-4 lg:w-9/12 lg:p-10 xl:w-10/12">
       <div
         className={clsx('grid w-full grid-cols-1', {
           'gap-2 p-2 md:grid-cols-2 xl:grid-cols-4': userSettings.layoutType === 'eco',

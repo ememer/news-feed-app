@@ -45,5 +45,6 @@
   "comments": "Komentarze",
   "share": "Udostępnij",
   "vote": "Głosy",
-  "open": "Otwórz"
+  "open": "Otwórz",
+  "notFoundMessage": "Nie znaleziono wyników dla:"
 }
