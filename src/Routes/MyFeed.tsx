@@ -192,7 +192,7 @@ const MyFeed = () => {
               length={response?.results.length as number}
               onClose={setIsPopUpOpen}
               selectedArticle={openAndUpdatePopup()}
-              response={response?.results}
+              response={response?.results ?? []}
             />
           </LayoutPopUp>
         )}

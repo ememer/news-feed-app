@@ -14,6 +14,7 @@ import LazyLoad from 'react-lazy-load';
 
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
+import { recentArticles } from '../shared/utils/recentArticleRandomise';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 
@@ -57,14 +58,6 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Prop
   } = selectedArticle;
 
   const publishedDate = new Date(pubDate as string);
-
-  const recentArticles = () => {
-    const responseId = response.map((article, index) => ({ ...article, id: index }));
-    const filteredResponse = responseId.filter(
-      (item, index) => index !== fillComponentData.componentId,
-    );
-    return filteredResponse.sort(() => 0.5 - Math.random()).slice(0, 3);
-  };
 
   return (
     <>
@@ -237,7 +230,7 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Prop
           )}
         >
           <h2>Recent:</h2>
-          {recentArticles().map((recent) => (
+          {recentArticles(response, fillComponentData).map((recent) => (
             <RecentArticles
               article={recent}
               onClick={setFillComponentData}
