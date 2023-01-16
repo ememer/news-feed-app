@@ -47,5 +47,6 @@
   "vote": "Głosy",
   "open": "Otwórz",
   "notFoundMessage": "Nie znaleziono wyników dla:",
-  "recent": "Polecane"
+  "recent": "Polecane",
+  "otherFrom": "Inne od"
 }

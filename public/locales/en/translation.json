@@ -47,5 +47,6 @@
   "vote": "Votes",
   "open": "Open",
   "notFoundMessage": "Not found results for:",
-  "recent": "Recent"
+  "recent": "Recent",
+  "otherFrom": "Other from"
 }

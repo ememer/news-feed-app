@@ -14,7 +14,7 @@ import LazyLoad from 'react-lazy-load';
 
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { recentArticles } from '../shared/utils/recentArticleRandomise';
+import { recentArticles, sourceArticles } from '../shared/utils/recentArticleRandomise';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 
@@ -218,14 +218,14 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Prop
       <div className="w-full lg:w-2/4 ">
         <PopupCTA
           buttonClose={onClose}
-          source={source_id}
+          source={(source_id as string).toLocaleUpperCase()}
           url={link as string}
           theme={theme}
           className="hidden lg:block"
         />
         <div
           className={clsx(
-            'mt-10 flex h-64 w-full flex-col items-center justify-center lg:mt-20',
+            'mt-10 flex w-full flex-col items-center justify-center lg:mt-20',
             theme.borderP50,
           )}
         >
@@ -237,6 +237,25 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Prop
               key={recent.id}
             />
           ))}
+        </div>
+        <div
+          className={clsx(
+            'mt-10 flex w-full flex-col items-center justify-center lg:mt-20',
+            theme.borderP50,
+          )}
+        >
+          <h2 className="w-full text-left">
+            {t('otherFrom')}: {source_id?.toLocaleUpperCase()}
+          </h2>
+          {sourceArticles(response, fillComponentData, source_id as string).map(
+            (sourceArticle) => (
+              <RecentArticles
+                article={sourceArticle}
+                onClick={setFillComponentData}
+                key={sourceArticle.id}
+              />
+            ),
+          )}
         </div>
       </div>
     </>
