@@ -19,6 +19,9 @@ import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 
 import CommentBlank from './CommentBlank';
 import PopupCTA from './PopupCTA';
+import RecentArticles from './RecentArticles';
+
+import missingImage from './../../public/images/img_missing.png';
 
 const theme = layoutTheme[0];
 
@@ -26,9 +29,10 @@ interface Props {
   selectedArticle: ArticleResponse;
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
   length: number;
+  response: ArticleResponse[];
 }
 
-const FeedPopUp = ({ selectedArticle, onClose, length = 0 }: Props) => {
+const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Props) => {
   const { t } = useTranslation('translation');
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const [shouldCommentOpen, setShouldCommentOpen] = useState(false);
@@ -53,6 +57,14 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0 }: Props) => {
   } = selectedArticle;
 
   const publishedDate = new Date(pubDate as string);
+
+  const recentArticles = () => {
+    const responseId = response.map((article, index) => ({ ...article, id: index }));
+    const filteredResponse = responseId.filter(
+      (item, index) => index !== fillComponentData.componentId,
+    );
+    return filteredResponse.sort(() => 0.5 - Math.random()).slice(0, 3);
+  };
 
   return (
     <>
@@ -145,13 +157,7 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0 }: Props) => {
         </p>
         <span className="m-4 block">{publishedDate.toLocaleDateString()}</span>
         <LazyLoad threshold={1.0}>
-          <img
-            className="rounded-md"
-            src={
-              (image_url as string) ??
-              'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
-            }
-          />
+          <img className="rounded-md" src={(image_url as string) ?? missingImage} />
         </LazyLoad>
 
         <div className="mt-6 mb-2 w-full text-sm">
@@ -226,19 +232,18 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0 }: Props) => {
         />
         <div
           className={clsx(
-            'mt-10 flex h-64 w-full items-center justify-center rounded-md border p-2 lg:mt-20',
+            'mt-10 flex h-64 w-full flex-col items-center justify-center lg:mt-20',
             theme.borderP50,
           )}
         >
-          <span className="text-5xl opacity-20">TODO</span>
-        </div>
-        <div
-          className={clsx(
-            'mt-10 flex h-64 w-full items-center justify-center rounded-md border p-2 lg:mt-20',
-            theme.borderP50,
-          )}
-        >
-          <span className="text-5xl opacity-20">TODO</span>
+          <h2>Recent:</h2>
+          {recentArticles().map((recent) => (
+            <RecentArticles
+              article={recent}
+              onClick={setFillComponentData}
+              key={recent.id}
+            />
+          ))}
         </div>
       </div>
     </>

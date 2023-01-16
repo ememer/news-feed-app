@@ -13,4 +13,5 @@ export interface LayoutTheme {
   elementsBgP: string;
   elementsBgP50: string;
   textP: string;
+  hoverP: string;
 }

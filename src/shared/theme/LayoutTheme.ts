@@ -15,5 +15,6 @@ export const layoutTheme = [
     elementsBgP: 'bg-hot-ping-500',
     elementsBgP50: 'bg-hot-ping-500/50',
     textP: 'text-hot-ping-500',
+    hoverP: 'hover:text-hot-ping-500',
   },
 ];
