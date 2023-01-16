@@ -229,7 +229,7 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Prop
             theme.borderP50,
           )}
         >
-          <h2>Recent:</h2>
+          <h2 className="w-full text-left">{t('recent')}:</h2>
           {recentArticles(response, fillComponentData).map((recent) => (
             <RecentArticles
               article={recent}

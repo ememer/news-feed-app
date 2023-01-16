@@ -46,5 +46,6 @@
   "share": "Share",
   "vote": "Votes",
   "open": "Open",
-  "notFoundMessage": "Not found results for:"
+  "notFoundMessage": "Not found results for:",
+  "recent": "Recent"
 }
