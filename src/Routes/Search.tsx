@@ -148,6 +148,7 @@ const Search = () => {
               length={response?.results.length as number}
               onClose={setIsPopUpOpen}
               selectedArticle={openAndUpdatePopup()}
+              response={response?.results ?? []}
             />
           </LayoutPopUp>
         )}

@@ -46,5 +46,7 @@
   "share": "Udostępnij",
   "vote": "Głosy",
   "open": "Otwórz",
-  "notFoundMessage": "Nie znaleziono wyników dla:"
+  "notFoundMessage": "Nie znaleziono wyników dla:",
+  "recent": "Polecane",
+  "otherFrom": "Inne od"
 }

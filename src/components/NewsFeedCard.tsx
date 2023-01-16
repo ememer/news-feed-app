@@ -17,6 +17,8 @@ import { LayoutTheme } from '../types/layoutTheme';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 
+import missingImage from './../../public/images/img_missing.png';
+
 type Props = {
   theme: LayoutTheme;
   article: ArticleResponse;
@@ -143,26 +145,27 @@ const NewsFeedCard = ({ theme, article, onClick, index, isReference }: Props) =>
         <img
           className="aspect-video rounded-b-md object-cover"
           alt={title as string}
-          src={
-            image_url ??
-            'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png'
-          }
+          src={image_url ?? missingImage}
         />
       </LazyLoad>
       <div id="UIelement" className="row flex justify-between p-4">
         <button
-          className="flex flex-row items-center"
+          className={clsx('flex flex-row items-center', theme.hoverP)}
           title={t('voteUpButton') as string}
           id="UIelement"
           onClick={() => addVote()}
         >
           <div id="UIelement">
-            <FontAwesomeIcon id="UIelement" className="text-2xl" icon={faHeart} />
+            <FontAwesomeIcon
+              id="UIelement"
+              className="bg-transparent text-2xl"
+              icon={faHeart}
+            />
             <span
               id="UIelement"
               className={clsx(
                 userReactions.isClicked && theme.mainAccText,
-                'ml-4 transform text-base duration-200 ease-in-out',
+                'ml-4 transform text-base',
               )}
             >
               {userReactions.vote !== 0 ? userReactions.vote : null}
@@ -171,21 +174,17 @@ const NewsFeedCard = ({ theme, article, onClick, index, isReference }: Props) =>
         </button>
         <button
           title={t('commentButton') as string}
-          id="UIelement"
-          className="flex flex-row items-center"
+          className={clsx('flex flex-row items-center', theme.hoverP)}
         >
-          <div id="UIelement" className="text-2xl">
-            <FontAwesomeIcon id="UIelement" icon={faMessage} />
-            <span
-              id="UIelement"
-              className="ml-4 transform text-base duration-200 ease-in-out"
-            >
+          <div className="text-2xl">
+            <FontAwesomeIcon icon={faMessage} />
+            <span className="ml-4 transform text-base">
               {userReactions.messages !== 0 ? userReactions.messages : null}
             </span>
           </div>
         </button>
         <button
-          className="flex flex-row items-center overflow-hidden"
+          className={clsx('flex flex-row items-center overflow-hidden', theme.hoverP)}
           title={t('shareButton') as string}
           id="UIelement"
           onClick={() =>
