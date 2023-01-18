@@ -22,7 +22,7 @@ import CommentBlank from './CommentBlank';
 import PopupCTA from './PopupCTA';
 import RecentArticles from './RecentArticles';
 
-import missingImage from './../../public/images/img_missing.png';
+import missingImage from './../images/img_missing.png';
 
 const theme = layoutTheme[0];
 

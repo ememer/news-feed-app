@@ -17,7 +17,7 @@ import { LayoutTheme } from '../types/layoutTheme';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 
-import missingImage from './../../public/images/img_missing.png';
+import missingImage from './../images/img_missing.png';
 
 type Props = {
   theme: LayoutTheme;

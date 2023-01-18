@@ -48,5 +48,12 @@
   "open": "Otwórz",
   "notFoundMessage": "Nie znaleziono wyników dla:",
   "recent": "Polecane",
-  "otherFrom": "Inne od"
+  "otherFrom": "Inne od",
+  "links": {
+    "MyFeed": "Strona Główna",
+    "popular": "Popularne",
+    "upvoted": "Najlepiej oceniane",
+    "discussion": "Dyskusja",
+    "search": "Wyszukiwarka"
+  }
 }

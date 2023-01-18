@@ -48,5 +48,12 @@
   "open": "Open",
   "notFoundMessage": "Not found results for:",
   "recent": "Recent",
-  "otherFrom": "Other from"
+  "otherFrom": "Other from",
+  "links": {
+    "MyFeed": "Home page",
+    "popular": "Popular",
+    "upvoted": "Most voted",
+    "discussion": "Discussion",
+    "search": "Search news"
+  }
 }

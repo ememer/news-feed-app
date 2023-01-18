@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 
+import { HelmetProvider } from 'react-helmet-async';
 import { Outlet } from 'react-router-dom';
 
 import Layout from './components/Layout';
@@ -9,13 +10,15 @@ import UserPreferencesContextProvider from './context/UserPreferencesContextProv
 function App() {
   return (
     <Suspense fallback="loading">
-      <UserPreferencesContextProvider>
-        <Layout>
-          <NewsFeedContextProvider>
-            <Outlet />
-          </NewsFeedContextProvider>
-        </Layout>
-      </UserPreferencesContextProvider>
+      <HelmetProvider>
+        <UserPreferencesContextProvider>
+          <Layout>
+            <NewsFeedContextProvider>
+              <Outlet />
+            </NewsFeedContextProvider>
+          </Layout>
+        </UserPreferencesContextProvider>
+      </HelmetProvider>
     </Suspense>
   );
 }
