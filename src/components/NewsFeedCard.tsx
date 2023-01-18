@@ -1,11 +1,6 @@
 import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 
-import {
-  faHeart,
-  faMessage,
-  faNewspaper,
-  faShareFromSquare,
-} from '@fortawesome/free-regular-svg-icons';
+import { faNewspaper } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +11,8 @@ import { clipLongText } from '../shared/utils/clipText';
 import { LayoutTheme } from '../types/layoutTheme';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
+
+import ArticleCardsButtons from './ArticleCardsButtons';
 
 import missingImage from './../images/img_missing.png';
 
@@ -154,51 +151,17 @@ const NewsFeedCard = ({ theme, article, onClick, index, isReference }: Props) =>
           />
         </LazyLoad>
       </div>
-      <div className="row flex justify-between p-4">
-        <button
-          className={clsx('flex flex-row items-center', theme.hoverP)}
-          title={t('voteUpButton') as string}
-          onClick={() => addVote()}
-        >
-          <div>
-            <FontAwesomeIcon className="bg-transparent text-2xl" icon={faHeart} />
-            <span
-              className={clsx(
-                userReactions.isClicked && theme.mainAccText,
-                'ml-4 transform text-base',
-              )}
-            >
-              {userReactions.vote !== 0 ? userReactions.vote : null}
-            </span>
-          </div>
-        </button>
-        <button
-          title={t('commentButton') as string}
-          className={clsx('flex flex-row items-center', theme.hoverP)}
-        >
-          <div className="text-2xl">
-            <FontAwesomeIcon icon={faMessage} />
-            <span className="ml-4 transform text-base">
-              {userReactions.messages !== 0 ? userReactions.messages : null}
-            </span>
-          </div>
-        </button>
-        <button
-          className={clsx('flex flex-row items-center overflow-hidden', theme.hoverP)}
-          title={t('shareButton') as string}
-          onClick={() =>
-            navigator.share({
-              title: title as string,
-              text: (content ?? description) as string,
-              url: link as string,
-            })
-          }
-        >
-          <div className="bg-transparent text-2xl">
-            <FontAwesomeIcon icon={faShareFromSquare} />
-          </div>
-        </button>
-      </div>
+      <ArticleCardsButtons
+        index={index}
+        content={content}
+        description={description}
+        link={link as string}
+        title={title as string}
+        theme={theme}
+        vote={addVote}
+        userReactions={userReactions}
+        onClick={onClick}
+      />
     </article>
   );
 };
