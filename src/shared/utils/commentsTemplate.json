@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "author": "Author 1",
+    "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+    "replays": [
+      {
+        "id": 1,
+        "author": "Reply author",
+        "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "author": "Author 2",
+    "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    "replays": [
+      {
+        "id": 1,
+        "author": "Reply author 1",
+        "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+      },
+      {
+        "id": 2,
+        "author": "Reply author 2",
+        "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "author": "Author 3",
+    "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    "replays": []
+  }
+]
