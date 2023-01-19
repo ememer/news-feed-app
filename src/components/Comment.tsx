@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
+import { faComment } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
 
 import { LayoutTheme } from '../types/layoutTheme';
+
+import NewCommentPopup from './NewCommentPopup';
 
 interface Props {
   theme: LayoutTheme;
@@ -16,9 +20,13 @@ interface Props {
       text: string;
     }[];
   };
+  onClick: Dispatch<SetStateAction<boolean>>;
+  openComment: boolean;
+  title: string;
+  source: string;
 }
 
-const Comment = ({ theme, comment }: Props) => {
+const Comment = ({ onClick, openComment, theme, comment, title, source }: Props) => {
   console.log(comment);
   return (
     <div
@@ -28,6 +36,7 @@ const Comment = ({ theme, comment }: Props) => {
         theme.elementsLinearBG,
       )}
     >
+      {openComment && <NewCommentPopup title={title} source={source} onClose={onClick} />}
       <div
         className={clsx(
           'flex w-full justify-between lg:items-center',
@@ -37,7 +46,7 @@ const Comment = ({ theme, comment }: Props) => {
       >
         <div className="w-full">
           <div className="flex items-center justify-start">
-            <span className="mx-auto block h-14 w-14 rounded-xl bg-slate-900/50" />
+            <span className="my-4 mx-auto block h-14 w-14 rounded-xl bg-slate-900/50" />
             <h2 className={clsx('my-4 ml-4 w-3/4 font-bold', theme.mainAccText)}>
               {comment.author}
             </h2>
@@ -56,30 +65,21 @@ const Comment = ({ theme, comment }: Props) => {
                 </h2>
               </div>
               <p className="py-4 px-6">{reply.text}</p>
+              <div className="flex w-full items-center justify-end p-4">
+                <button onClick={() => onClick(true)}>
+                  <FontAwesomeIcon icon={faComment} /> Comment
+                </button>
+              </div>
               <span
                 className={clsx('mx-auto my-2 block w-11/12 border-b', theme.borderP)}
               />
             </div>
           ))}
-      </div>
-      <div className="my-2 flex w-full items-center justify-between p-4">
-        <input
-          type="text"
-          className={clsx(
-            'w-3/4 rounded-lg border p-2 shadow-md',
-            theme.elementsLinearBG,
-            theme.borderB,
-          )}
-          placeholder="Share your thought"
-        />
-        <button
-          className={clsx(
-            'mx-auto w-2/12 rounded-md p-2 shadow-md',
-            theme.elementsLinearBG,
-          )}
-        >
-          Post
-        </button>
+        <div className="flex w-full items-center justify-center p-4">
+          <button onClick={() => onClick(true)}>
+            <FontAwesomeIcon icon={faComment} /> Comment
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -35,17 +35,11 @@ interface Props {
 
 const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Props) => {
   const { t } = useTranslation('translation');
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+
   const [shouldCommentOpen, setShouldCommentOpen] = useState(false);
   const { fillComponentData, setFillComponentData } = useContext(
     NewsFeedContext,
   ) as NewsFeedContextTypes;
-
-  //  =>> TO DO <<=
-  //
-  // =>COMMENT SECTION
-  //
-  // => USE DECELERATED VARIABLE
 
   const {
     title = '',
@@ -212,7 +206,12 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Prop
             </button>
           </div>
         </div>
-        <CommentSection />
+        <CommentSection
+          title={title as string}
+          source={source_id as string}
+          openComment={shouldCommentOpen}
+          onClick={setShouldCommentOpen}
+        />
       </div>
       <div className="w-full lg:w-2/4 ">
         <PopupCTA
