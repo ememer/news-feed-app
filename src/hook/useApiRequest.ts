@@ -105,7 +105,10 @@ export const useApiRequest = () => {
       (search !== '' ? `${search}` : `${searchTags}`);
 
     const request = new Request(
-      newUrl + `&language=${userLang}&country=${userCountry}&page=${pageNumber}`,
+      newUrl +
+        `&language=${userLang}&country=${userCountry}${
+          pageNumber > 0 ? `&page=${pageNumber}` : ''
+        }`,
     );
 
     const response = await fetch(request);
@@ -120,6 +123,7 @@ export const useApiRequest = () => {
     } else {
       setNextPage(null);
     }
+    console.log(newses);
 
     return {
       ...newses,

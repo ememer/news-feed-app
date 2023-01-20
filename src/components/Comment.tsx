@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
-import { faComment } from '@fortawesome/free-regular-svg-icons';
+import { faComment, faEdit, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
 
@@ -14,6 +14,7 @@ interface Props {
     id: number;
     author: string;
     text: string;
+    edit?: boolean;
     replays?: {
       id: number;
       author: string;
@@ -24,10 +25,37 @@ interface Props {
   openComment: boolean;
   title: string;
   source: string;
+  commentsLength: number;
+  setNewComment: Dispatch<SetStateAction<any>>;
 }
 
-const Comment = ({ onClick, openComment, theme, comment, title, source }: Props) => {
-  console.log(comment);
+const Comment = ({
+  onClick,
+  openComment,
+  theme,
+  comment,
+  title,
+  source,
+  comments,
+  commentsLength,
+  setNewComment,
+}: Props) => {
+  const foo = (e) => {
+    const test = comments.map((comment) => {
+      console.log(comment.id, e.target.id);
+      if (comment.id === +e.target.id) {
+        return {
+          id: +e.target.id,
+          text: '',
+          author: '',
+        };
+      } else {
+        return comment;
+      }
+    });
+    console.log('TEST', test);
+  };
+
   return (
     <div
       className={clsx(
@@ -36,7 +64,15 @@ const Comment = ({ onClick, openComment, theme, comment, title, source }: Props)
         theme.elementsLinearBG,
       )}
     >
-      {openComment && <NewCommentPopup title={title} source={source} onClose={onClick} />}
+      {openComment && (
+        <NewCommentPopup
+          length={commentsLength}
+          setComment={setNewComment}
+          title={title}
+          source={source}
+          onClose={onClick}
+        />
+      )}
       <div
         className={clsx(
           'flex w-full justify-between lg:items-center',
@@ -47,9 +83,23 @@ const Comment = ({ onClick, openComment, theme, comment, title, source }: Props)
         <div className="w-full">
           <div className="flex items-center justify-start">
             <span className="my-4 mx-auto block h-14 w-14 rounded-xl bg-slate-900/50" />
-            <h2 className={clsx('my-4 ml-4 w-3/4 font-bold', theme.mainAccText)}>
+            <h2 className={clsx('my-4 ml-4 w-2/4 font-bold', theme.mainAccText)}>
               {comment.author}
             </h2>
+            {comment.edit && (
+              <div className="flex">
+                <button
+                  id={`${comment.id}`}
+                  onClick={(e) => foo(e)}
+                  className="mx-2 w-1/6"
+                >
+                  <FontAwesomeIcon className="h-full w-full" icon={faTrashCan} />
+                </button>
+                <button className="mx-2">
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
+              </div>
+            )}
           </div>
           <p className="my-4 p-4">{comment.text}</p>
         </div>
@@ -65,11 +115,6 @@ const Comment = ({ onClick, openComment, theme, comment, title, source }: Props)
                 </h2>
               </div>
               <p className="py-4 px-6">{reply.text}</p>
-              <div className="flex w-full items-center justify-end p-4">
-                <button onClick={() => onClick(true)}>
-                  <FontAwesomeIcon icon={faComment} /> Comment
-                </button>
-              </div>
               <span
                 className={clsx('mx-auto my-2 block w-11/12 border-b', theme.borderP)}
               />

@@ -10,11 +10,25 @@ interface Props {
   onClose: Dispatch<SetStateAction<boolean>>;
   title: string;
   source: string;
+  setComment: Dispatch<SetStateAction<any>>;
+  length: number;
 }
 
-const NewCommentPopup = ({ onClose, title, source }: Props) => {
+const NewCommentPopup = ({ onClose, title, source, setComment, length }: Props) => {
   const [userComment, setUserComment] = useState('');
-
+  const addNewComment = () => {
+    setComment((prevState: any) => [
+      ...prevState,
+      {
+        id: (length as number) + 1,
+        author: 'You',
+        text: userComment,
+        edit: true,
+        replays: [],
+      },
+    ]);
+    onClose(false);
+  };
   return (
     <div
       onClick={(e) => {
@@ -58,6 +72,7 @@ const NewCommentPopup = ({ onClose, title, source }: Props) => {
             placeholder="Share your thought"
           />
           <button
+            onClick={() => addNewComment()}
             className={clsx(
               'mx-auto w-2/12 rounded-md p-2 shadow-md',
               theme.elementsLinearBG,
