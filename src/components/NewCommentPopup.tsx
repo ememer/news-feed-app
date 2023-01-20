@@ -4,20 +4,21 @@ import clsx from 'clsx';
 
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { clipLongText } from '../shared/utils/clipText';
+import { CommentType } from '../types/CommentsTypes';
 const theme = layoutTheme[0];
 
 interface Props {
   onClose: Dispatch<SetStateAction<boolean>>;
   title: string;
   source: string;
-  setComment: Dispatch<SetStateAction<any>>;
+  setComment: Dispatch<SetStateAction<CommentType[]>>;
   length: number;
 }
 
 const NewCommentPopup = ({ onClose, title, source, setComment, length }: Props) => {
   const [userComment, setUserComment] = useState('');
   const addNewComment = () => {
-    setComment((prevState: any) => [
+    setComment((prevState) => [
       ...prevState,
       {
         id: (length as number) + 1,

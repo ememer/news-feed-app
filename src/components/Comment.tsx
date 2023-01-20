@@ -18,7 +18,7 @@ interface Props {
   source: string;
   comments: CommentType[];
   commentsLength: number;
-  setNewComment: Dispatch<SetStateAction<any>>;
+  setNewComment: Dispatch<SetStateAction<CommentType[]>>;
 }
 
 const Comment = ({
@@ -71,7 +71,7 @@ const Comment = ({
     const matchedComment = comments.find(
       (comment) => comment.id === +(e.currentTarget as HTMLButtonElement).id,
     );
-    setUpdatedContent(matchedComment?.text);
+    setUpdatedContent(matchedComment?.text as string);
     setIsFieldOpen(!isFieldOpen);
   };
 
@@ -142,6 +142,7 @@ const Comment = ({
               </div>
             )}
           </div>
+          {comment.isUpdated && <span className="px-2 text-sm">Edited</span>}
           {comment.text && !isFieldOpen && <p className="my-4 p-4">{comment.text}</p>}
           {isFieldOpen && (
             <div className="w-full">

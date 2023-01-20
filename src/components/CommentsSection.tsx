@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import { layoutTheme } from '../shared/theme/LayoutTheme';
+import { CommentType } from '../types/CommentsTypes';
 const theme = layoutTheme[0];
 
 import commentsData from './../shared/utils/commentsTemplate.json';
@@ -13,7 +14,7 @@ interface Props {
 }
 
 const CommentSection = ({ onClick, openComment, title, source }: Props) => {
-  const [comments, setComments] = useState(commentsData);
+  const [comments, setComments] = useState(commentsData as CommentType[]);
 
   return (
     <div className="w-full py-10">
