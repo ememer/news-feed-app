@@ -67,6 +67,14 @@ const Comment = ({
     }
   };
 
+  const findAndUpdateField = (e: React.MouseEvent) => {
+    const matchedComment = comments.find(
+      (comment) => comment.id === +(e.currentTarget as HTMLButtonElement).id,
+    );
+    setUpdatedContent(matchedComment?.text);
+    setIsFieldOpen(!isFieldOpen);
+  };
+
   return (
     <div
       className={clsx(
@@ -124,7 +132,11 @@ const Comment = ({
                     icon={faTrashCan}
                   />
                 </button>
-                <button onClick={() => setIsFieldOpen(!isFieldOpen)} className="p-2">
+                <button
+                  id={`${comment.id}`}
+                  onClick={(e) => findAndUpdateField(e)}
+                  className="p-2"
+                >
                   <FontAwesomeIcon icon={faEdit} />
                 </button>
               </div>
@@ -133,8 +145,11 @@ const Comment = ({
           {comment.text && !isFieldOpen && <p className="my-4 p-4">{comment.text}</p>}
           {isFieldOpen && (
             <div className="w-full">
-              <input
-                placeholder={comment.text}
+              <textarea
+                className={clsx(
+                  'my-4 w-full rounded-md border bg-transparent p-4 outline-none ',
+                  theme.borderB,
+                )}
                 value={updatedContent}
                 onChange={(e) => setUpdatedContent(e.target.value)}
               />
