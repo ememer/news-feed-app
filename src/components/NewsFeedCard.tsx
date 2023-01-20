@@ -1,11 +1,4 @@
-import React, {
-  Dispatch,
-  RefObject,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 
 import { faNewspaper } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,7 +21,7 @@ type Props = {
   article: ArticleResponse;
   onClick: Dispatch<SetStateAction<boolean>>;
   index: number;
-  isReference?: RefObject<HTMLElement>;
+  isReference?: any;
 };
 
 const NewsFeedCard = ({ theme, article, onClick, index, isReference }: Props) => {
