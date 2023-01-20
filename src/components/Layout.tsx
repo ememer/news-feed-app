@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
 import clsx from 'clsx';
+import { t } from 'i18next';
+import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 
@@ -14,10 +17,19 @@ type Props = {
 const theme = layoutTheme[0];
 
 const Layout = ({ children }: Props) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation().pathname;
+  const locationName = location.slice(1, location.length);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <>
+      <Helmet>
+        <title>
+          {locationName === ''
+            ? `Daily Feeder | ${t('MyFeed')}`
+            : `Daily Feeder | ${t(`links.${locationName}`)}`}
+        </title>
+      </Helmet>
       <header
         className={clsx(
           theme.borderB,

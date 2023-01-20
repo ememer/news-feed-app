@@ -4,7 +4,7 @@ import { clipLongText } from '../shared/utils/clipText';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { DEF_COMPONENT_DATA } from '../types/NewsFeedProvider';
 
-import missingImage from './../../public/images/img_missing.png';
+import missingImage from './../images/img_missing.png';
 
 interface Article extends ArticleResponse {
   id: number;

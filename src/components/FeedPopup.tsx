@@ -14,15 +14,15 @@ import LazyLoad from 'react-lazy-load';
 
 import { NewsFeedContext } from '../context/NewsFeedContext';
 import { layoutTheme } from '../shared/theme/LayoutTheme';
-import { recentArticles, sourceArticles } from '../shared/utils/recentArticleRandomise';
+import { recentArticles, sourceArticles } from '../shared/utils/recentArticleRandomize';
 import { ArticleResponse } from '../types/NewsFeedArticleType';
 import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 
-import CommentBlank from './CommentBlank';
+import CommentSection from './CommentsSection';
 import PopupCTA from './PopupCTA';
 import RecentArticles from './RecentArticles';
 
-import missingImage from './../../public/images/img_missing.png';
+import missingImage from './../images/img_missing.png';
 
 const theme = layoutTheme[0];
 
@@ -35,17 +35,11 @@ interface Props {
 
 const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Props) => {
   const { t } = useTranslation('translation');
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+
   const [shouldCommentOpen, setShouldCommentOpen] = useState(false);
   const { fillComponentData, setFillComponentData } = useContext(
     NewsFeedContext,
   ) as NewsFeedContextTypes;
-
-  //  =>> TO DO <<=
-  //
-  // =>COMMENT SECTION
-  //
-  // => USE DECELERATED VARIABLE
 
   const {
     title = '',
@@ -61,7 +55,9 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Prop
 
   return (
     <>
-      <div className={clsx('w-full lg:w-3/4 lg:border-r lg:pr-10', theme.borderP20)}>
+      <div
+        className={clsx('w-full py-10 lg:w-3/4 lg:border-r lg:pr-10', theme.borderP20)}
+      >
         <div className="flex items-center justify-between">
           <div className="my-6 text-5xl">
             <button
@@ -150,7 +146,10 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Prop
         </p>
         <span className="m-4 block">{publishedDate.toLocaleDateString()}</span>
         <LazyLoad threshold={1.0}>
-          <img className="rounded-md" src={(image_url as string) ?? missingImage} />
+          <img
+            className="mx-auto rounded-md"
+            src={(image_url as string) ?? missingImage}
+          />
         </LazyLoad>
 
         <div className="mt-6 mb-2 w-full text-sm">
@@ -163,7 +162,7 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Prop
         </div>
         <div
           className={clsx(
-            'mb-6 flex items-center justify-between border-t border-b py-4',
+            'mb-6 flex items-center justify-between border-t border-b px-2 py-4',
             theme.borderP50,
           )}
         >
@@ -207,13 +206,12 @@ const FeedPopUp = ({ selectedArticle, onClose, length = 0, response = [] }: Prop
             </button>
           </div>
         </div>
-        <div className="my-4 w-full">
-          <span className="text-center text-slate-900/70">TO DO COMMENTS SECTION</span>
-          <CommentBlank />
-          <CommentBlank />
-          <CommentBlank />
-          <CommentBlank />
-        </div>
+        <CommentSection
+          title={title as string}
+          source={source_id as string}
+          openComment={shouldCommentOpen}
+          onClick={setShouldCommentOpen}
+        />
       </div>
       <div className="w-full lg:w-2/4 ">
         <PopupCTA
