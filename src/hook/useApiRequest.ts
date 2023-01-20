@@ -123,7 +123,6 @@ export const useApiRequest = () => {
     } else {
       setNextPage(null);
     }
-    console.log(newses);
 
     return {
       ...newses,

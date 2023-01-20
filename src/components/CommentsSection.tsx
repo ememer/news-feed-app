@@ -14,7 +14,6 @@ interface Props {
 
 const CommentSection = ({ onClick, openComment, title, source }: Props) => {
   const [comments, setComments] = useState(commentsData);
-  console.log(comments);
 
   return (
     <div className="w-full py-10">
