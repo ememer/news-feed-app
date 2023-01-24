@@ -36,33 +36,30 @@ const Comment = ({
   const [updatedContent, setUpdatedContent] = useState('');
 
   const updateComment = (e: React.MouseEvent, option: 'remove' | 'edit') => {
-    if (option === 'remove') {
-      const removed = comments.map((comment) => {
-        if (comment.id === +(e.currentTarget as HTMLButtonElement).id) {
-          return {
-            id: +(e.currentTarget as HTMLButtonElement).id,
-            text: '',
-            author: '',
-          };
+    setNewComment((prevState) => {
+      return prevState.map((comment) => {
+        if (comment.id === +(e.target as HTMLButtonElement).id) {
+          if (option === 'remove') {
+            return {
+              id: +(e.target as HTMLButtonElement).id,
+              text: '',
+              author: '',
+            } as CommentType;
+          }
+          if (option === 'edit') {
+            return {
+              ...comment,
+              isUpdated: true,
+              text: updatedContent,
+            } as CommentType;
+          }
         } else {
-          return comment;
+          return comment as CommentType;
         }
-      });
-      setNewComment(removed);
-    }
+      }) as CommentType[];
+    });
+
     if (option === 'edit') {
-      const newContent = comments.map((comment) => {
-        if (comment.id === +(e.currentTarget as HTMLButtonElement).id) {
-          return {
-            ...comment,
-            isUpdated: true,
-            text: updatedContent,
-          };
-        } else {
-          return comment;
-        }
-      });
-      setNewComment(newContent);
       setIsFieldOpen(false);
     }
   };
@@ -71,6 +68,7 @@ const Comment = ({
     const matchedComment = comments.find(
       (comment) => comment.id === +(e.currentTarget as HTMLButtonElement).id,
     );
+
     setUpdatedContent(matchedComment?.text as string);
     setIsFieldOpen(!isFieldOpen);
   };
@@ -182,7 +180,7 @@ const Comment = ({
             ))}
 
           <div className="flex w-full items-center justify-center p-4">
-            <button onClick={() => onClick(true)}>
+            <button id={`${comment.id}`} onClick={() => onClick(true)}>
               <FontAwesomeIcon icon={faComment} /> Comment
             </button>
           </div>

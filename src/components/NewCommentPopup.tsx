@@ -15,7 +15,13 @@ interface Props {
   length: number;
 }
 
-const NewCommentPopup = ({ onClose, title, source, setComment, length }: Props) => {
+const NewCommentPopup = ({
+  onClose,
+  title = '',
+  source = '',
+  setComment,
+  length = 1,
+}: Props) => {
   const [userComment, setUserComment] = useState('');
   const addNewComment = () => {
     setComment((prevState) => [
