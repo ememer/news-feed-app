@@ -35,7 +35,7 @@ const Comment = ({
   const [isFieldOpen, setIsFieldOpen] = useState(false);
   const [updatedContent, setUpdatedContent] = useState('');
 
-  const updateComment = (e: React.MouseEvent, option: 'remove' | 'edit') => {
+  const updateOrRemoveComment = (e: React.MouseEvent, option: 'remove' | 'edit') => {
     setNewComment((prevState) => {
       return prevState.map((comment) => {
         if (comment.id === +(e.target as HTMLButtonElement).id) {
@@ -58,10 +58,7 @@ const Comment = ({
         }
       }) as CommentType[];
     });
-
-    if (option === 'edit') {
-      setIsFieldOpen(false);
-    }
+    setIsFieldOpen(false);
   };
 
   const findAndUpdateField = (e: React.MouseEvent) => {
@@ -121,7 +118,7 @@ const Comment = ({
               <div className="flex">
                 <button
                   id={`${comment.id}`}
-                  onClick={(e) => updateComment(e, 'remove')}
+                  onClick={(e) => updateOrRemoveComment(e, 'remove')}
                   className="p-2"
                 >
                   <FontAwesomeIcon
@@ -153,7 +150,10 @@ const Comment = ({
                 onChange={(e) => setUpdatedContent(e.target.value)}
               />
               <div className="flex w-full justify-end">
-                <button id={`${comment.id}`} onClick={(e) => updateComment(e, 'edit')}>
+                <button
+                  id={`${comment.id}`}
+                  onClick={(e) => updateOrRemoveComment(e, 'edit')}
+                >
                   Update
                 </button>
               </div>
