@@ -34,6 +34,7 @@ const NewCommentPopup = ({
         replays: [],
       },
     ]);
+
     onClose(false);
   };
   return (

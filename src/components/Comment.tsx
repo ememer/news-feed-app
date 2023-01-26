@@ -65,10 +65,35 @@ const Comment = ({
     const matchedComment = comments.find(
       (comment) => comment.id === +(e.currentTarget as HTMLButtonElement).id,
     );
-
     setUpdatedContent(matchedComment?.text as string);
     setIsFieldOpen(!isFieldOpen);
   };
+
+  const addNewReply = (e: React.MouseEvent) => {
+    const matchedComment = comments.find(
+      (comment) => comment.id === +(e.currentTarget as HTMLButtonElement).id,
+    );
+    setNewComment((prevState) => {
+      return prevState.map((comment) => {
+        if (comment === matchedComment) {
+          return {
+            ...comment,
+            replays: [
+              ...(comment.replays ?? []),
+              {
+                id: (comment.replays?.length ?? -1) + 1,
+                author: 'TEST',
+                text: 'TEST2',
+              },
+            ],
+          };
+        } else {
+          return comment;
+        }
+      });
+    });
+  };
+  console.log(comments);
 
   return (
     <div
@@ -162,7 +187,7 @@ const Comment = ({
         </div>
       </div>
       {comment.author && (
-        <div>
+        <div className="w-full">
           {comment.replays &&
             comment.replays.map((reply) => (
               <div key={reply.id} className="my-2 w-full px-4">
@@ -178,9 +203,8 @@ const Comment = ({
                 />
               </div>
             ))}
-
           <div className="flex w-full items-center justify-center p-4">
-            <button id={`${comment.id}`} onClick={() => onClick(true)}>
+            <button id={`${comment.id}`} onClick={(e) => addNewReply(e)}>
               <FontAwesomeIcon icon={faComment} /> Comment
             </button>
           </div>
