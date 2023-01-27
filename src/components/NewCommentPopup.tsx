@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import clsx from 'clsx';
+import { t } from 'i18next';
 
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { clipLongText } from '../shared/utils/clipText';
@@ -15,7 +16,13 @@ interface Props {
   length: number;
 }
 
-const NewCommentPopup = ({ onClose, title, source, setComment, length }: Props) => {
+const NewCommentPopup = ({
+  onClose,
+  title = '',
+  source = '',
+  setComment,
+  length = 1,
+}: Props) => {
   const [userComment, setUserComment] = useState('');
   const addNewComment = () => {
     setComment((prevState) => [
@@ -28,6 +35,7 @@ const NewCommentPopup = ({ onClose, title, source, setComment, length }: Props) 
         replays: [],
       },
     ]);
+
     onClose(false);
   };
   return (
@@ -48,7 +56,11 @@ const NewCommentPopup = ({ onClose, title, source, setComment, length }: Props) 
         )}
       >
         <div className="w-full p-2 text-right">
-          <button className={clsx('p-4', theme.textP)} onClick={() => onClose(false)}>
+          <button
+            title={t('closePopUp') as string}
+            className={clsx('p-4', theme.textP)}
+            onClick={() => onClose(false)}
+          >
             X
           </button>
         </div>
@@ -70,7 +82,7 @@ const NewCommentPopup = ({ onClose, title, source, setComment, length }: Props) 
               theme.elementsLinearBG,
               theme.borderB,
             )}
-            placeholder="Share your thought"
+            placeholder={t('commentPlaceholder') as string}
           />
           <button
             onClick={() => addNewComment()}
@@ -79,7 +91,7 @@ const NewCommentPopup = ({ onClose, title, source, setComment, length }: Props) 
               theme.elementsLinearBG,
             )}
           >
-            Post
+            {t('post')}
           </button>
         </div>
       </div>

@@ -16,18 +16,18 @@ import { NewsFeedContextTypes } from '../types/NewsFeedProvider';
 import { UserPreferencesContextTypes } from '../types/UserPreferContext';
 
 const Search = () => {
-  const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
-  const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
-  const [response, setResponse] = useState<ResponseArray>();
-
   const theme = layoutTheme[0];
+  const { fillComponentData } = useContext(NewsFeedContext) as NewsFeedContextTypes;
   const { userSettings } = useContext(
     UserPreferencesContext,
   ) as UserPreferencesContextTypes;
   const { newNews, DEF_ARTICLE, isLoaded, setIsLoaded, nextPage } = useApiRequest();
+  const { t } = useTranslation('translation');
+  const [isPopUpOpen, setIsPopUpOpen] = useState<boolean>(false);
+  const [response, setResponse] = useState<ResponseArray>();
   const [searchParam, setSearchParam] = useState('');
   const [shouldRequest, setShouldRequest] = useState(true);
-  const { t } = useTranslation('translation');
+
   const createSearchUrl = (fieldText: string) => {
     if (fieldText.length >= 0 && fieldText.length < 3) {
       return { __err: t('searchFieldInfo') };
@@ -109,7 +109,9 @@ const Search = () => {
         className="my-10 flex min-h-10-s flex-col items-center justify-center p-6"
       >
         <input
-          onChange={(e) => setSearchParam(e.target.value)}
+          onChange={(e) => {
+            setSearchParam(e.target.value);
+          }}
           value={searchParam}
           autoFocus={true}
           autoCapitalize="off"
@@ -122,7 +124,7 @@ const Search = () => {
         <span className={clsx('inline-block w-full p-2', theme.mainAccText)}>
           {(validationError as { __err: string })?.__err}
         </span>
-        {response?.results.length === 0 && (
+        {response?.results.length === 0 && searchParam !== '' && (
           <span
             className={clsx(
               theme.textP,

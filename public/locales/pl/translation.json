@@ -55,5 +55,7 @@
     "upvoted": "Najlepiej oceniane",
     "discussion": "Dyskusja",
     "search": "Wyszukiwarka"
-  }
+  },
+  "post": "Dodaj",
+  "commentPlaceholder": "Podziel się opinią"
 }

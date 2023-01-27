@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { faComment, faEdit, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
+import { t } from 'i18next';
 
 import { CommentType } from '../types/CommentsTypes';
 import { LayoutTheme } from '../types/layoutTheme';
@@ -34,45 +35,69 @@ const Comment = ({
 }: Props) => {
   const [isFieldOpen, setIsFieldOpen] = useState(false);
   const [updatedContent, setUpdatedContent] = useState('');
+  const [inputOpen, setInputOpen] = useState(false);
+  const [replayInput, setReplayInput] = useState('');
 
-  const updateComment = (e: React.MouseEvent, option: 'remove' | 'edit') => {
-    if (option === 'remove') {
-      const removed = comments.map((comment) => {
-        if (comment.id === +(e.currentTarget as HTMLButtonElement).id) {
-          return {
-            id: +(e.currentTarget as HTMLButtonElement).id,
-            text: '',
-            author: '',
-          };
+  const updateOrRemoveComment = (e: React.MouseEvent, option: 'remove' | 'edit') => {
+    setNewComment((prevState) => {
+      return prevState.map((comment) => {
+        if (comment.id === +(e.target as HTMLButtonElement).id) {
+          if (option === 'remove') {
+            return {
+              id: +(e.target as HTMLButtonElement).id,
+              text: '',
+              author: '',
+            } as CommentType;
+          }
+          if (option === 'edit') {
+            return {
+              ...comment,
+              isUpdated: true,
+              text: updatedContent,
+            } as CommentType;
+          }
         } else {
-          return comment;
+          return comment as CommentType;
         }
-      });
-      setNewComment(removed);
-    }
-    if (option === 'edit') {
-      const newContent = comments.map((comment) => {
-        if (comment.id === +(e.currentTarget as HTMLButtonElement).id) {
-          return {
-            ...comment,
-            isUpdated: true,
-            text: updatedContent,
-          };
-        } else {
-          return comment;
-        }
-      });
-      setNewComment(newContent);
-      setIsFieldOpen(false);
-    }
+      }) as CommentType[];
+    });
+    setIsFieldOpen(false);
   };
 
   const findAndUpdateField = (e: React.MouseEvent) => {
     const matchedComment = comments.find(
       (comment) => comment.id === +(e.currentTarget as HTMLButtonElement).id,
     );
+
     setUpdatedContent(matchedComment?.text as string);
     setIsFieldOpen(!isFieldOpen);
+  };
+
+  const addNewReply = (e: React.MouseEvent) => {
+    const matchedComment = comments.find(
+      (comment) => comment.id === +(e.currentTarget as HTMLButtonElement).id,
+    );
+    setNewComment((prevState) => {
+      return prevState.map((comment) => {
+        if (comment === matchedComment) {
+          return {
+            ...comment,
+            replays: [
+              ...(comment.replays ?? []),
+              {
+                id: (comment.replays?.length ?? -1) + 1,
+                author: 'You',
+                text: replayInput,
+              },
+            ],
+          };
+        } else {
+          return comment;
+        }
+      });
+    });
+    setInputOpen(false);
+    setReplayInput('');
   };
 
   return (
@@ -123,7 +148,7 @@ const Comment = ({
               <div className="flex">
                 <button
                   id={`${comment.id}`}
-                  onClick={(e) => updateComment(e, 'remove')}
+                  onClick={(e) => updateOrRemoveComment(e, 'remove')}
                   className="p-2"
                 >
                   <FontAwesomeIcon
@@ -155,7 +180,10 @@ const Comment = ({
                 onChange={(e) => setUpdatedContent(e.target.value)}
               />
               <div className="flex w-full justify-end">
-                <button id={`${comment.id}`} onClick={(e) => updateComment(e, 'edit')}>
+                <button
+                  id={`${comment.id}`}
+                  onClick={(e) => updateOrRemoveComment(e, 'edit')}
+                >
                   Update
                 </button>
               </div>
@@ -164,7 +192,7 @@ const Comment = ({
         </div>
       </div>
       {comment.author && (
-        <div>
+        <div className="w-full">
           {comment.replays &&
             comment.replays.map((reply) => (
               <div key={reply.id} className="my-2 w-full px-4">
@@ -180,11 +208,36 @@ const Comment = ({
                 />
               </div>
             ))}
-
           <div className="flex w-full items-center justify-center p-4">
-            <button onClick={() => onClick(true)}>
-              <FontAwesomeIcon icon={faComment} /> Comment
-            </button>
+            {!inputOpen && (
+              <button onClick={() => setInputOpen(true)}>
+                <FontAwesomeIcon icon={faComment} /> {t('comments')}
+              </button>
+            )}
+            {inputOpen && (
+              <div className="flex w-full justify-between">
+                <input
+                  placeholder={t('commentPlaceholder') as string}
+                  className={clsx(
+                    'w-3/4 rounded-lg border p-2 shadow-md',
+                    theme.elementsLinearBG,
+                    theme.borderB,
+                  )}
+                  value={replayInput}
+                  onChange={(e) => setReplayInput(e.target.value)}
+                ></input>
+                <button
+                  className={clsx(
+                    'mx-auto w-2/12 rounded-md p-2 shadow-md',
+                    theme.elementsLinearBG,
+                  )}
+                  id={`${comment.id}`}
+                  onClick={(e) => addNewReply(e)}
+                >
+                  {t('post')}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
