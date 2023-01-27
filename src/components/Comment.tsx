@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { faComment, faEdit, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
+import { t } from 'i18next';
 
 import { CommentType } from '../types/CommentsTypes';
 import { LayoutTheme } from '../types/layoutTheme';
@@ -34,6 +35,8 @@ const Comment = ({
 }: Props) => {
   const [isFieldOpen, setIsFieldOpen] = useState(false);
   const [updatedContent, setUpdatedContent] = useState('');
+  const [inputOpen, setInputOpen] = useState(false);
+  const [replayInput, setReplayInput] = useState('');
 
   const updateOrRemoveComment = (e: React.MouseEvent, option: 'remove' | 'edit') => {
     setNewComment((prevState) => {
@@ -65,6 +68,7 @@ const Comment = ({
     const matchedComment = comments.find(
       (comment) => comment.id === +(e.currentTarget as HTMLButtonElement).id,
     );
+
     setUpdatedContent(matchedComment?.text as string);
     setIsFieldOpen(!isFieldOpen);
   };
@@ -82,8 +86,8 @@ const Comment = ({
               ...(comment.replays ?? []),
               {
                 id: (comment.replays?.length ?? -1) + 1,
-                author: 'TEST',
-                text: 'TEST2',
+                author: 'You',
+                text: replayInput,
               },
             ],
           };
@@ -92,8 +96,9 @@ const Comment = ({
         }
       });
     });
+    setInputOpen(false);
+    setReplayInput('');
   };
-  console.log(comments);
 
   return (
     <div
@@ -204,9 +209,35 @@ const Comment = ({
               </div>
             ))}
           <div className="flex w-full items-center justify-center p-4">
-            <button id={`${comment.id}`} onClick={(e) => addNewReply(e)}>
-              <FontAwesomeIcon icon={faComment} /> Comment
-            </button>
+            {!inputOpen && (
+              <button onClick={() => setInputOpen(true)}>
+                <FontAwesomeIcon icon={faComment} /> {t('comments')}
+              </button>
+            )}
+            {inputOpen && (
+              <div className="flex w-full justify-between">
+                <input
+                  placeholder={t('commentPlaceholder') as string}
+                  className={clsx(
+                    'w-3/4 rounded-lg border p-2 shadow-md',
+                    theme.elementsLinearBG,
+                    theme.borderB,
+                  )}
+                  value={replayInput}
+                  onChange={(e) => setReplayInput(e.target.value)}
+                ></input>
+                <button
+                  className={clsx(
+                    'mx-auto w-2/12 rounded-md p-2 shadow-md',
+                    theme.elementsLinearBG,
+                  )}
+                  id={`${comment.id}`}
+                  onClick={(e) => addNewReply(e)}
+                >
+                  {t('post')}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

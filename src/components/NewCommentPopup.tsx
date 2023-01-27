@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import clsx from 'clsx';
+import { t } from 'i18next';
 
 import { layoutTheme } from '../shared/theme/LayoutTheme';
 import { clipLongText } from '../shared/utils/clipText';
@@ -55,7 +56,11 @@ const NewCommentPopup = ({
         )}
       >
         <div className="w-full p-2 text-right">
-          <button className={clsx('p-4', theme.textP)} onClick={() => onClose(false)}>
+          <button
+            title={t('closePopUp') as string}
+            className={clsx('p-4', theme.textP)}
+            onClick={() => onClose(false)}
+          >
             X
           </button>
         </div>
@@ -77,7 +82,7 @@ const NewCommentPopup = ({
               theme.elementsLinearBG,
               theme.borderB,
             )}
-            placeholder="Share your thought"
+            placeholder={t('commentPlaceholder') as string}
           />
           <button
             onClick={() => addNewComment()}
@@ -86,7 +91,7 @@ const NewCommentPopup = ({
               theme.elementsLinearBG,
             )}
           >
-            Post
+            {t('post')}
           </button>
         </div>
       </div>

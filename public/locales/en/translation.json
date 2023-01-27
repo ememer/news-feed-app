@@ -55,5 +55,7 @@
     "upvoted": "Most voted",
     "discussion": "Discussion",
     "search": "Search news"
-  }
+  },
+  "post": "Post",
+  "commentPlaceholder": "Share your thought"
 }
