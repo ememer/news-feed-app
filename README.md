@@ -6,7 +6,7 @@ This application is inspired daily.dev.
 
 Daily Feeder - Is a an app based on Vite substitute.
 
-Throught this app you are abble to search interested news by used querys in title or whole article text, read and add own comments ( feature is under construtctin ), also to check top upvoted posts, hotest discussion, menage tags and settings with your personal prefferences.
+Throught this app you are abble to search interested news by used querys in title or whole article text, read and add own comments, also to check top upvoted posts, hotest discussion, menage tags and settings with your personal prefferences.
 
 App can detect your laugage preferences and provide to you articles from your country.
 
